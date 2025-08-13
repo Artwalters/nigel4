@@ -3,28 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fitlike Nigel - Transformeer jouw lichaam. Verander jouw leven.</title>
+    <title>Fitlike Nigel Transformeer jouw lichaam en verander jouw leven</title>
     <meta name="description" content="Online coaching voor mannen en vrouwen die écht resultaat willen. Persoonlijk traject gericht op spieropbouw, vetverlies en een duurzame levensstijl.">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="#home">Fitlike Nigel</a>
+            </div>
+            <nav class="main-nav">
+                <a href="#about">Over</a>
+                <a href="#packages">Coaching</a>
+                <a href="#reviews">Reviews</a>
+                <a href="#onboarding" class="nav-cta">Start Nu</a>
+            </nav>
+        </div>
+    </header>
+
     <section id="home" class="hero">
-        <nav class="corner-nav">
-            <a href="#about" class="corner-nav-item nav-1">OVER MIJ</a>
-            <a href="#coaching" class="corner-nav-item nav-2">TRAJECTEN</a>
-            <a href="#packages" class="corner-nav-item nav-3">PRIJZEN</a>
-            <a href="#contact" class="corner-nav-item nav-4">CONTACT</a>
-        </nav>
+        <div class="hero-sidebar">
+            <ul class="hero-features">
+                <li>Gepersonaliseerde recepten</li>
+                <li>Wekelijkse check-ins</li>
+                <li>Op maat gemaakte trainingen</li>
+                <li>Exclusieve database</li>
+                <li>Directe chat support</li>
+            </ul>
+        </div>
         <div class="hero-content">
-            <h1 class="hero-title">TRANSFORMEER JOUW LICHAAM.<br>VERANDER JOUW LEVEN.</h1>
+            <h1 class="hero-title">TRANSFORMEER JOUW LICHAAM EN VERANDER JOUW LEVEN</h1>
+            <div class="hero-buttons">
+                <a href="#packages" class="hero-btn primary">START VANDAAG</a>
+                <a href="#about" class="hero-btn secondary">OVER NIGEL</a>
+            </div>
         </div>
     </section>
-    
-    <div class="circle-menu">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
 
     <section id="intro" class="intro">
         <div class="container">
@@ -47,8 +62,6 @@
                         <li>EXCLUSIEVE DATABASE</li>
                         <li>DIRECTE CHAT SUPPORT</li>
                     </ul>
-                    
-                    <a href="#contact" class="more-info-btn">Meer info</a>
                 </div>
                 <div class="about-right">
                     <img src="img/coaching.JPG" alt="Nigel Coaching" class="about-image">
@@ -73,12 +86,12 @@
                         <li>EERLIJKE COMMUNICATIE</li>
                         <li>MENTALE KRACHT</li>
                     </ul>
-                    
-                    <a href="#contact" class="philosophy-btn">Over Nigel</a>
                 </div>
             </div>
         </div>
     </section>
+
+    <div class="rocks-background"></div>
 
     <section id="packages" class="packages">
         <div class="container">
@@ -259,148 +272,151 @@
     </section>
 
     <section id="onboarding" class="onboarding">
-        <div class="container">
-            <form id="onboarding-form" class="onboarding-form">
-                <div class="form-steps-container" id="steps-container">
-                    <div class="form-step" id="step-0">
-                        <div class="intro-step">
-                            <h2 class="intro-step-title">KLAAR VOOR JOUW TRANSFORMATIE?</h2>
-                            <p class="intro-step-text">Begin hier je reis naar jouw droomfysiek. Ik ga je een paar vragen stellen om een perfect op jou afgestemde aanpak te maken.</p>
-                            <p class="intro-step-subtext">Het duurt slechts 2 minuten en je krijgt direct een persoonlijk advies van mij.</p>
-                            <button type="button" class="start-btn" onclick="startForm()">START JOUW TRAJECT</button>
+        <div class="onboarding-container">
+            <div class="onboarding-content">
+                <h2 class="onboarding-title">Klaar voor jouw transformatie?</h2>
+                
+                <div class="onboarding-description">
+                    <p>Vul het formulier in en ontdek hoe ik je kan helpen jouw droomfysiek te bereiken. In slechts 2 minuten krijg je een persoonlijk advies op maat.</p>
+                    <p>Of je nu wilt afvallen, spieren opbouwen of gewoon fitter worden - samen maken we een plan dat 100% op jou is afgestemd.</p>
+                </div>
+            </div>
+            
+            <div class="onboarding-form-panel">
+                <form id="onboarding-form" class="onboarding-form">
+                    <div class="form-steps-container" id="steps-container">
+                        <div class="form-step" id="step-1">
+                            <h3 class="step-title">Wat zijn jouw doelen?</h3>
+                            <p class="step-subtitle">Selecteer alles wat van toepassing is</p>
+                            <div class="error-message" id="error-step-1"></div>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="goals" value="afvallen">
+                                    <span class="checkmark"></span>
+                                    AFVALLEN & VETVERLIES
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="goals" value="spieropbouw">
+                                    <span class="checkmark"></span>
+                                    SPIEROPBOUW & KRACHT
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="goals" value="conditie">
+                                    <span class="checkmark"></span>
+                                    CONDITIE VERBETEREN
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="goals" value="gezonde-levensstijl">
+                                    <span class="checkmark"></span>
+                                    GEZONDE LEVENSSTIJL
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-step" id="step-2">
+                            <h3 class="step-title">Wat is jouw huidige ervaring?</h3>
+                            <div class="error-message" id="error-step-2"></div>
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="experience" value="beginner">
+                                    <span class="radiomark"></span>
+                                    <div class="radio-content">
+                                        <strong>BEGINNER</strong>
+                                        <small>Weinig tot geen sportervaring</small>
+                                    </div>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="experience" value="intermediate">
+                                    <span class="radiomark"></span>
+                                    <div class="radio-content">
+                                        <strong>GEMIDDELD</strong>
+                                        <small>Enige ervaring met sporten/fitness</small>
+                                    </div>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="experience" value="advanced">
+                                    <span class="radiomark"></span>
+                                    <div class="radio-content">
+                                        <strong>GEVORDERD</strong>
+                                        <small>Veel ervaring en kennis</small>
+                                    </div>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="experience" value="athlete">
+                                    <span class="radiomark"></span>
+                                    <div class="radio-content">
+                                        <strong>ATLEET</strong>
+                                        <small>Competitieve sportachtergrond</small>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-step" id="step-3">
+                            <h3 class="step-title">Hoe train je het liefst?</h3>
+                            <div class="error-message" id="error-step-3"></div>
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="training-preference" value="thuis">
+                                    <span class="radiomark"></span>
+                                    <div class="radio-content">
+                                        <strong>THUIS TRAINEN</strong>
+                                        <small>Met minimale apparatuur</small>
+                                    </div>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="training-preference" value="gym">
+                                    <span class="radiomark"></span>
+                                    <div class="radio-content">
+                                        <strong>IN DE SPORTSCHOOL</strong>
+                                        <small>Met volledige uitrusting</small>
+                                    </div>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="training-preference" value="hybrid">
+                                    <span class="radiomark"></span>
+                                    <div class="radio-content">
+                                        <strong>COMBINATIE</strong>
+                                        <small>Zowel thuis als gym</small>
+                                    </div>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="training-preference" value="outdoor">
+                                    <span class="radiomark"></span>
+                                    <div class="radio-content">
+                                        <strong>BUITEN TRAINEN</strong>
+                                        <small>Natuurlijke omgeving</small>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-step" id="step-4">
+                            <h3 class="step-title">Vertel iets over jezelf</h3>
+                            <p class="step-subtitle">Deel je verhaal, uitdagingen of specifieke wensen</p>
+                            <textarea 
+                                name="personal-message" 
+                                placeholder="Bijv. Ik wil al jaren afvallen maar lukt het niet om vol te houden. Ik werk veel en heb weinig tijd. Mijn grootste uitdaging is..."
+                                rows="6"
+                            ></textarea>
                         </div>
                     </div>
-                    <div class="form-step" id="step-1">
-                    <h3 class="step-title">Wat zijn jouw doelen?</h3>
-                    <p class="step-subtitle">Selecteer alles wat van toepassing is</p>
-                    <div class="error-message" id="error-step-1"></div>
-                    <div class="checkbox-group">
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="goals" value="afvallen">
-                            <span class="checkmark"></span>
-                            AFVALLEN & VETVERLIES
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="goals" value="spieropbouw">
-                            <span class="checkmark"></span>
-                            SPIEROPBOUW & KRACHT
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="goals" value="conditie">
-                            <span class="checkmark"></span>
-                            CONDITIE VERBETEREN
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="goals" value="gezonde-levensstijl">
-                            <span class="checkmark"></span>
-                            GEZONDE LEVENSSTIJL
-                        </label>
-                    </div>
-                </div>
 
-                <div class="form-step" id="step-2">
-                    <h3 class="step-title">Wat is jouw huidige ervaring?</h3>
-                    <div class="error-message" id="error-step-2"></div>
-                    <div class="radio-group">
-                        <label class="radio-item">
-                            <input type="radio" name="experience" value="beginner">
-                            <span class="radiomark"></span>
-                            <div class="radio-content">
-                                <strong>BEGINNER</strong>
-                                <small>Weinig tot geen sportervaring</small>
-                            </div>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="experience" value="intermediate">
-                            <span class="radiomark"></span>
-                            <div class="radio-content">
-                                <strong>GEMIDDELD</strong>
-                                <small>Enige ervaring met sporten/fitness</small>
-                            </div>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="experience" value="advanced">
-                            <span class="radiomark"></span>
-                            <div class="radio-content">
-                                <strong>GEVORDERD</strong>
-                                <small>Veel ervaring en kennis</small>
-                            </div>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="experience" value="athlete">
-                            <span class="radiomark"></span>
-                            <div class="radio-content">
-                                <strong>ATLEET</strong>
-                                <small>Competitieve sportachtergrond</small>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-step" id="step-3">
-                    <h3 class="step-title">Hoe train je het liefst?</h3>
-                    <div class="error-message" id="error-step-3"></div>
-                    <div class="radio-group">
-                        <label class="radio-item">
-                            <input type="radio" name="training-preference" value="thuis">
-                            <span class="radiomark"></span>
-                            <div class="radio-content">
-                                <strong>THUIS TRAINEN</strong>
-                                <small>Met minimale apparatuur</small>
-                            </div>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="training-preference" value="gym">
-                            <span class="radiomark"></span>
-                            <div class="radio-content">
-                                <strong>IN DE SPORTSCHOOL</strong>
-                                <small>Met volledige uitrusting</small>
-                            </div>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="training-preference" value="hybrid">
-                            <span class="radiomark"></span>
-                            <div class="radio-content">
-                                <strong>COMBINATIE</strong>
-                                <small>Zowel thuis als gym</small>
-                            </div>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="training-preference" value="outdoor">
-                            <span class="radiomark"></span>
-                            <div class="radio-content">
-                                <strong>BUITEN TRAINEN</strong>
-                                <small>Natuurlijke omgeving</small>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-step" id="step-4">
-                    <h3 class="step-title">Vertel iets over jezelf</h3>
-                    <p class="step-subtitle">Deel je verhaal, uitdagingen of specifieke wensen</p>
-                    <textarea 
-                        name="personal-message" 
-                        placeholder="Bijv. Ik wil al jaren afvallen maar lukt het niet om vol te houden. Ik werk veel en heb weinig tijd. Mijn grootste uitdaging is..."
-                        rows="6"
-                    ></textarea>
-                </div>
-                </div>
-
-                <div class="form-navigation">
-                    <div class="nav-buttons">
-                        <button type="button" class="nav-btn prev-btn" onclick="previousStep()">Vorige</button>
-                        <button type="button" class="nav-btn next-btn" onclick="nextStep()">Volgende</button>
-                        <button type="submit" class="submit-btn">VERSTUUR AANVRAAG</button>
-                    </div>
-                    <div class="form-progress">
-                        <div class="progress-line">
-                            <div class="progress-fill" id="progress-fill"></div>
+                    <div class="form-navigation">
+                        <div class="nav-buttons">
+                            <button type="button" class="nav-btn prev-btn" onclick="previousStep()">Vorige</button>
+                            <button type="button" class="nav-btn next-btn" onclick="nextStep()">Volgende</button>
+                            <button type="submit" class="submit-btn">VERSTUUR AANVRAAG</button>
                         </div>
-                        <div class="progress-text" id="progress-text">STAP 1 VAN 4</div>
+                        <div class="form-progress">
+                            <div class="progress-line">
+                                <div class="progress-fill" id="progress-fill"></div>
+                            </div>
+                            <div class="progress-text" id="progress-text">STAP 1 VAN 4</div>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </section>
 

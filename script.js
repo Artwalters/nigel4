@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     gsap.registerPlugin(ScrollTrigger, Draggable);
     
+    
     // No initial animation for corner navigation items
     
     gsap.fromTo('.hero-title', 
@@ -16,47 +17,24 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     );
     
-    // Circle menu scroll functionality
-    const circleMenu = document.querySelector('.circle-menu');
+    // Hero scroll effect
     const heroSection = document.querySelector('.hero');
-    const heroOverlay = document.querySelector('.hero::before');
     
-    // Create dynamic overlay for scroll effect
-    const dynamicOverlay = document.createElement('div');
-    dynamicOverlay.className = 'hero-scroll-overlay';
-    heroSection.appendChild(dynamicOverlay);
-    
-    const cornerNavItems = document.querySelectorAll('.corner-nav-item');
-    
-    window.addEventListener('scroll', () => {
-        const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
-        const scrollPosition = window.pageYOffset + window.innerHeight;
-        const scrolled = window.pageYOffset;
-        const heroHeight = heroSection.offsetHeight;
+    if (heroSection) {
+        // Create dynamic overlay for scroll effect
+        const dynamicOverlay = document.createElement('div');
+        dynamicOverlay.className = 'hero-scroll-overlay';
+        heroSection.appendChild(dynamicOverlay);
         
-        // Calculate darkness based on scroll (0 to 1)
-        const darkness = Math.min(scrolled / (heroHeight * 0.8), 1);
-        dynamicOverlay.style.backgroundColor = `rgba(0, 0, 0, ${darkness})`;
-        
-        // Menu switching logic with proper thresholds
-        if (scrollPosition > heroBottom) {
-            // Past hero section - show circle menu
-            circleMenu.classList.add('visible');
-            gsap.to(cornerNavItems, {
-                opacity: 0,
-                duration: 0.5,
-                ease: 'power2.out'
-            });
-        } else {
-            // Still in hero section - show corner nav
-            circleMenu.classList.remove('visible');
-            gsap.to(cornerNavItems, {
-                opacity: 1,
-                duration: 0.5,
-                ease: 'power2.out'
-            });
-        }
-    });
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroHeight = heroSection.offsetHeight;
+            
+            // Calculate darkness based on scroll (0 to 1)
+            const darkness = Math.min(scrolled / (heroHeight * 0.8), 1);
+            dynamicOverlay.style.backgroundColor = `rgba(0, 0, 0, ${darkness})`;
+        });
+    }
     
     gsap.utils.toArray('.section-title').forEach(title => {
         gsap.from(title, {
@@ -117,24 +95,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    const packageCards = document.querySelectorAll('.package-card');
-    packageCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            gsap.to(card, {
-                scale: 1.02,
-                duration: 0.3,
-                ease: 'power2.out'
-            });
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            gsap.to(card, {
-                scale: 1,
-                duration: 0.3,
-                ease: 'power2.out'
-            });
-        });
-    });
     
     // Check if form groups exist
     if (document.querySelector('.form-group') && document.querySelector('.contact-form')) {
@@ -193,24 +153,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    const ctaButtons = document.querySelectorAll('.cta-button, .package-cta');
-    ctaButtons.forEach(button => {
-        button.addEventListener('mouseenter', function() {
-            gsap.to(button, {
-                scale: 1.05,
-                duration: 0.3,
-                ease: 'power2.out'
-            });
-        });
-        
-        button.addEventListener('mouseleave', function() {
-            gsap.to(button, {
-                scale: 1,
-                duration: 0.3,
-                ease: 'power2.out'
-            });
-        });
-    });
     
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
@@ -266,19 +208,10 @@ function showStep(step) {
     const nextBtn = document.querySelector('.next-btn');
     const submitBtn = document.querySelector('.submit-btn');
     
-    // Calculate transform position (step 0 = intro, step 1-4 = actual steps)
-    const translateX = -(step * 100);
+    // Calculate transform position (step 1-4 = actual steps, no intro step)
+    const translateX = -((step - 1) * 25);
     container.style.transform = `translateX(${translateX}%)`;
     
-    // Hide progress bar and navigation on intro step (step 0)
-    if (step === 0) {
-        if (progressFill) progressFill.style.width = '0%';
-        if (progressText) progressText.textContent = '';
-        if (prevBtn) prevBtn.style.display = 'none';
-        if (nextBtn) nextBtn.style.display = 'none';
-        if (submitBtn) submitBtn.style.display = 'none';
-        return;
-    }
     
     // Update progress line for actual steps
     const progressWidth = (step / totalSteps) * 100;
@@ -499,7 +432,8 @@ Dit bericht is automatisch gegenereerd via de onboarding pagina van fitlikenigel
 // Initialize form when page loads
 document.addEventListener('DOMContentLoaded', function() {
     if (document.getElementById('onboarding-form')) {
-        showStep(0);
+        currentStep = 1;
+        showStep(1);
         
         // Add event listeners to hide error messages when selections are made
         setupFormValidation();
@@ -559,21 +493,39 @@ document.addEventListener('DOMContentLoaded', function() {
 function initReviewsSlider() {
     const wrapper = document.querySelector('.testimonials-wrapper');
     const boxes = gsap.utils.toArray('.testimonial-box');
+    const avatars = gsap.utils.toArray('.client-avatars .avatar');
     
     if (!wrapper || boxes.length === 0) return;
     
     let activeElement;
     let isDragging = false;
     let autoPlayTimer;
+    let highlightTimeout;
     
     const loop = horizontalLoop(boxes, {
         paused: true,
         draggable: false,
         center: true,
         onChange: (element, index) => {
+            // Clear any pending highlight timeout
+            if (highlightTimeout) {
+                clearTimeout(highlightTimeout);
+            }
+            
+            // Remove active state from previous elements immediately
             activeElement && activeElement.classList.remove("active");
-            element.classList.add("active");
-            activeElement = element;
+            avatars.forEach(avatar => avatar.classList.remove("active"));
+            
+            // Add active class to new testimonial and avatar after animation completes
+            highlightTimeout = setTimeout(() => {
+                element.classList.add("active");
+                activeElement = element;
+                
+                if (avatars[index]) {
+                    avatars[index].classList.add("active");
+                }
+                highlightTimeout = null;
+            }, 400); // Wait for slide transition to complete
         }
     });
     
@@ -632,7 +584,7 @@ function initReviewsSlider() {
             
             // Snap to nearest item
             const currentIndex = loop.closestIndex(true);
-            loop.toIndex(currentIndex, {duration: 0.4, ease: "power2.inOut"});
+            loop.toIndex(currentIndex, {duration: 0.6, ease: "power2.out"});
             
             // Restart autoplay after delay
             setTimeout(() => {
@@ -667,12 +619,12 @@ function initReviewsSlider() {
             if (clickX < centerX - 100) {
                 // Click on left side - go to previous
                 clearInterval(autoPlayTimer);
-                loop.previous({duration: 0.6, ease: "power2.inOut"});
+                loop.previous({duration: 0.4, ease: "power3.out"});
                 setTimeout(startAutoPlay, 1000);
             } else if (clickX > centerX + 100) {
                 // Click on right side - go to next
                 clearInterval(autoPlayTimer);
-                loop.next({duration: 0.6, ease: "power2.inOut"});
+                loop.next({duration: 0.4, ease: "power3.out"});
                 setTimeout(startAutoPlay, 1000);
             }
         }
@@ -683,7 +635,18 @@ function initReviewsSlider() {
         box.addEventListener("click", (e) => {
             if (!isDragging && !hasDragged) {
                 clearInterval(autoPlayTimer);
-                loop.toIndex(i, {duration: 0.8, ease: "power1.inOut"});
+                loop.toIndex(i, {duration: 0.4, ease: "power3.out"});
+                setTimeout(startAutoPlay, 1000);
+            }
+        });
+    });
+    
+    // Add click handlers to avatars
+    avatars.forEach((avatar, i) => {
+        avatar.addEventListener("click", () => {
+            if (!isDragging) {
+                clearInterval(autoPlayTimer);
+                loop.toIndex(i, {duration: 0.4, ease: "power3.out"});
                 setTimeout(startAutoPlay, 1000);
             }
         });
@@ -702,18 +665,6 @@ function initReviewsSlider() {
     // Start auto-play
     startAutoPlay();
     
-    // Pause on hover
-    wrapper.addEventListener("mouseenter", () => {
-        if (!isDragging) {
-            clearInterval(autoPlayTimer);
-        }
-    });
-    
-    wrapper.addEventListener("mouseleave", () => {
-        if (!isDragging) {
-            startAutoPlay();
-        }
-    });
 }
 
 // Horizontal Loop Function (van jouw voorbeeld)
