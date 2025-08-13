@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger, Draggable);
     
     // No initial animation for corner navigation items
     
@@ -555,7 +555,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Reviews Slider - Exact copy van werkend voorbeeld
+// Reviews Slider - Met drag functionaliteit
 function initReviewsSlider() {
     const wrapper = document.querySelector('.testimonials-wrapper');
     const boxes = gsap.utils.toArray('.testimonial-box');
@@ -563,6 +563,9 @@ function initReviewsSlider() {
     if (!wrapper || boxes.length === 0) return;
     
     let activeElement;
+    let isDragging = false;
+    let autoPlayTimer;
+    
     const loop = horizontalLoop(boxes, {
         paused: true,
         draggable: false,
@@ -574,22 +577,142 @@ function initReviewsSlider() {
         }
     });
     
-    // Click handlers
-    boxes.forEach((box, i) => box.addEventListener("click", () => loop.toIndex(i, {duration: 0.8, ease: "power1.inOut"})));
+    // Create proxy element for dragging
+    const proxy = document.createElement("div");
+    proxy.style.position = "absolute";
+    proxy.style.width = "100%";
+    proxy.style.height = "100%";
+    proxy.style.top = "0";
+    proxy.style.left = "0";
+    proxy.style.zIndex = "10";
+    proxy.style.cursor = "grab";
+    proxy.style.pointerEvents = "auto";
+    wrapper.appendChild(proxy);
     
-    // Auto-play timer
-    let autoPlayTimer = setInterval(() => {
-        loop.next({duration: 0.4, ease: "power1.inOut"});
-    }, 5000);
+    let dragThreshold = 10;
+    let hasDragged = false;
+    let startX = 0;
     
-    // Pause on click
-    boxes.forEach(box => {
-        box.addEventListener("click", () => {
+    // Create draggable
+    const draggable = Draggable.create(proxy, {
+        type: "x",
+        trigger: proxy,
+        inertia: true,
+        onPress: function(e) {
+            startX = e.x || e.clientX;
+            hasDragged = false;
+        },
+        onDragStart: function() {
+            isDragging = true;
+            hasDragged = true;
+            proxy.style.cursor = "grabbing";
             clearInterval(autoPlayTimer);
-            autoPlayTimer = setInterval(() => {
-                loop.next({duration: 0.4, ease: "power1.inOut"});
-            }, 5000);
+            this.startProgress = loop.progress();
+        },
+        onDrag: function() {
+            const sensitivity = 0.3; // Increased sensitivity
+            let progress = this.startProgress - (this.x / wrapper.offsetWidth) * sensitivity;
+            
+            // Wrap progress to keep infinite loop
+            if (progress < 0) {
+                progress = progress + 1;
+            } else if (progress > 1) {
+                progress = progress - 1;
+            }
+            
+            loop.progress(progress);
+        },
+        onDragEnd: function() {
+            isDragging = false;
+            proxy.style.cursor = "grab";
+            
+            // Reset proxy position
+            gsap.set(this.target, {x: 0});
+            this.x = 0;
+            
+            // Snap to nearest item
+            const currentIndex = loop.closestIndex(true);
+            loop.toIndex(currentIndex, {duration: 0.4, ease: "power2.inOut"});
+            
+            // Restart autoplay after delay
+            setTimeout(() => {
+                if (!isDragging) {
+                    startAutoPlay();
+                }
+            }, 1000);
+            
+            // Reset drag flag after animation
+            setTimeout(() => {
+                hasDragged = false;
+            }, 500);
+        },
+        onClick: function(e) {
+            // Only allow click if we haven't dragged significantly
+            if (hasDragged) {
+                e.stopPropagation();
+                return false;
+            }
+        }
+    })[0];
+    
+    // Click handlers - handle clicks on proxy to allow clicking through
+    proxy.addEventListener("click", (e) => {
+        if (!hasDragged && !isDragging) {
+            // Find which testimonial was clicked
+            const rect = wrapper.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const centerX = rect.width / 2;
+            
+            // Check if click is on left or right side
+            if (clickX < centerX - 100) {
+                // Click on left side - go to previous
+                clearInterval(autoPlayTimer);
+                loop.previous({duration: 0.6, ease: "power2.inOut"});
+                setTimeout(startAutoPlay, 1000);
+            } else if (clickX > centerX + 100) {
+                // Click on right side - go to next
+                clearInterval(autoPlayTimer);
+                loop.next({duration: 0.6, ease: "power2.inOut"});
+                setTimeout(startAutoPlay, 1000);
+            }
+        }
+    });
+    
+    // Also keep original click handlers as backup
+    boxes.forEach((box, i) => {
+        box.addEventListener("click", (e) => {
+            if (!isDragging && !hasDragged) {
+                clearInterval(autoPlayTimer);
+                loop.toIndex(i, {duration: 0.8, ease: "power1.inOut"});
+                setTimeout(startAutoPlay, 1000);
+            }
         });
+    });
+    
+    // Auto-play functionality
+    function startAutoPlay() {
+        clearInterval(autoPlayTimer);
+        autoPlayTimer = setInterval(() => {
+            if (!isDragging) {
+                loop.next({duration: 0.4, ease: "power1.inOut"});
+            }
+        }, 5000);
+    }
+    
+    // Start auto-play
+    startAutoPlay();
+    
+    // Pause on hover
+    wrapper.addEventListener("mouseenter", () => {
+        if (!isDragging) {
+            clearInterval(autoPlayTimer);
+        }
+    });
+    
+    wrapper.addEventListener("mouseleave", () => {
+        if (!isDragging) {
+            startAutoPlay();
+        }
     });
 }
 
