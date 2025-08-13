@@ -1,3 +1,30 @@
+// Initialize Lenis smooth scroll - optimized for performance
+const lenis = new Lenis({
+    duration: 0.8,
+    easing: (t) => 1 - Math.pow(1 - t, 2), // Lighter easing
+    direction: 'vertical',
+    gestureDirection: 'vertical',
+    smooth: true,
+    mouseMultiplier: 1.2,
+    smoothTouch: false,
+    touchMultiplier: 1.5,
+    infinite: false,
+    lerp: 0.12, // Faster interpolation
+    wheelMultiplier: 1.2,
+    autoResize: true,
+    syncTouch: true // Better mobile performance
+});
+
+// Update ScrollTrigger on Lenis scroll
+lenis.on('scroll', ScrollTrigger.update);
+
+// GSAP ticker for Lenis with requestAnimationFrame
+function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
+
 document.addEventListener('DOMContentLoaded', function() {
     gsap.registerPlugin(ScrollTrigger, Draggable);
     
@@ -16,6 +43,29 @@ document.addEventListener('DOMContentLoaded', function() {
             ease: 'power3.out'
         }
     );
+
+    // Intro logo animation
+    gsap.fromTo('.intro-logo-circle', 
+        {
+            scale: 0,
+            opacity: 0,
+            rotation: -180
+        },
+        {
+            scrollTrigger: {
+                trigger: '.intro',
+                start: 'top 80%',
+                end: 'bottom 20%',
+                toggleActions: 'play none none reverse'
+            },
+            scale: 1,
+            opacity: 1,
+            rotation: 0,
+            duration: 1,
+            ease: 'back.out(1.7)'
+        }
+    );
+
     
     // Hero scroll effect
     const heroSection = document.querySelector('.hero');
@@ -26,13 +76,19 @@ document.addEventListener('DOMContentLoaded', function() {
         dynamicOverlay.className = 'hero-scroll-overlay';
         heroSection.appendChild(dynamicOverlay);
         
+        let scrollTimeout;
         window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const heroHeight = heroSection.offsetHeight;
-            
-            // Calculate darkness based on scroll (0 to 1)
-            const darkness = Math.min(scrolled / (heroHeight * 0.8), 1);
-            dynamicOverlay.style.backgroundColor = `rgba(0, 0, 0, ${darkness})`;
+            if (!scrollTimeout) {
+                scrollTimeout = requestAnimationFrame(() => {
+                    const scrolled = window.pageYOffset;
+                    const heroHeight = heroSection.offsetHeight;
+                    
+                    // Calculate darkness based on scroll (0 to 1)
+                    const darkness = Math.min(scrolled / (heroHeight * 0.8), 1);
+                    dynamicOverlay.style.backgroundColor = `rgba(0, 0, 0, ${darkness})`;
+                    scrollTimeout = null;
+                });
+            }
         });
     }
     
@@ -41,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
             scrollTrigger: {
                 trigger: title,
                 start: 'top 80%',
-                toggleActions: 'play none none reverse'
+                once: true
             },
             opacity: 0,
             y: 30,
@@ -53,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
             scrollTrigger: {
                 trigger: title,
                 start: 'top 80%',
-                toggleActions: 'play none none reverse'
+                once: true
             },
             width: 0,
             duration: 0.8,
@@ -69,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
             scrollTrigger: {
                 trigger: '.coaching-content',
                 start: 'top 75%',
-                toggleActions: 'play none none reverse'
+                once: true
             },
             opacity: 0,
             x: -20,
@@ -85,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
             scrollTrigger: {
                 trigger: '.packages-grid',
                 start: 'top 75%',
-                toggleActions: 'play none none reverse'
+                once: true
             },
             opacity: 0,
             y: 40,
@@ -102,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
             scrollTrigger: {
                 trigger: '.contact-form',
                 start: 'top 75%',
-                toggleActions: 'play none none reverse'
+                once: true
             },
             opacity: 0,
             y: 20,
@@ -154,20 +210,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     
+    // Lenis Smooth Scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
+            const targetId = this.getAttribute('href');
+            const target = document.querySelector(targetId);
+            
             if (target) {
-                const offset = 80;
-                const bodyRect = document.body.getBoundingClientRect().top;
-                const elementRect = target.getBoundingClientRect().top;
-                const elementPosition = elementRect - bodyRect;
-                const offsetPosition = elementPosition - offset;
+                const headerOffset = 80;
+                const targetPosition = target.offsetTop - headerOffset;
                 
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
+                // Use Lenis scrollTo method
+                lenis.scrollTo(targetPosition, {
+                    duration: 2,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
                 });
             }
         });
