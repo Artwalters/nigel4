@@ -28,6 +28,68 @@ requestAnimationFrame(raf);
 document.addEventListener('DOMContentLoaded', function() {
     gsap.registerPlugin(ScrollTrigger, Draggable);
     
+    // Button text stagger animation
+    function createButtonAnimation(button) {
+        const textElement = button.querySelector('.btn-text');
+        if (!textElement) {
+            console.log('No .btn-text found in button:', button);
+            return;
+        }
+        
+        const originalText = textElement.textContent.trim();
+        const letters = originalText.split('');
+        
+        // Create spans for each letter
+        textElement.innerHTML = letters.map(letter => 
+            letter === ' ' ? '<span>&nbsp;</span>' : `<span>${letter}</span>`
+        ).join('');
+        
+        const spans = textElement.querySelectorAll('span');
+        console.log('Created spans for button:', originalText, spans.length);
+        
+        // Set initial position
+        gsap.set(spans, { y: 0 });
+        
+        let isAnimating = false;
+        
+        button.addEventListener('mouseenter', () => {
+            if (isAnimating) return;
+            isAnimating = true;
+            
+            // Stagger animation: text out (up) and new text in (from bottom)
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    isAnimating = false;
+                }
+            });
+            
+            // First animate all letters up and out
+            tl.to(spans, {
+                y: -30,
+                duration: 0.12,
+                stagger: 0.015,
+                ease: "power2.in"
+            })
+            // Then set them below and animate back in
+            .set(spans, {
+                y: 30
+            })
+            .to(spans, {
+                y: 0,
+                duration: 0.12,
+                stagger: 0.015,
+                ease: "power2.out"
+            });
+        });
+    }
+    
+    // Initialize all buttons after a small delay to ensure DOM is ready
+    setTimeout(() => {
+        const buttons = document.querySelectorAll('.hero-btn, .package-btn, .submit-btn');
+        console.log('Found buttons:', buttons.length);
+        buttons.forEach(createButtonAnimation);
+    }, 100);
+    
     
     // No initial animation for corner navigation items
     
@@ -582,7 +644,7 @@ function initReviewsSlider() {
                     avatars[index].classList.add("active");
                 }
                 highlightTimeout = null;
-            }, 400); // Wait for slide transition to complete
+            }, 200); // Reduced wait time for smoother feel
         }
     });
     
@@ -641,7 +703,7 @@ function initReviewsSlider() {
             
             // Snap to nearest item
             const currentIndex = loop.closestIndex(true);
-            loop.toIndex(currentIndex, {duration: 0.6, ease: "power2.out"});
+            loop.toIndex(currentIndex, {duration: 0.4, ease: "power3.out"});
             
             // Restart autoplay after delay
             setTimeout(() => {
@@ -676,12 +738,12 @@ function initReviewsSlider() {
             if (clickX < centerX - 100) {
                 // Click on left side - go to previous
                 clearInterval(autoPlayTimer);
-                loop.previous({duration: 0.4, ease: "power3.out"});
+                loop.previous({duration: 0.3, ease: "power2.out"});
                 setTimeout(startAutoPlay, 1000);
             } else if (clickX > centerX + 100) {
                 // Click on right side - go to next
                 clearInterval(autoPlayTimer);
-                loop.next({duration: 0.4, ease: "power3.out"});
+                loop.next({duration: 0.3, ease: "power2.out"});
                 setTimeout(startAutoPlay, 1000);
             }
         }
@@ -692,7 +754,7 @@ function initReviewsSlider() {
         box.addEventListener("click", (e) => {
             if (!isDragging && !hasDragged) {
                 clearInterval(autoPlayTimer);
-                loop.toIndex(i, {duration: 0.4, ease: "power3.out"});
+                loop.toIndex(i, {duration: 0.3, ease: "power2.out"});
                 setTimeout(startAutoPlay, 1000);
             }
         });
@@ -703,7 +765,7 @@ function initReviewsSlider() {
         avatar.addEventListener("click", () => {
             if (!isDragging) {
                 clearInterval(autoPlayTimer);
-                loop.toIndex(i, {duration: 0.4, ease: "power3.out"});
+                loop.toIndex(i, {duration: 0.3, ease: "power2.out"});
                 setTimeout(startAutoPlay, 1000);
             }
         });
@@ -714,7 +776,7 @@ function initReviewsSlider() {
         clearInterval(autoPlayTimer);
         autoPlayTimer = setInterval(() => {
             if (!isDragging) {
-                loop.next({duration: 0.4, ease: "power1.inOut"});
+                loop.next({duration: 0.5, ease: "power2.inOut"});
             }
         }, 5000);
     }

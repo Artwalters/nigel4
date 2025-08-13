@@ -381,6 +381,27 @@ a {
     border-radius: 6px;
     text-decoration: none;
     font-family: inherit;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.hero-btn .btn-text {
+    display: block;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    height: 1.2em;
+    line-height: 1.2em;
+}
+
+.hero-btn .btn-text span {
+    display: inline-block;
+}
+
+.hero-btn:hover {
+    transform: scale(0.98);
 }
 
 .hero-btn.primary {
@@ -763,36 +784,23 @@ a {
 
 .client-avatars .avatar.active {
     transform: translateY(-3px) scale(1.1);
-    border-color: #efeeec;
+    border-color: rgba(255, 255, 255, 0.4);
     border-width: 3px;
     position: relative;
-    transition: all 0.6s ease 0.4s; /* Delay van 0.4s */
+    transition: all 0.3s ease;
 }
 
 .client-avatars .avatar.active::after {
     content: '';
     position: absolute;
-    top: -8px;
-    left: -8px;
-    right: -8px;
-    bottom: -8px;
-    border: 2px solid #ff6600;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent);
     border-radius: 50%;
-    animation: pulse-ring 2s infinite;
-    opacity: 0;
-    animation-delay: 0.6s; /* Start animatie na fade-in */
-    animation-fill-mode: forwards;
-}
-
-@keyframes pulse-ring {
-    0% {
-        transform: scale(0.8);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(1.2);
-        opacity: 0;
-    }
+    opacity: 1;
+    transition: opacity 0.3s ease;
 }
 
 .client-avatars .avatar.active::before {
@@ -843,6 +851,7 @@ a {
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
+    opacity: 0.5;
 }
 
 .testimonial-inner::before {
@@ -852,15 +861,16 @@ a {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), transparent);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent);
     opacity: 0;
     border-radius: 6px;
     transition: opacity 0.3s ease;
 }
 
 .testimonial-box.active .testimonial-inner {
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
     background-color: #efeeec0f;
+    opacity: 1;
 }
 
 .testimonial-box.active .testimonial-inner::before {
@@ -879,7 +889,8 @@ a {
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.6);
     margin-bottom: 25px;
-    font-style: italic;
+    font-style: normal;
+    font-weight: 400;
     position: relative;
     z-index: 1;
 }
@@ -1339,12 +1350,38 @@ a {
     border-radius: 8px;
     cursor: pointer;
     width: 100%;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.package-btn .btn-text {
+    display: block;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    height: 1.2em;
+    line-height: 1.2em;
+}
+
+.package-btn .btn-text span {
+    display: inline-block;
+}
+
+.package-btn:hover {
+    transform: scale(0.98);
 }
 
 .package-card.featured .package-btn {
     background-color: #000000;
     color: #efeeec;
     border: 1px solid #000000;
+}
+
+.package-card.elite .package-btn {
+    background-color: #efeeec;
+    color: #000000;
+    border: 1px solid #efeeec;
 }
 
 @media (max-width: 968px) {
@@ -1841,10 +1878,26 @@ textarea::placeholder {
     color: #efeeec;
     border: none;
     font-weight: 600;
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-btn .btn-text {
+    display: block;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    height: 1.2em;
+    line-height: 1.2em;
+}
+
+.submit-btn .btn-text span {
+    display: inline-block;
 }
 
 .submit-btn:hover {
     background: #374151;
+    transform: scale(0.98);
 }
 
 /* Progress Bar */
@@ -2160,6 +2213,25 @@ textarea::placeholder {
 .submit-btn {
     background-color: #efeeec;
     color: #000;
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-btn .btn-text {
+    display: block;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    height: 1.2em;
+    line-height: 1.2em;
+}
+
+.submit-btn .btn-text span {
+    display: inline-block;
+}
+
+.submit-btn:hover {
+    transform: scale(0.98);
 }
 
 
