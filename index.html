@@ -38,7 +38,7 @@
             </ul>
         </div>
         <div class="hero-content">
-            <h1 class="hero-title">Transformeer jouw lichaam en verander jouw leven</h1>
+            <h1 class="hero-title">Transformeer jouw <br class="desktop-br">lichaam en verander <br class="desktop-br">jouw leven</h1>
             <div class="hero-buttons">
                 <a href="#packages" class="hero-btn primary"><span class="btn-text">Start vandaag</span></a>
                 <a href="#about" class="hero-btn secondary"><span class="btn-text">Over Nigel</span></a>
@@ -333,10 +333,25 @@
     <section id="onboarding" class="onboarding">
         <div class="onboarding-container">
             <div class="onboarding-content">
-                <h2 class="onboarding-title heading-h2">Klaar voor jouw transformatie?</h2>
+                <h2 class="onboarding-title heading-h2">Gratis Intake & Persoonlijk Advies</h2>
                 
                 <div class="onboarding-description">
-                    <p class="text-large">Vul het formulier in en ontdek hoe ik je kan helpen jouw droomfysiek te bereiken. In slechts 2 minuten krijg je een persoonlijk advies op maat.</p>
+                    <p class="text-large">Boek een <strong>gratis 15-minuten intake call</strong> en ontvang persoonlijk advies voor jouw situatie.</p>
+                    
+                    <div class="intake-benefits">
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>15 minuten persoonlijke call - geheel vrijblijvend</span>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>Handige tips & tricks specifiek voor jouw situatie</span>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>Advies welk pakket/dienst het beste bij je past</span>
+                        </div>
+                    </div>
                     <p class="text-normal">Of je nu wilt afvallen, spieren opbouwen of gewoon fitter worden - samen maken we een plan dat 100% op jou is afgestemd.</p>
                 </div>
             </div>
@@ -345,35 +360,36 @@
                 <form id="onboarding-form" class="onboarding-form">
                     <div class="form-steps-container" id="steps-container">
                         <div class="form-step" id="step-1">
-                            <h3 class="step-title">Wat zijn jouw doelen?</h3>
-                            <p class="step-subtitle">Selecteer alles wat van toepassing is</p>
+                            <h3 class="step-title">Wat wil je bereiken?</h3>
+                            <p class="step-subtitle">Vertel me waar ik je mee kan helpen</p>
                             <div class="error-message" id="error-step-1"></div>
                             <div class="checkbox-group">
                                 <label class="checkbox-item">
                                     <input type="checkbox" name="goals" value="afvallen">
                                     <span class="checkmark"></span>
-                                    AFVALLEN & VETVERLIES
+                                    Afvallen & vetverlies
                                 </label>
                                 <label class="checkbox-item">
                                     <input type="checkbox" name="goals" value="spieropbouw">
                                     <span class="checkmark"></span>
-                                    SPIEROPBOUW & KRACHT
+                                    Spieropbouw & kracht
                                 </label>
                                 <label class="checkbox-item">
                                     <input type="checkbox" name="goals" value="conditie">
                                     <span class="checkmark"></span>
-                                    CONDITIE VERBETEREN
+                                    Conditie verbeteren
                                 </label>
                                 <label class="checkbox-item">
                                     <input type="checkbox" name="goals" value="gezonde-levensstijl">
                                     <span class="checkmark"></span>
-                                    GEZONDE LEVENSSTIJL
+                                    Gezonde levensstijl
                                 </label>
                             </div>
                         </div>
 
                         <div class="form-step" id="step-2">
                             <h3 class="step-title">Wat is jouw huidige ervaring?</h3>
+                            <p class="step-subtitle">Zo kan ik het beste advies geven</p>
                             <div class="error-message" id="error-step-2"></div>
                             <div class="radio-group">
                                 <label class="radio-item">
@@ -412,7 +428,8 @@
                         </div>
 
                         <div class="form-step" id="step-3">
-                            <h3 class="step-title">Hoe train je het liefst?</h3>
+                            <h3 class="step-title">Waar wil je trainen?</h3>
+                            <p class="step-subtitle">Belangrijk voor het juiste programma</p>
                             <div class="error-message" id="error-step-3"></div>
                             <div class="radio-group">
                                 <label class="radio-item">
@@ -451,13 +468,30 @@
                         </div>
 
                         <div class="form-step" id="step-4">
-                            <h3 class="step-title">Vertel iets over jezelf</h3>
-                            <p class="step-subtitle">Deel je verhaal, uitdagingen of specifieke wensen</p>
-                            <textarea 
-                                name="personal-message" 
-                                placeholder="Bijv. Ik wil al jaren afvallen maar lukt het niet om vol te houden. Ik werk veel en heb weinig tijd. Mijn grootste uitdaging is..."
-                                rows="6"
-                            ></textarea>
+                            <h3 class="step-title">Je contactgegevens</h3>
+                            <p class="step-subtitle">Zodat ik je kan bellen voor de gratis intake</p>
+                            
+                            <div class="contact-fields">
+                                <div class="field-group">
+                                    <label for="name">Naam *</label>
+                                    <input type="text" id="name" name="name" required placeholder="Je voor- en achternaam">
+                                </div>
+                                
+                                <div class="field-group">
+                                    <label for="phone">Telefoonnummer *</label>
+                                    <input type="tel" id="phone" name="phone" required placeholder="06-12345678">
+                                </div>
+                                
+                                <div class="field-group">
+                                    <label for="email">E-mail</label>
+                                    <input type="email" id="email" name="email" placeholder="naam@email.nl">
+                                </div>
+                                
+                                <div class="field-group">
+                                    <label for="message">Korte toelichting (optioneel)</label>
+                                    <textarea id="message" name="message" rows="3" placeholder="Bijv. Mijn grootste uitdaging is... of ik wil vooral..."></textarea>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -465,7 +499,7 @@
                         <div class="nav-buttons">
                             <button type="button" class="nav-btn prev-btn" onclick="previousStep()">Vorige</button>
                             <button type="button" class="nav-btn next-btn" onclick="nextStep()">Volgende</button>
-                            <button type="submit" class="submit-btn"><span class="btn-text">Verstuur aanvraag</span></button>
+                            <button type="submit" class="submit-btn"><span class="btn-text">Boek Gratis Intake</span></button>
                         </div>
                         <div class="form-progress">
                             <div class="progress-line">

@@ -408,7 +408,30 @@ const totalSteps = 4;
 
 function startForm() {
     currentStep = 1;
+    
+    // Reset all form steps for mobile
+    const isMobile = window.innerWidth <= 767;
+    if (isMobile) {
+        const container = document.getElementById('steps-container');
+        const allSteps = document.querySelectorAll('.form-step');
+        
+        // Reset container
+        if (container) {
+            container.style.transform = 'none';
+            container.style.transition = 'none';
+        }
+        
+        // Hide all steps first
+        allSteps.forEach(step => {
+            step.style.display = 'none';
+            step.classList.remove('active');
+        });
+    }
+    
     showStep(currentStep);
+    
+    // Initialize auto-advance functionality
+    autoAdvanceOnSelection();
 }
 
 function showStep(step) {
@@ -419,22 +442,59 @@ function showStep(step) {
     const nextBtn = document.querySelector('.next-btn');
     const submitBtn = document.querySelector('.submit-btn');
     
-    // Calculate transform position (step 1-4 = actual steps, no intro step)
-    const translateX = -((step - 1) * 25);
-    container.style.transform = `translateX(${translateX}%)`;
+    // Check if mobile (simple card layout) or desktop (sliding layout)
+    const isMobile = window.innerWidth <= 767;
     
+    if (isMobile) {
+        // Mobile: Simple show/hide approach
+        const allSteps = document.querySelectorAll('.form-step');
+        allSteps.forEach((stepElement, index) => {
+            if (index + 1 === step) {
+                stepElement.classList.add('active');
+                stepElement.style.display = 'flex';
+            } else {
+                stepElement.classList.remove('active');
+                stepElement.style.display = 'none';
+            }
+        });
+    } else {
+        // Desktop: Sliding animation
+        const translateX = -((step - 1) * 25);
+        requestAnimationFrame(() => {
+            if (container) {
+                container.style.transform = `translateX(${translateX}%)`;
+                container.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            }
+        });
+    }
     
     // Update progress line for actual steps
     const progressWidth = (step / totalSteps) * 100;
-    if (progressFill) progressFill.style.width = `${progressWidth}%`;
+    if (progressFill) {
+        progressFill.style.width = `${progressWidth}%`;
+        progressFill.style.transition = 'width 0.3s ease';
+    }
     
     // Update progress text
     if (progressText) progressText.textContent = `Stap ${step} van ${totalSteps}`;
     
     // Show/hide navigation buttons
-    if (prevBtn) prevBtn.style.display = step === 1 ? 'none' : 'inline-block';
-    if (nextBtn) nextBtn.style.display = step === totalSteps ? 'none' : 'inline-block';
-    if (submitBtn) submitBtn.style.display = step === totalSteps ? 'inline-block' : 'none';
+    if (prevBtn) {
+        prevBtn.style.display = step === 1 ? 'none' : 'inline-block';
+    }
+    if (nextBtn) {
+        nextBtn.style.display = step === totalSteps ? 'none' : 'inline-block';
+    }
+    if (submitBtn) {
+        submitBtn.style.display = step === totalSteps ? 'block' : 'none';
+    }
+    
+    // Hide any visible error messages when changing steps
+    const errorElement = document.getElementById(`error-step-${step}`);
+    if (errorElement && errorElement.classList.contains('show')) {
+        errorElement.classList.remove('show');
+        errorElement.classList.add('hide');
+    }
 }
 
 function nextStep() {
@@ -444,9 +504,43 @@ function nextStep() {
     }
 }
 
+// Auto-advance when option is selected
+function autoAdvanceOnSelection() {
+    // Add event listeners to all radio buttons and checkboxes
+    const radioInputs = document.querySelectorAll('input[type="radio"]');
+    const checkboxInputs = document.querySelectorAll('input[type="checkbox"]');
+    
+    radioInputs.forEach(input => {
+        input.addEventListener('change', () => {
+            // Small delay for visual feedback
+            setTimeout(() => {
+                if (currentStep < totalSteps) {
+                    nextStep();
+                }
+            }, 300);
+        });
+    });
+    
+    checkboxInputs.forEach(input => {
+        input.addEventListener('change', () => {
+            // For checkboxes, advance after a selection is made
+            const checkedBoxes = document.querySelectorAll(`input[name="${input.name}"]:checked`);
+            if (checkedBoxes.length > 0) {
+                setTimeout(() => {
+                    if (currentStep < totalSteps) {
+                        nextStep();
+                    }
+                }, 500); // Longer delay to allow multiple selections
+            }
+        });
+    });
+}
+
 function previousStep() {
-    currentStep--;
-    showStep(currentStep);
+    if (currentStep > 1) {
+        currentStep--;
+        showStep(currentStep);
+    }
 }
 
 function showErrorMessage(step, message) {
