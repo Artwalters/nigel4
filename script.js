@@ -1,18 +1,21 @@
+// Check if mobile device
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+
 // Initialize Lenis smooth scroll - optimized for performance
 const lenis = new Lenis({
-    duration: 0.8,
+    duration: isMobile ? 0.4 : 0.8,
     easing: (t) => 1 - Math.pow(1 - t, 2), // Lighter easing
     direction: 'vertical',
     gestureDirection: 'vertical',
-    smooth: true,
+    smooth: !isMobile, // Disable smooth scroll on mobile
     mouseMultiplier: 1.2,
-    smoothTouch: false,
-    touchMultiplier: 1.5,
+    smoothTouch: false, // Disable smooth touch completely
+    touchMultiplier: 2, // Faster touch response
     infinite: false,
-    lerp: 0.12, // Faster interpolation
+    lerp: isMobile ? 1 : 0.12, // Instant on mobile
     wheelMultiplier: 1.2,
     autoResize: true,
-    syncTouch: true // Better mobile performance
+    syncTouch: false // Native scroll on mobile
 });
 
 // Update ScrollTrigger on Lenis scroll
@@ -63,21 +66,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
             
-            // First animate all letters up and out
+            // Letters go up almost simultaneously
             tl.to(spans, {
                 y: -30,
-                duration: 0.12,
-                stagger: 0.015,
+                opacity: 0,
+                duration: 0.15,
+                stagger: 0.008, // Minimal stagger
                 ease: "power2.in"
             })
-            // Then set them below and animate back in
+            // Set letters below for return
             .set(spans, {
-                y: 30
+                y: 30,
+                opacity: 1
             })
+            // Letters come back almost at once
             .to(spans, {
                 y: 0,
                 duration: 0.12,
-                stagger: 0.015,
+                stagger: 0.005, // Even less stagger
                 ease: "power2.out"
             });
         });
@@ -85,10 +91,51 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize all buttons after a small delay to ensure DOM is ready
     setTimeout(() => {
-        const buttons = document.querySelectorAll('.hero-btn, .package-btn, .submit-btn');
+        const buttons = document.querySelectorAll('.hero-btn, .package-btn, .submit-btn, .community-btn');
         console.log('Found buttons:', buttons.length);
         buttons.forEach(createButtonAnimation);
     }, 100);
+    
+    // Subtle parallax effect for images
+    function initParallax() {
+        const parallaxElements = document.querySelectorAll('.about-image, .philosophy-image');
+        
+        parallaxElements.forEach(element => {
+            gsap.fromTo(element, 
+                {
+                    y: -30
+                }, 
+                {
+                    y: 30,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: element,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: 0.5 // Very smooth
+                    }
+                }
+            );
+        });
+        
+        // Rocks background - mega subtle parallax
+        const rocksBackground = document.querySelector('.rocks-background');
+        if (rocksBackground) {
+            gsap.to(rocksBackground, {
+                backgroundPositionY: "10px",
+                ease: "none",
+                scrollTrigger: {
+                    trigger: rocksBackground,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 2 // Very slow and smooth
+                }
+            });
+        }
+    }
+    
+    // Initialize parallax
+    initParallax();
     
     
     // No initial animation for corner navigation items
@@ -106,27 +153,86 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     );
 
-    // Intro logo animation
-    gsap.fromTo('.intro-logo-circle', 
-        {
-            scale: 0,
-            opacity: 0,
-            rotation: -180
-        },
-        {
-            scrollTrigger: {
-                trigger: '.intro',
-                start: 'top 80%',
-                end: 'bottom 20%',
-                toggleActions: 'play none none reverse'
+    // Intro clients rollout animation - CLEAN VERSION
+    
+    // Set initial state for all client icons
+    gsap.set('.client-icon', { 
+        opacity: 0,
+        left: '50%',
+        top: '50%',
+        rotation: 0,
+        transform: 'translate(-50%, -50%)'
+    });
+    
+    // Create clean timeline with proper reset
+    const clientsTimeline = gsap.timeline({
+        scrollTrigger: {
+            trigger: '.intro',
+            start: 'top 80%',
+            end: 'bottom 20%',
+            toggleActions: 'play none none reverse',
+            onLeave: () => {
+                // Reset all icons when leaving
+                gsap.set('.client-icon', { 
+                    opacity: 0,
+                    left: '50%',
+                    rotation: 0,
+                    transform: 'translate(-50%, -50%)'
+                });
             },
-            scale: 1,
-            opacity: 1,
-            rotation: 0,
-            duration: 1,
-            ease: 'back.out(1.7)'
+            onEnterBack: () => {
+                // Ensure proper state when scrolling back
+                clientsTimeline.restart();
+            }
         }
-    );
+    });
+    
+    // Smooth rolling animation - all icons roll out from center
+    clientsTimeline
+        .to(['.client-icon.left-1', '.client-icon.left-2', '.client-icon.left-3'], {
+            opacity: 1,
+            duration: 0.1
+        })
+        .to(['.client-icon.right-1', '.client-icon.right-2', '.client-icon.right-3'], {
+            opacity: 1,
+            duration: 0.1
+        }, '<')
+        .to('.client-icon.left-1', {
+            left: '8%',
+            rotation: 360,
+            duration: 0.6,
+            ease: 'power2.out'
+        }, '<0.1')
+        .to('.client-icon.left-2', {
+            left: '22%',
+            rotation: 360,
+            duration: 0.6,
+            ease: 'power2.out'
+        }, '<0.05')
+        .to('.client-icon.left-3', {
+            left: '36%',
+            rotation: 360,
+            duration: 0.6,
+            ease: 'power2.out'
+        }, '<0.05')
+        .to('.client-icon.right-1', {
+            left: '64%',
+            rotation: -360,
+            duration: 0.6,
+            ease: 'power2.out'
+        }, '<-0.15')
+        .to('.client-icon.right-2', {
+            left: '78%',
+            rotation: -360,
+            duration: 0.6,
+            ease: 'power2.out'
+        }, '<0.05')
+        .to('.client-icon.right-3', {
+            left: '92%',
+            rotation: -360,
+            duration: 0.6,
+            ease: 'power2.out'
+        }, '<0.05');
 
     
     // Hero scroll effect
@@ -197,21 +303,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Check if package cards exist
-    if (document.querySelector('.package-card') && document.querySelector('.packages-grid')) {
-        gsap.from('.package-card', {
-            scrollTrigger: {
-                trigger: '.packages-grid',
-                start: 'top 75%',
-                once: true
-            },
-            opacity: 0,
-            y: 40,
-            duration: 0.8,
-            stagger: 0.2,
-            ease: 'power3.out'
-        });
-    }
+    // Package cards - no scroll animation
     
     
     // Check if form groups exist
@@ -283,9 +375,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const headerOffset = 80;
                 const targetPosition = target.offsetTop - headerOffset;
                 
-                // Use Lenis scrollTo method
+                // Use Lenis scrollTo method - faster on mobile
                 lenis.scrollTo(targetPosition, {
-                    duration: 2,
+                    duration: isMobile ? 0.6 : 2,
                     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
                 });
             }
@@ -337,7 +429,7 @@ function showStep(step) {
     if (progressFill) progressFill.style.width = `${progressWidth}%`;
     
     // Update progress text
-    if (progressText) progressText.textContent = `STAP ${step} VAN ${totalSteps}`;
+    if (progressText) progressText.textContent = `Stap ${step} van ${totalSteps}`;
     
     // Show/hide navigation buttons
     if (prevBtn) prevBtn.style.display = step === 1 ? 'none' : 'inline-block';
