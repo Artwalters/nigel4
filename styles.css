@@ -503,15 +503,17 @@ img {
 
 .nigel-info-panel {
     position: fixed;
-    top: 0;
-    right: 0;
-    width: 45%;
-    height: 100vh;
+    top: 20px;
+    right: 20px;
+    width: calc(45% - 40px);
+    height: calc(100vh - 40px);
     background: #efeeec;
     z-index: 999;
     transform: translateX(100%);
     transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     overflow-y: auto;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
 .nigel-info-content {
@@ -525,10 +527,10 @@ img {
 
 .nigel-info-close {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 44px;
-    height: 44px;
+    top: 15px;
+    right: 15px;
+    width: 36px;
+    height: 36px;
     background: rgba(0, 0, 0, 0.8);
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 50%;
@@ -538,18 +540,15 @@ img {
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    z-index: 1000;
+    z-index: 1001;
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1;
 }
 
 .nigel-info-close:hover {
     background: rgba(0, 0, 0, 0.9);
     transform: rotate(90deg);
-}
-
-.nigel-info-close .close-icon {
-    width: 16px;
-    height: 16px;
-    transform: rotate(45deg);
 }
 
 .nigel-info-header {
@@ -578,7 +577,7 @@ img {
 .nigel-info-title {
     font-size: clamp(28px, 4vw, 36px);
     font-weight: 700;
-    color: var(--text-dark);
+    color: #000000;
     text-align: center;
     margin: 0;
 }
@@ -587,7 +586,7 @@ img {
     flex: 1;
     font-size: 16px;
     line-height: 1.6;
-    color: var(--text-dark);
+    color: #000000;
     margin-bottom: 30px;
 }
 
@@ -605,7 +604,7 @@ img {
 .nigel-credentials h3 {
     font-size: 18px;
     font-weight: 600;
-    color: var(--text-dark);
+    color: #000000;
     margin: 0 0 12px 0;
 }
 
@@ -656,10 +655,13 @@ img {
 /* Mobile styling for Nigel Info Panel */
 @media (max-width: 768px) {
     .nigel-info-panel {
-        width: 100vw;
-        left: 0;
-        right: auto;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        width: calc(100vw - 20px);
+        height: calc(100vh - 20px);
         transform: translateX(100%);
+        border-radius: 8px;
     }
     
     .nigel-info-content {
@@ -669,8 +671,9 @@ img {
     .nigel-info-close {
         top: 15px;
         right: 15px;
-        width: 40px;
-        height: 40px;
+        width: 32px;
+        height: 32px;
+        font-size: 18px;
     }
     
     .nigel-photo-large {

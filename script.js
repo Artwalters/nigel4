@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Nigel Info Panel functionality with GSAP
-    const nigelInfoButton = document.querySelector('.hero-btn.secondary');
+    const nigelInfoButton = document.getElementById('nigel-info-btn');
     const nigelInfoPanel = document.querySelector('.nigel-info-panel');
     const nigelInfoOverlay = document.querySelector('.nigel-info-overlay');
     const nigelInfoClose = document.querySelector('.nigel-info-close');
@@ -198,16 +198,16 @@ document.addEventListener('DOMContentLoaded', function() {
         const infoPanelTL = gsap.timeline({ paused: true });
         
         infoPanelTL.to(nigelInfoOverlay, {
-            duration: 0.4,
+            duration: 0.2,
             opacity: 1,
             visibility: "visible",
-            ease: "power2.out"
+            ease: "power2.inOut"
         })
         .to(nigelInfoPanel, {
-            duration: 0.5,
+            duration: 0.3,
             x: "0%",
-            ease: "power3.out"
-        }, "-=0.2");
+            ease: "power2.inOut"
+        }, "-=0.1");
         
         // Open panel when clicking "Over Nigel" button
         nigelInfoButton.addEventListener('click', (e) => {
