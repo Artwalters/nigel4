@@ -60,6 +60,132 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    // Mobile menu functionality with GSAP
+    const menuButton = document.querySelector('.menu-button');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const menuOverlay = document.querySelector('.mobile-menu-overlay');
+    let isMenuOpen = false;
+    
+    if (menuButton && mobileMenu && menuOverlay) {
+        // Create GSAP timeline for menu animation
+        const tl = gsap.timeline({ paused: true });
+        
+        tl.to(menuOverlay, {
+            duration: 0.4,
+            opacity: 1,
+            visibility: "visible",
+            ease: "power2.out"
+        })
+        .to(mobileMenu, {
+            duration: 0.35,
+            y: "0%",
+            scale: 0.995,
+            ease: "power3.out"
+        }, "-=0.3")
+        .to(mobileMenu, {
+            duration: 0.25,
+            scale: 0.985,
+            x: 5,
+            width: "calc(100vw - 10px)",
+            borderRadius: "4px",
+            ease: "back.out(1.7)"
+        }, "-=0.05");
+        
+        menuButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            const icon = menuButton.querySelector('.menu-button__icon');
+            
+            if (!isMenuOpen) {
+                // Open menu
+                tl.play();
+                gsap.to(icon, { rotation: 45, duration: 0.3, ease: "power2.out" });
+                
+                // Animate menu button to dark theme
+                gsap.to(menuButton, {
+                    backgroundColor: "rgba(0, 0, 0, 0.8)",
+                    borderColor: "rgba(0, 0, 0, 0.2)",
+                    duration: 0.4,
+                    ease: "power2.out",
+                    delay: 0.2
+                });
+                gsap.to(icon, {
+                    color: "#ffffff",
+                    duration: 0.3,
+                    ease: "power2.out",
+                    delay: 0.25
+                });
+                
+                isMenuOpen = true;
+            } else {
+                // Close menu
+                tl.reverse();
+                gsap.to(icon, { rotation: 0, duration: 0.3, ease: "power2.out" });
+                
+                // Animate menu button back to light theme
+                gsap.to(menuButton, {
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                    borderColor: "rgba(255, 255, 255, 0.2)",
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+                gsap.to(icon, {
+                    color: "#ffffff",
+                    duration: 0.2,
+                    ease: "power2.out"
+                });
+                
+                isMenuOpen = false;
+            }
+        });
+        
+        // Close menu when clicking on a menu item
+        const menuItems = document.querySelectorAll('.mobile-menu-item');
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                closeMenu();
+            });
+        });
+        
+        // Close menu when clicking/touching on overlay
+        menuOverlay.addEventListener('click', closeMenu);
+        menuOverlay.addEventListener('touchstart', closeMenu);
+        
+        // Close menu on scroll
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            if (isMenuOpen) {
+                // Debounce scroll events to prevent excessive calls
+                if (scrollTimeout) clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    closeMenu();
+                }, 50);
+            }
+        });
+        
+        // Function to close menu with animations
+        function closeMenu() {
+            tl.reverse();
+            gsap.to(menuButton.querySelector('.menu-button__icon'), { 
+                rotation: 0, 
+                duration: 0.3, 
+                ease: "power2.out" 
+            });
+            gsap.to(menuButton, {
+                backgroundColor: "rgba(255, 255, 255, 0.1)",
+                borderColor: "rgba(255, 255, 255, 0.2)",
+                duration: 0.3,
+                ease: "power2.out"
+            });
+            gsap.to(menuButton.querySelector('.menu-button__icon'), {
+                color: "#ffffff",
+                duration: 0.2,
+                ease: "power2.out"
+            });
+            isMenuOpen = false;
+        }
+    }
+    
     // Button text stagger animation
     function createButtonAnimation(button) {
         const textElement = button.querySelector('.btn-text');
