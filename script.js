@@ -1,5 +1,5 @@
-// Check if mobile device
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+// Check if mobile device (excluding iPad for better tablet experience)
+const isMobile = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768 && !/iPad/i.test(navigator.userAgent));
 
 // Initialize Lenis smooth scroll - optimized for performance
 const lenis = new Lenis({
@@ -1119,3 +1119,27 @@ function horizontalLoop(items, config) {
     });
     return timeline;
 }
+
+// Featured Badge Animation with ScrollTrigger
+ScrollTrigger.create({
+    trigger: ".packages",
+    start: "top 70%",
+    onEnter: () => {
+        const badge = document.querySelector(".featured-badge");
+        if (badge) {
+            gsap.fromTo(badge, 
+                {
+                    scale: 0,
+                    opacity: 0
+                },
+                {
+                    scale: 1,
+                    opacity: 1,
+                    duration: 0.6,
+                    ease: "back.out(1.7)"
+                }
+            );
+        }
+    },
+    once: true
+});
