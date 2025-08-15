@@ -217,6 +217,33 @@ img {
     justify-content: center;
     align-items: center;
     position: relative;
+    transition: all 0.4s ease;
+}
+
+.main-header.scrolled .header-container {
+    padding: 12px 40px;
+    transform: translateY(12px);
+}
+
+.main-header.scrolled .logo {
+    transform: translateX(8px);
+}
+
+.main-header.scrolled .nav-cta,
+.main-header.scrolled .menu-button {
+    transform: translateX(-8px);
+}
+
+.logo {
+    transition: all 0.4s ease;
+}
+
+.nav-cta {
+    transition: all 0.4s ease !important;
+}
+
+.menu-button {
+    transition: all 0.4s ease;
 }
 
 .logo {
@@ -288,7 +315,7 @@ img {
     text-transform: none !important;
     letter-spacing: 0 !important;
     position: absolute !important;
-    right: 64px !important;
+    right: 40px !important;
     font-size: 13px !important;
     text-decoration: none !important;
     font-family: inherit !important;
@@ -474,7 +501,7 @@ a {
     margin-bottom: 40px;
     color: #efeeec;
     max-width: 100%;
-    font-weight: var(--weight-bold);
+    font-weight: 700 !important;
 }
 
 .hero-buttons {
@@ -614,6 +641,12 @@ a {
     display: flex;
     gap: 20px;
     z-index: 10;
+    transition: all 0.6s ease;
+}
+
+.hero-social.hidden {
+    transform: translateX(100px);
+    opacity: 0;
 }
 
 .social-icon {
@@ -2739,7 +2772,7 @@ textarea::placeholder {
    =============================================== */
 .follow-section {
     background-color: #000;
-    padding: var(--space-2xl) 0;
+    padding: clamp(5rem, 4rem + 5vw, 10rem) 0;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -2847,15 +2880,15 @@ textarea::placeholder {
    =============================================== */
 .footer {
     background-color: #000;
-    padding: var(--space-2xl) 0 var(--space-xl) 0;
+    padding: var(--space-lg) 0 var(--space-sm) 0;
     color: #efeeec;
 }
 
 .footer-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-xl);
-    margin-bottom: 60px;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
 }
 
 .footer-column h4 {
@@ -3105,6 +3138,30 @@ textarea::placeholder {
     .header-container {
         width: 100%;
         padding: 30px 40px;
+    }
+    
+    /* Fix mobile navigation positioning */
+    .nav-cta {
+        right: 70px !important;
+    }
+    
+    .menu-button {
+        right: 20px !important;
+    }
+    
+    /* Disable header animations on mobile - keep static positioning */
+    .main-header.scrolled .header-container {
+        transform: none !important;
+        padding: 30px 40px !important;
+    }
+    
+    .main-header.scrolled .logo {
+        transform: none !important;
+    }
+    
+    .main-header.scrolled .nav-cta,
+    .main-header.scrolled .menu-button {
+        transform: none !important;
     }
     
     /* Show menu button on mobile */

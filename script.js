@@ -31,6 +31,35 @@ requestAnimationFrame(raf);
 document.addEventListener('DOMContentLoaded', function() {
     gsap.registerPlugin(ScrollTrigger, Draggable);
     
+    // Header scroll effect - compact at top, wider when scrolled
+    ScrollTrigger.create({
+        trigger: "body",
+        start: "100px top",
+        end: "bottom bottom",
+        onEnter: () => {
+            document.querySelector('.main-header').classList.remove('scrolled');
+        },
+        onLeaveBack: () => {
+            document.querySelector('.main-header').classList.add('scrolled');
+        }
+    });
+    
+    // Initially set header as scrolled (compact) at top
+    document.querySelector('.main-header').classList.add('scrolled');
+    
+    // Hero social icons scroll effect
+    ScrollTrigger.create({
+        trigger: ".hero",
+        start: "top top",
+        end: "50% top",
+        onEnter: () => {
+            document.querySelector('.hero-social').classList.add('hidden');
+        },
+        onLeaveBack: () => {
+            document.querySelector('.hero-social').classList.remove('hidden');
+        }
+    });
+    
     // Button text stagger animation
     function createButtonAnimation(button) {
         const textElement = button.querySelector('.btn-text');
