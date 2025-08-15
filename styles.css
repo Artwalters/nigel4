@@ -382,10 +382,10 @@ img {
 /* Mobile Menu */
 .mobile-menu {
     position: fixed;
-    top: -5px;
+    top: -10px;
     left: 0;
     width: 100vw;
-    height: 70vh;
+    height: calc(70vh + 10px);
     background: #efeeec;
     z-index: 999;
     transform: translateY(-100%);
