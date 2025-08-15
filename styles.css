@@ -382,7 +382,7 @@ img {
 /* Mobile Menu */
 .mobile-menu {
     position: fixed;
-    top: 0;
+    top: -5px;
     left: 0;
     width: 100vw;
     height: 70vh;
