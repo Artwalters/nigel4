@@ -280,29 +280,58 @@ img {
 
 .nav-cta {
     display: inline-block !important;
-    background-color: #efeeec !important;
-    color: #000000 !important;
+    background-color: #ff4500 !important;
+    color: #ffffff !important;
     padding: 10px 18px !important;
     border-radius: 6px !important;
     font-weight: var(--weight-normal) !important;
     text-transform: none !important;
     letter-spacing: 0 !important;
     position: absolute !important;
-    right: 40px !important;
+    right: 64px !important;
     font-size: 13px !important;
     text-decoration: none !important;
     font-family: inherit !important;
     overflow: hidden !important;
     transition: all 0.3s ease !important;
     cursor: pointer !important;
-    border: 1px solid #efeeec !important;
+    border: 1px solid #ff4500 !important;
     line-height: 1.2 !important;
+    height: 34px !important;
+    box-sizing: border-box !important;
 }
 
 .nav-cta:hover {
-    background-color: rgba(239, 238, 236, 0.9) !important;
+    background-color: rgba(255, 69, 0, 0.9) !important;
     transform: scale(0.98) !important;
-    color: #000000 !important;
+    color: #ffffff !important;
+}
+
+.menu-button {
+    display: none;
+    width: 34px;
+    height: 34px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: #ffffff;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: absolute;
+    right: 20px;
+    box-sizing: border-box;
+}
+
+.menu-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(0.98);
+}
+
+.menu-button__icon {
+    width: 16px;
+    height: 16px;
 }
 
 
@@ -457,7 +486,9 @@ a {
 }
 
 .hero-btn {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: 12px 24px;
     font-size: 14px;
     font-weight: var(--weight-medium);
@@ -470,10 +501,33 @@ a {
     overflow: hidden;
     transition: all 0.3s ease;
     cursor: pointer;
+    text-align: center;
+}
+
+/* Nigel Photo Circle in Secondary Button */
+.nigel-photo-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.nigel-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 .hero-btn .btn-text {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
     z-index: 2;
     overflow: hidden;
@@ -492,8 +546,10 @@ a {
 }
 
 .hero-btn.secondary:hover {
-    background-color: rgba(239, 238, 236, 0.1);
-    border-color: #efeeec;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transform: scale(0.98);
 }
 
 .hero-btn.primary {
@@ -504,9 +560,16 @@ a {
 
 
 .hero-btn.secondary {
-    background-color: transparent;
+    background: rgba(255, 255, 255, 0.08);
     color: #efeeec;
-    border: 2px solid #efeeec;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
 }
 
 
@@ -1424,6 +1487,7 @@ a {
     margin-bottom: 8px;
     font-weight: var(--weight-bold);
     text-transform: none;
+    margin-top: 8px;
 }
 
 .package-card.featured .package-name {
@@ -2339,8 +2403,9 @@ textarea::placeholder {
     }
     
     .onboarding-container {
-        padding: 0 20px;
+        padding: 0 var(--space-sm);
         gap: 40px;
+        max-width: 100%;
     }
     
     .onboarding-title {
@@ -2741,29 +2806,29 @@ textarea::placeholder {
 }
 
 .follow-socials .social-icon {
-    width: 44px;
-    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    color: rgba(255, 255, 255, 0.7);
-    transition: all 0.3s ease;
+    width: 44px;
+    height: 44px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: #efeeec;
     text-decoration: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
 }
 
 .follow-socials .social-icon:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.2);
-    color: #efeeec;
+    background-color: #ff4c24;
+    border-color: #ff4c24;
     transform: translateY(-2px);
 }
 
 .follow-socials .social-icon svg {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
 }
 
 .follow-quote {
@@ -2903,20 +2968,23 @@ textarea::placeholder {
 }
 
 .footer-logo .logo-circle {
-    width: 40px;
-    height: 40px;
-    background-color: #efeeec;
+    width: 38px;
+    height: 38px;
+    background-color: #000000;
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    overflow: hidden;
 }
 
 .footer-logo .logo-image {
-    width: 24px;
-    height: 24px;
-    filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(3600%) hue-rotate(10deg) brightness(105%) contrast(102%); /* Make SVG orange for footer */
+    width: 120%;
+    height: 120%;
+    object-fit: contain;
+    filter: brightness(0) saturate(100%) invert(100%); /* Make SVG white */
+    transform: translateY(2px);
 }
 
 .footer-logo .logo-text {
@@ -2936,28 +3004,29 @@ textarea::placeholder {
 }
 
 .footer-socials .social-icon {
-    width: 44px;
-    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    color: rgba(255, 255, 255, 0.7);
+    width: 44px;
+    height: 44px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: #efeeec;
+    text-decoration: none;
     transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
 }
 
 .footer-socials .social-icon:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.2);
-    color: #efeeec;
+    background-color: #ff4c24;
+    border-color: #ff4c24;
     transform: translateY(-2px);
 }
 
 .footer-socials .social-icon svg {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
 }
 
 /* ===============================================
@@ -3010,9 +3079,46 @@ textarea::placeholder {
     }
     
     .container {
-        padding: 0 20px;
+        padding: 0 var(--space-sm);
         max-width: 100%;
         overflow-x: hidden;
+    }
+    
+    /* Package cards mobile - extra spacing for featured badge */
+    .package-name {
+        margin-top: 30px !important;
+    }
+    
+    .featured-badge {
+        top: 8px !important;
+    }
+    
+    
+    /* Hide nav items on mobile for space - keep only Start Nu button */
+    .main-nav a[href="#about"],
+    .main-nav a[href="#packages"],
+    .main-nav a[href="#reviews"] {
+        display: none !important;
+    }
+    
+    /* Header container mobile styling */
+    .header-container {
+        width: 100%;
+        padding: 30px 40px;
+    }
+    
+    /* Show menu button on mobile */
+    .menu-button {
+        display: flex !important;
+    }
+    
+    /* Mobile button styling - center align and hide photo */
+    .hero-btn.secondary {
+        justify-content: center !important;
+    }
+    
+    .nigel-photo-circle {
+        display: none !important;
     }
     
     /* Consistent text hierarchy for mobile */
@@ -3226,11 +3332,11 @@ textarea::placeholder {
     }
     
     .onboarding-form {
-        margin: 0 12px;
-        max-width: calc(100% - 24px);
+        margin: 0;
+        max-width: 100%;
         height: 520px;
         background: #ffffff;
-        border-radius: 12px;
+        border-radius: 6px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         overflow: hidden;
         position: relative;
@@ -3597,8 +3703,9 @@ textarea::placeholder {
     }
     
     .onboarding-form {
-        margin: 0 12px;
-        max-width: calc(100% - 24px);
+        margin: 0;
+        max-width: 100%;
+        border-radius: 6px;
     }
     
     .form-step {
