@@ -186,6 +186,73 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Nigel Info Panel functionality with GSAP
+    const nigelInfoButton = document.querySelector('.hero-btn.secondary');
+    const nigelInfoPanel = document.querySelector('.nigel-info-panel');
+    const nigelInfoOverlay = document.querySelector('.nigel-info-overlay');
+    const nigelInfoClose = document.querySelector('.nigel-info-close');
+    let isInfoPanelOpen = false;
+    
+    if (nigelInfoButton && nigelInfoPanel && nigelInfoOverlay && nigelInfoClose) {
+        // Create GSAP timeline for info panel animation
+        const infoPanelTL = gsap.timeline({ paused: true });
+        
+        infoPanelTL.to(nigelInfoOverlay, {
+            duration: 0.4,
+            opacity: 1,
+            visibility: "visible",
+            ease: "power2.out"
+        })
+        .to(nigelInfoPanel, {
+            duration: 0.5,
+            x: "0%",
+            ease: "power3.out"
+        }, "-=0.2");
+        
+        // Open panel when clicking "Over Nigel" button
+        nigelInfoButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            if (!isInfoPanelOpen) {
+                infoPanelTL.play();
+                isInfoPanelOpen = true;
+                
+                // Prevent body scroll
+                document.body.style.overflow = 'hidden';
+            }
+        });
+        
+        // Close panel functions
+        function closeInfoPanel() {
+            infoPanelTL.reverse();
+            isInfoPanelOpen = false;
+            
+            // Restore body scroll
+            document.body.style.overflow = '';
+        }
+        
+        // Close panel when clicking close button
+        nigelInfoClose.addEventListener('click', closeInfoPanel);
+        
+        // Close panel when clicking overlay
+        nigelInfoOverlay.addEventListener('click', closeInfoPanel);
+        
+        // Close panel on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isInfoPanelOpen) {
+                closeInfoPanel();
+            }
+        });
+        
+        // Close panel when clicking on info panel CTA button
+        const infoPanelCTA = document.querySelector('.nigel-cta-button');
+        if (infoPanelCTA) {
+            infoPanelCTA.addEventListener('click', () => {
+                closeInfoPanel();
+            });
+        }
+    }
+    
     // Button text stagger animation
     function createButtonAnimation(button) {
         const textElement = button.querySelector('.btn-text');
@@ -246,7 +313,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize all buttons after a small delay to ensure DOM is ready
     setTimeout(() => {
-        const buttons = document.querySelectorAll('.hero-btn, .package-btn, .submit-btn, .community-btn');
+        const buttons = document.querySelectorAll('.hero-btn, .package-btn, .submit-btn, .community-btn, .nigel-cta-button');
         console.log('Found buttons:', buttons.length);
         buttons.forEach(createButtonAnimation);
     }, 100);
