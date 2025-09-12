@@ -4,54 +4,32 @@
 
 /* Font Face Declarations */
 @font-face {
-    font-family: 'BwGradual';
-    src: url('fonts/BwGradual-Light.otf') format('opentype');
-    font-weight: 200;
+    font-family: 'PPFormula';
+    src: url('fonts/PPFormula-CondensedBlack.otf') format('opentype');
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'BwGradual';
-    src: url('fonts/BwGradual-Light.otf') format('opentype');
-    font-weight: 300;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'BwGradual';
-    src: url('fonts/BwGradual-Light.otf') format('opentype');
+    font-family: 'Inter';
+    src: url('fonts/Inter-Regular.woff2') format('woff2');
     font-weight: 400;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'BwGradual';
-    src: url('fonts/BwGradual-Regular.otf') format('opentype');
-    font-weight: 500;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'BwGradual';
-    src: url('fonts/BwGradual-Bold.otf') format('opentype');
+    font-family: 'Inter';
+    src: url('fonts/Inter-Bold.woff2') format('woff2');
     font-weight: 700;
     font-style: normal;
-}
-
-@font-face {
-    font-family: 'BwGradual';
-    src: url('fonts/BwGradual-BoldItalic.otf') format('opentype');
-    font-weight: 700;
-    font-style: italic;
 }
 
 /* Professional Font System */
 :root {
     /* Fluid Typography System using clamp() */
     /* Headings - scale from mobile to desktop and beyond */
-    --heading-h1: clamp(2.25rem, 1rem + 5vw, 6.5rem);        /* 36px -> 64px -> 104px */
-    --heading-h2: clamp(1.75rem, 1.25rem + 2.5vw, 3.5rem);   /* 28px -> 42px -> 56px */
-    --heading-h3: clamp(1.375rem, 1rem + 1.875vw, 2.5rem);   /* 22px -> 28px -> 40px */
+    --heading-h1: clamp(2.25rem, 1rem + 5vw, 9.36rem);       /* 36px -> 64px -> 150px (44% larger total) */
+    --heading-h2: clamp(1.75rem, 1.25rem + 2.5vw, 5.04rem);  /* 28px -> 42px -> 80px (44% larger total) */
+    --heading-h3: clamp(1.375rem, 1rem + 1.875vw, 3.6rem);   /* 22px -> 28px -> 58px (44% larger total) */
     
     /* Text content - fluid scaling */
     --text-large: clamp(1.125rem, 1rem + 0.625vw, 1.5rem);   /* 18px -> 20px -> 24px */
@@ -65,9 +43,9 @@
     --space-xs: clamp(0.5rem, 0.375rem + 0.625vw, 1.5rem);   /* 8px -> 12px -> 24px */
     --space-sm: clamp(1rem, 0.75rem + 1.25vw, 3rem);         /* 16px -> 24px -> 48px */
     --space-md: clamp(1.5rem, 1rem + 2.5vw, 5rem);           /* 24px -> 40px -> 80px */
-    --space-lg: clamp(2rem, 1.5rem + 3.5vw, 7rem);           /* 32px -> 56px -> 112px */
-    --space-xl: clamp(3rem, 2rem + 3vw, 6rem);               /* 48px -> 64px -> 96px */
-    --space-2xl: clamp(4rem, 3rem + 4vw, 8rem);              /* 64px -> 80px -> 128px */
+    --space-lg: clamp(3rem, 2rem + 4vw, 8rem);               /* 48px -> 64px -> 128px */
+    --space-xl: clamp(4rem, 3rem + 5vw, 10rem);              /* 64px -> 80px -> 160px */
+    --space-2xl: clamp(5rem, 4rem + 6vw, 12rem);             /* 80px -> 96px -> 192px */
     
     /* Font Weights */
     --weight-bold: 700;     /* Headings - Bold font */
@@ -86,6 +64,8 @@
 
 html {
     font-size: 16px;
+    overflow-y: auto !important;
+    height: auto;
 }
 
 html.lenis {
@@ -101,7 +81,8 @@ html.lenis {
 }
 
 .lenis.lenis-stopped {
-    overflow: hidden;
+    overflow-y: auto !important;
+    overflow-x: hidden;
 }
 
 .lenis.lenis-scrolling iframe {
@@ -109,11 +90,11 @@ html.lenis {
 }
 
 body {
-    font-family: 'BwGradual', Arial, sans-serif;
+    font-family: 'Inter', Arial, sans-serif;
     background-color: #000000;
     color: #efeeec;
     line-height: 1.6;
-    overflow-x: hidden;
+    overflow: hidden;
     width: 100%;
     user-select: none;
     -webkit-user-select: none;
@@ -121,6 +102,21 @@ body {
     -ms-user-select: none;
     position: relative;
     font-size: var(--text-normal);
+}
+
+html {
+    overflow: hidden;
+}
+
+/* Hide scrollbar for webkit browsers */
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+* {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 /* Allow text selection in form inputs */
@@ -409,9 +405,10 @@ img {
 .mobile-menu-title {
     color: #000000;
     font-size: 14px;
-    font-weight: var(--weight-bold);
+    font-weight: 900;
     letter-spacing: 2px;
     text-transform: uppercase;
+    font-family: 'PPFormula', Arial, sans-serif;
 }
 
 .mobile-menu-items {
@@ -580,6 +577,8 @@ img {
     color: #000000;
     text-align: center;
     margin: 0;
+    text-transform: uppercase;
+    font-family: 'PPFormula', Arial, sans-serif;
 }
 
 .nigel-info-text {
@@ -695,9 +694,9 @@ img {
 
 /* HEADINGS - 3 Clear Levels */
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'BwGradual', Arial, sans-serif;
+    font-family: 'PPFormula', Arial, sans-serif;
     color: #efeeec;
-    text-transform: none;
+    text-transform: uppercase;
     letter-spacing: 0.025em;
     margin: 0 0 24px 0;
 }
@@ -705,25 +704,28 @@ h1, h2, h3, h4, h5, h6 {
 /* H1 - Hero/Main Titles */
 h1, .heading-h1 {
     font-size: var(--heading-h1);
-    font-weight: var(--weight-bold);
+    font-weight: 900;
     line-height: 1.1;
     margin-bottom: 32px;
+    text-transform: uppercase;
 }
 
 /* H2 - Section Titles */  
 h2, .heading-h2 {
     font-size: var(--heading-h2);
-    font-weight: var(--weight-bold);
+    font-weight: 900;
     line-height: 1.2;
     margin-bottom: 24px;
+    text-transform: uppercase;
 }
 
 /* H3 - Subsection/Component Titles */
 h3, .heading-h3 {
     font-size: var(--heading-h3);
-    font-weight: var(--weight-bold);
+    font-weight: 900;
     line-height: 1.3;
     margin-bottom: 16px;
+    text-transform: uppercase;
 }
 
 /* PARAGRAPHS - 3 Clear Levels */
@@ -735,6 +737,7 @@ h3, .heading-h3 {
     line-height: 1.5;
     color: #efeeec;
     margin-bottom: 20px;
+    font-family: 'Inter', Arial, sans-serif;
 }
 
 /* Normal Text - Standard body content */
@@ -744,6 +747,7 @@ p, .text-normal {
     line-height: 1.6;
     color: #e0e0e0;
     margin-bottom: 16px;
+    font-family: 'Inter', Arial, sans-serif;
 }
 
 /* Small Text - Details, captions, metadata */
@@ -753,6 +757,7 @@ p, .text-normal {
     line-height: 1.5;
     color: #999999;
     margin-bottom: 12px;
+    font-family: 'Inter', Arial, sans-serif;
 }
 
 a {
@@ -763,12 +768,61 @@ a {
 /* ===============================================
    HERO SECTION
    =============================================== */
+/* Navigation */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background: transparent;
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 4rem;
+    width: 100%;
+}
+
+.nav-brand {
+    font-family: 'PPFormula', Arial, sans-serif;
+    font-weight: 900;
+    font-size: clamp(1.6rem, 2.8vw, 2.1rem);
+    text-transform: uppercase;
+    color: #efeeec;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+}
+
+.nav-brand:hover {
+    color: #ff4c24;
+}
+
+.nav-link {
+    font-family: 'PPFormula', Arial, sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    letter-spacing: 0.5px;
+}
+
+.nav-link:hover {
+    color: #ff4c24;
+}
+
+/* Hero Section */
 .hero {
     height: 100vh;
     width: 100%;
     position: relative;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     background-image: url('img/hero.webp');
     background-size: cover;
@@ -811,33 +865,52 @@ a {
     pointer-events: none;
 }
 
-.hero-content {
+.hero-container {
     position: relative;
     z-index: 5;
-    text-align: left;
-    padding: 40px;
-    padding-top: 40vh;
-    padding-left: 31.25%;
-    padding-right: 40px;
-    max-width: 100%;
-    margin: 0;
+    text-align: center;
+    padding: 0 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
     width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 10vh;
+}
+
+.hero-main {
+    margin-bottom: 4rem;
 }
 
 .hero-title {
-    font-size: var(--heading-h1);
+    font-size: clamp(3.5rem, 8vw, 8rem);
     line-height: 1.1;
-    margin-bottom: 40px;
+    margin-bottom: 2rem;
     color: #efeeec;
-    max-width: 100%;
-    font-weight: 700 !important;
+    text-transform: uppercase;
+    font-family: 'PPFormula', Arial, sans-serif;
+    letter-spacing: -0.02em;
+}
+
+.hero-subtitle {
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 3rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .hero-buttons {
     display: flex;
-    justify-content: flex-start;
-    gap: 20px;
-    margin-bottom: 60px;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 0;
     flex-wrap: wrap;
 }
 
@@ -845,19 +918,132 @@ a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 12px 24px;
-    font-size: 14px;
-    font-weight: var(--weight-medium);
-    text-transform: none;
-    letter-spacing: 0;
+    padding: 16px 32px;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     border-radius: 8px;
     text-decoration: none;
-    font-family: inherit;
+    font-family: 'PPFormula', Arial, sans-serif;
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
     cursor: pointer;
     text-align: center;
+    border: 2px solid transparent;
+}
+
+.hero-btn.primary {
+    background: #ff4c24;
+    color: #efeeec;
+    border-color: #ff4c24;
+}
+
+.hero-btn.primary:hover {
+    background: #e63d1a;
+    border-color: #e63d1a;
+    transform: translateY(-2px);
+}
+
+.hero-btn.secondary {
+    background: transparent;
+    color: #efeeec;
+    border-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(20px);
+}
+
+.hero-btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+/* Hero Decorative Elements */
+.hero-decorative {
+    position: absolute;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85vw;
+    max-width: 120rem;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2rem;
+    z-index: 4;
+}
+
+.hero-deco-left, .hero-deco-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.hero-deco-right {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.deco-text {
+    font-family: 'PPFormula', Arial, sans-serif;
+    font-weight: 900;
+    font-size: clamp(0.8rem, 1.2vw, 1rem);
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.deco-subtext {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: clamp(0.7rem, 1vw, 0.9rem);
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.3px;
+}
+
+/* Mobile Navigation and Hero */
+@media (max-width: 768px) {
+    /* Hide specific nav items on mobile */
+    .nav-container a[href="#packages"],
+    .nav-container a[href="#reviews"] {
+        display: none;
+    }
+    
+    .nav-container {
+        padding: 2rem 1rem;
+    }
+    
+    .hero-title {
+        font-size: clamp(5.5rem, 18vw, 8rem);
+    }
+    
+    .hero-container {
+        padding: 0 1rem;
+    }
+    
+    .hero-decorative {
+        position: absolute;
+        bottom: 2rem;
+        left: 0;
+        right: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 1rem;
+        z-index: 10;
+        transform: none;
+    }
+    
+    .hero-deco-left {
+        align-items: flex-start;
+        text-align: left;
+    }
+    
+    .hero-deco-right {
+        align-items: flex-end;
+        text-align: right;
+    }
 }
 
 /* Nigel Photo Circle in Secondary Button */
@@ -1013,7 +1199,7 @@ a {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: var(--space-lg) 0;
+    padding: var(--space-xl) 0;
 }
 
 .intro-title {
@@ -1021,6 +1207,9 @@ a {
     line-height: 0.9;
     margin-bottom: 40px;
     color: #efeeec;
+    text-transform: uppercase;
+    font-family: 'PPFormula', Arial, sans-serif;
+    font-weight: 900;
 }
 
 .intro-text {
@@ -1096,7 +1285,7 @@ a {
 .about {
     display: flex;
     align-items: center;
-    padding: var(--space-lg) 0;
+    padding: var(--space-xl) 0;
 }
 
 .about-grid {
@@ -1114,6 +1303,9 @@ a {
     font-size: var(--heading-h2);
     margin-bottom: 20px;
     color: #efeeec;
+    text-transform: uppercase;
+    font-family: 'PPFormula', Arial, sans-serif;
+    font-weight: 900;
 }
 
 .about-intro {
@@ -1199,7 +1391,7 @@ a {
     display: flex;
     align-items: center;
     background-color: transparent;
-    padding: var(--space-lg) 0;
+    padding: var(--space-xl) 0;
     position: relative;
 }
 
@@ -1218,6 +1410,9 @@ a {
     font-size: var(--heading-h2);
     margin-bottom: 20px;
     color: #efeeec;
+    text-transform: uppercase;
+    font-family: 'PPFormula', Arial, sans-serif;
+    font-weight: 900;
 }
 
 .philosophy-intro {
@@ -1326,15 +1521,15 @@ a {
 }
 
 .reviews-hero-title {
-    font-family: 'BwGradual', Arial, sans-serif;
+    font-family: 'PPFormula', Arial, sans-serif;
     font-size: var(--heading-h2);
-    font-weight: var(--weight-bold);
+    font-weight: 900;
     line-height: 1.2;
     color: #efeeec;
+    text-transform: uppercase;
     max-width: 700px;
     margin: 0 auto;
     text-align: center;
-    text-transform: none;
     letter-spacing: 0.02em;
 }
 
@@ -1352,10 +1547,11 @@ a {
 .reviews-title {
     font-size: var(--text-normal);
     color: #efeeec;
-    text-transform: none;
+    text-transform: uppercase;
     letter-spacing: 0.1em;
-    font-weight: var(--weight-light);
+    font-weight: 900;
     margin-bottom: 30px;
+    font-family: 'PPFormula', Arial, sans-serif;
 }
 
 .reviews-subtitle {
@@ -1363,10 +1559,11 @@ a {
     color: #efeeec;
     text-align: center;
     margin-bottom: 20px;
-    font-weight: var(--weight-light);
-    text-transform: none;
+    font-weight: 900;
+    text-transform: uppercase;
     letter-spacing: 0.05em;
     opacity: 0.6;
+    font-family: 'PPFormula', Arial, sans-serif;
 }
 
 .reviews-divider {
@@ -1558,9 +1755,10 @@ a {
 .author-title {
     font-size: 11px;
     color: #efeeec;
-    text-transform: none;
+    text-transform: uppercase;
     letter-spacing: 0.05em;
-    font-weight: var(--weight-normal);
+    font-weight: 900;
+    font-family: 'PPFormula', Arial, sans-serif;
 }
 
 /* Mobile optimizations (excluding iPads) */
@@ -1775,8 +1973,9 @@ a {
     color: #efeeec;
     text-align: center;
     margin-bottom: 15px;
-    font-weight: var(--weight-bold);
-    text-transform: none;
+    font-weight: 900;
+    text-transform: uppercase;
+    font-family: 'PPFormula', Arial, sans-serif;
 }
 
 .packages-subtitle {
@@ -1785,7 +1984,9 @@ a {
     text-align: center;
     margin-bottom: 60px;
     opacity: 0.8;
-    font-weight: var(--weight-light);
+    font-weight: 900;
+    text-transform: uppercase;
+    font-family: 'PPFormula', Arial, sans-serif;
 }
 
 .packages-grid {
@@ -1983,6 +2184,10 @@ a {
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    box-sizing: border-box;
 }
 
 .package-btn .btn-text {
@@ -2105,7 +2310,9 @@ a {
         font-size: 16px !important;
         margin-bottom: 4px !important;
         line-height: 1.2 !important;
-        font-weight: var(--weight-medium) !important;
+        font-weight: 900 !important;
+        text-transform: uppercase !important;
+        font-family: 'PPFormula', Arial, sans-serif !important;
     }
     
     .step-subtitle {
@@ -2113,6 +2320,9 @@ a {
         font-size: var(--text-small) !important;
         margin-bottom: 12px !important;
         line-height: 1.2 !important;
+        text-transform: uppercase !important;
+        font-family: 'PPFormula', Arial, sans-serif !important;
+        font-weight: 900 !important;
     }
     
     .checkbox-item,
@@ -2265,9 +2475,11 @@ a {
     .step-title {
         color: #000000 !important;
         font-size: var(--text-large) !important;
-        font-weight: var(--weight-bold) !important;
+        font-weight: 900 !important;
         margin-bottom: 8px !important;
         text-align: left !important;
+        text-transform: uppercase !important;
+        font-family: 'PPFormula', Arial, sans-serif !important;
     }
     
     .step-subtitle {
@@ -2275,6 +2487,9 @@ a {
         font-size: var(--text-normal) !important;
         margin-bottom: 20px !important;
         text-align: left !important;
+        text-transform: uppercase !important;
+        font-family: 'PPFormula', Arial, sans-serif !important;
+        font-weight: 900 !important;
     }
     
     .checkbox-item,
@@ -2295,9 +2510,11 @@ a {
 
 .onboarding-title {
     font-size: var(--heading-h2);
-    font-weight: var(--weight-bold);
+    font-weight: 900;
     margin-bottom: 30px;
     line-height: 1.2;
+    text-transform: uppercase;
+    font-family: 'PPFormula', Arial, sans-serif;
 }
 
 .onboarding-description {
@@ -2454,11 +2671,12 @@ a {
 .intro-step-title {
     font-size: var(--heading-h3);
     color: #000000;
-    font-weight: var(--weight-bold);
-    text-transform: none;
+    font-weight: 900;
+    text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-bottom: 20px;
     line-height: 1.2;
+    font-family: 'PPFormula', Arial, sans-serif;
 }
 
 .intro-step-text {
@@ -2498,14 +2716,19 @@ a {
 .step-title {
     font-size: var(--text-large);
     color: #000000;
-    font-weight: var(--weight-medium);
+    font-weight: 900;
     margin-bottom: 8px;
+    text-transform: uppercase;
+    font-family: 'PPFormula', Arial, sans-serif;
 }
 
 .step-subtitle {
     font-size: var(--text-small);
     color: #666666;
     margin-bottom: 24px;
+    text-transform: uppercase;
+    font-family: 'PPFormula', Arial, sans-serif;
+    font-weight: 900;
 }
 
 /* Error Messages */
@@ -2796,10 +3019,11 @@ textarea::placeholder {
     color: #1a1a1a;
     text-align: left;
     margin-bottom: 8px;
-    font-weight: var(--weight-bold);
+    font-weight: 900;
     text-transform: uppercase;
     letter-spacing: -0.25px;
     line-height: 1.3;
+    font-family: 'PPFormula', Arial, sans-serif;
 }
 
 .step-subtitle {
@@ -2808,8 +3032,10 @@ textarea::placeholder {
     text-align: left;
     margin-bottom: 24px;
     opacity: 1;
-    font-weight: var(--weight-normal);
+    font-weight: 900;
     line-height: 1.4;
+    text-transform: uppercase;
+    font-family: 'PPFormula', Arial, sans-serif;
 }
 
 /* Intro Step Styling */
@@ -2827,9 +3053,10 @@ textarea::placeholder {
     font-size: 32px;
     color: #000000;
     margin-bottom: 20px;
-    font-weight: var(--weight-bold);
-    text-transform: none;
+    font-weight: 900;
+    text-transform: uppercase;
     line-height: 1.2;
+    font-family: 'PPFormula', Arial, sans-serif;
 }
 
 .intro-step-text {
@@ -3146,9 +3373,11 @@ textarea::placeholder {
 
 .follow-title {
     font-size: var(--heading-h2);
-    font-weight: var(--weight-bold);
+    font-weight: 900;
     margin-bottom: 15px;
     color: #efeeec;
+    text-transform: uppercase;
+    font-family: 'PPFormula', Arial, sans-serif;
 }
 
 .follow-subtitle {
@@ -3157,7 +3386,9 @@ textarea::placeholder {
     text-align: center;
     margin-bottom: 60px;
     opacity: 0.8;
-    font-weight: var(--weight-light);
+    font-weight: 900;
+    text-transform: uppercase;
+    font-family: 'PPFormula', Arial, sans-serif;
 }
 
 .follow-socials {
@@ -4126,14 +4357,19 @@ textarea::placeholder {
     .step-title {
         color: #000000 !important;
         font-size: var(--text-large) !important;
-        font-weight: var(--weight-bold) !important;
+        font-weight: 900 !important;
         text-align: left !important;
+        text-transform: uppercase !important;
+        font-family: 'PPFormula', Arial, sans-serif !important;
     }
     
     .step-subtitle {
         color: #666666 !important;
         font-size: var(--text-normal) !important;
         text-align: left !important;
+        text-transform: uppercase !important;
+        font-family: 'PPFormula', Arial, sans-serif !important;
+        font-weight: 900 !important;
     }
     
     .onboarding-content {

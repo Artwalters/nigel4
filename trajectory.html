@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coaching Traject - Nigel</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: #0a0d0f;
+            color: #efeeec;
+            overflow-x: hidden;
+        }
+
+        .trajectory-page {
+            height: 100vh;
+            display: flex;
+            align-items: stretch;
+            overflow: hidden;
+        }
+
+        .trajectory-left {
+            flex: 0 0 33.333%;
+            padding: 4rem 5rem;
+            background: #0a0d0f;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .trajectory-right {
+            flex: 1;
+            padding: 4rem 6rem;
+            background: rgba(15, 20, 25, 0.8);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        .trajectory-content {
+            max-width: 100%;
+            width: 100%;
+        }
+
+        .trajectory-title {
+            font-family: 'PPFormula', Arial, sans-serif;
+            font-size: clamp(2.5rem, 4vw, 4rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #efeeec;
+            margin-bottom: 2rem;
+            line-height: 1.1;
+        }
+
+        .plan-switcher {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 2rem;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .plan-option {
+            flex: 1;
+            padding: 14px 24px;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-family: 'PPFormula', Arial, sans-serif;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .plan-option.active {
+            background: #ff4c24;
+            color: #efeeec;
+            box-shadow: 0 4px 12px rgba(255, 76, 36, 0.3);
+        }
+
+        .trajectory-description {
+            font-size: clamp(1.1rem, 1.3vw, 1.4rem);
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2.5rem;
+        }
+
+        .trajectory-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 2.5rem 0;
+        }
+
+        .trajectory-features li {
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: clamp(1rem, 1.1vw, 1.2rem);
+            color: rgba(255, 255, 255, 0.85);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .trajectory-features li:before {
+            content: "✓";
+            color: #ff4c24;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .trajectory-price {
+            font-family: 'PPFormula', Arial, sans-serif;
+            font-size: clamp(2rem, 3vw, 3.5rem);
+            font-weight: 900;
+            color: #ff4c24;
+            margin-top: 1rem;
+        }
+
+        .form-container {
+            max-width: 100%;
+            width: 100%;
+            padding-top: 2rem;
+        }
+
+        .form-title {
+            font-family: 'PPFormula', Arial, sans-serif;
+            font-size: clamp(1.8rem, 2.5vw, 2.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #efeeec;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .trajectory-form {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 3rem;
+            backdrop-filter: blur(20px);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: var(--text-small);
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input, .form-textarea, select.form-input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #efeeec;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        select.form-input {
+            cursor: pointer;
+        }
+        
+        select.form-input option {
+            background: #1a1d20;
+            color: #efeeec;
+        }
+
+        .form-input:focus, .form-textarea:focus, select.form-input:focus {
+            outline: none;
+            border-color: #ff4c24;
+            box-shadow: 0 0 0 3px rgba(255, 76, 36, 0.1);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 18px 32px;
+            background: #ff4c24;
+            border: none;
+            border-radius: 8px;
+            color: #efeeec;
+            font-family: 'PPFormula', Arial, sans-serif;
+            font-weight: 900;
+            font-size: 16px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: var(--space-sm);
+        }
+
+        .form-submit:hover {
+            background: #e63d1a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 76, 36, 0.3);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 40px;
+            left: 40px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #efeeec;
+            text-decoration: none;
+            font-size: var(--text-small);
+            font-weight: 600;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(-4px);
+        }
+
+        @media (max-width: 1024px) {
+            .trajectory-page {
+                flex-direction: column;
+            }
+            
+            .trajectory-left, .trajectory-right {
+                max-width: 100%;
+                padding: var(--space-md);
+            }
+            
+            .trajectory-title {
+                font-size: var(--heading-h2);
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">
+        ← Terug naar overzicht
+    </a>
+
+    <div class="trajectory-page">
+        <div class="trajectory-left">
+            <div class="trajectory-content">
+                <div class="plan-switcher">
+                    <button class="plan-option active" data-plan="basic">Basic</button>
+                    <button class="plan-option" data-plan="pro">Pro</button>
+                    <button class="plan-option" data-plan="elite">Elite</button>
+                </div>
+                
+                <h1 class="trajectory-title" id="plan-title">Basic Coaching</h1>
+                
+                <div class="trajectory-description" id="plan-description">
+                    Start je transformatie met onze basis coaching. Perfect voor wie net begint en wil kennismaken met professionele begeleiding.
+                </div>
+                
+                <ul class="trajectory-features" id="plan-features">
+                    <li>4 coaching sessies per maand</li>
+                    <li>Persoonlijk actieplan</li>
+                    <li>WhatsApp ondersteuning</li>
+                    <li>Voortgangsrapportage</li>
+                </ul>
+                
+                <div class="trajectory-price" id="plan-price">€297/maand</div>
+            </div>
+        </div>
+        
+        <div class="trajectory-right">
+            <div class="form-container">
+                <h2 class="form-title">Start je transformatie</h2>
+                <p style="text-align: center; color: rgba(255,255,255,0.7); margin-bottom: 2rem; font-size: 0.9rem;">Vul onderstaande gegevens in om je coaching traject te starten. We nemen binnen 24 uur contact met je op voor een gratis intake gesprek.</p>
+                
+                <form class="trajectory-form" id="trajectoryForm">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Volledige naam *</label>
+                        <input type="text" class="form-input" id="name" name="name" placeholder="Voor- en achternaam" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="email">E-mailadres *</label>
+                        <input type="email" class="form-input" id="email" name="email" placeholder="je@email.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="phone">Telefoonnummer *</label>
+                        <input type="tel" class="form-input" id="phone" name="phone" placeholder="+31 6 12345678" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="age">Leeftijd *</label>
+                        <input type="number" class="form-input" id="age" name="age" min="16" max="80" placeholder="25" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="experience">Ervaring met fitness/coaching</label>
+                        <select class="form-input" id="experience" name="experience">
+                            <option value="">Selecteer je niveau</option>
+                            <option value="beginner">Beginner (0-1 jaar)</option>
+                            <option value="intermediate">Gevorderd (1-3 jaar)</option>
+                            <option value="advanced">Ervaren (3+ jaar)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="goals">Wat is je hoofddoel? *</label>
+                        <select class="form-input" id="goals" name="goals" required>
+                            <option value="">Selecteer je doel</option>
+                            <option value="weight-loss">Afvallen</option>
+                            <option value="muscle-gain">Spieren opbouwen</option>
+                            <option value="strength">Sterker worden</option>
+                            <option value="health">Gezonder leven</option>
+                            <option value="transformation">Complete transformatie</option>
+                            <option value="maintenance">Huidige vorm behouden</option>
+                            <option value="other">Anders</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="timeframe">Wanneer wil je starten?</label>
+                        <select class="form-input" id="timeframe" name="timeframe">
+                            <option value="">Selecteer tijdframe</option>
+                            <option value="immediate">Direct</option>
+                            <option value="week">Binnen een week</option>
+                            <option value="month">Binnen een maand</option>
+                            <option value="flexible">Ben flexibel</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="challenges">Wat zijn je grootste uitdagingen? *</label>
+                        <textarea class="form-textarea" id="challenges" name="challenges" placeholder="Bijvoorbeeld: geen tijd, motivatie, blessures, voeding..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="motivation">Wat motiveert je het meest?</label>
+                        <textarea class="form-textarea" id="motivation" name="motivation" placeholder="Waarom wil je deze verandering maken? Wat drijft je?"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="budget">Budget indicatie (optioneel)</label>
+                        <select class="form-input" id="budget" name="budget">
+                            <option value="">Geen voorkeur</option>
+                            <option value="basic">€200-400 per maand</option>
+                            <option value="premium">€400-800 per maand</option>
+                            <option value="elite">€800+ per maand</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="message">Extra informatie</label>
+                        <textarea class="form-textarea" id="message" name="message" placeholder="Vertel ons meer over jezelf, je situatie, of stel een vraag..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="contact-preference">Voorkeur voor contact</label>
+                        <select class="form-input" id="contact-preference" name="contact-preference">
+                            <option value="email">E-mail</option>
+                            <option value="phone">Telefonisch</option>
+                            <option value="whatsapp">WhatsApp</option>
+                        </select>
+                    </div>
+                    
+                    <input type="hidden" id="selectedPlan" name="plan" value="basic">
+                    
+                    <button type="submit" class="form-submit">Start mijn gratis intake</button>
+                    
+                    <p style="text-align: center; color: rgba(255,255,255,0.5); margin-top: 1rem; font-size: 0.8rem;">
+                        Door dit formulier in te vullen ga je akkoord met een gratis kennismakingsgesprek. Geen verplichtingen.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const planData = {
+            basic: {
+                title: 'Basic Coaching',
+                description: 'Start je transformatie met onze basis coaching. Perfect voor wie net begint en wil kennismaken met professionele begeleiding.',
+                features: [
+                    '4 coaching sessies per maand',
+                    'Persoonlijk actieplan',
+                    'WhatsApp ondersteuning',
+                    'Voortgangsrapportage'
+                ],
+                price: '€297/maand'
+            },
+            pro: {
+                title: 'Pro Coaching',
+                description: 'Intensievere begeleiding voor ambitieuze professionals. Meer sessies en diepgaande ondersteuning voor snellere resultaten.',
+                features: [
+                    '8 coaching sessies per maand',
+                    'Gepersonaliseerd ontwikkelplan',
+                    '24/7 WhatsApp ondersteuning',
+                    'Wekelijkse voortgangsrapportage',
+                    'Video call sessies',
+                    'Persoonlijke werkboeken'
+                ],
+                price: '€597/maand'
+            },
+            elite: {
+                title: 'Elite Coaching',
+                description: 'Het ultieme coaching programma voor executives en ondernemers. Maximale ondersteuning en resultaten op alle levensgebieden.',
+                features: [
+                    'Onbeperkte coaching sessies',
+                    '1-op-1 strategische planning',
+                    'Direct telefonische bereikbaarheid',
+                    'Maandelijkse evaluaties',
+                    'Live video sessies',
+                    'Exclusieve masterclasses',
+                    'Netwerk toegang',
+                    'Persoonlijke mentor'
+                ],
+                price: '€1297/maand'
+            }
+        };
+
+        document.querySelectorAll('.plan-option').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.plan-option').forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Get selected plan
+                const selectedPlan = this.dataset.plan;
+                const planInfo = planData[selectedPlan];
+                
+                // Update content
+                document.getElementById('plan-title').textContent = planInfo.title;
+                document.getElementById('plan-description').textContent = planInfo.description;
+                document.getElementById('plan-price').textContent = planInfo.price;
+                document.getElementById('selectedPlan').value = selectedPlan;
+                
+                // Update features list
+                const featuresList = document.getElementById('plan-features');
+                featuresList.innerHTML = '';
+                planInfo.features.forEach(feature => {
+                    const li = document.createElement('li');
+                    li.textContent = feature;
+                    featuresList.appendChild(li);
+                });
+            });
+        });
+
+        // Check URL parameters and set initial plan
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const planFromUrl = urlParams.get('plan');
+            
+            if (planFromUrl && planData[planFromUrl]) {
+                // Find and click the corresponding plan button
+                const targetButton = document.querySelector(`[data-plan="${planFromUrl}"]`);
+                if (targetButton) {
+                    targetButton.click();
+                }
+            }
+        });
+
+        // Form submission
+        document.getElementById('trajectoryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const selectedPlan = document.getElementById('selectedPlan').value;
+            
+            // Here you would normally send the data to your backend
+            alert(`Bedankt! We nemen contact met je op voor het ${planData[selectedPlan].title} traject.`);
+            
+            // Reset form
+            this.reset();
+        });
+    </script>
+</body>
+</html>
