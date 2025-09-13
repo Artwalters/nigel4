@@ -3833,13 +3833,13 @@ textarea::placeholder {
     
     /* Follow Section Mobile */
     .follow-section {
-        padding: clamp(7rem, 15vw, 12rem) 0; /* Nog meer spacing voor follow section */
+        padding: clamp(12rem, 25vw, 20rem) 0 !important; /* Force veel meer spacing */
     }
     
     .follow-title {
-        font-size: var(--heading-h2);
-        padding: 0 20px;
-        margin-bottom: clamp(3rem, 8vw, 5rem); /* Veel meer ruimte onder titel */
+        font-size: clamp(3.6rem, 14.4vw, 7.2rem) !important; /* Same as hero-title on mobile */
+        padding: clamp(2rem, 6vw, 4rem) 20px; /* Meer padding boven en onder */
+        margin-bottom: clamp(4rem, 10vw, 6rem); /* Nog meer ruimte onder titel */
     }
     
     .follow-socials {
