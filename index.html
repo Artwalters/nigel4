@@ -11,6 +11,9 @@
 <body>
     <!-- Custom Cursor -->
     <div class="custom-cursor"></div>
+    
+    <!-- Noise Overlay -->
+    <canvas id="noise-canvas" class="noise-overlay"></canvas>
 
     <!-- Navigation -->
     <nav class="navbar">
@@ -25,6 +28,7 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
+        <canvas id="hero-canvas" class="hero-canvas"></canvas>
         <div class="hero-container">
             <div class="hero-main">
                 <h1 class="hero-title">TRANSFORMEER JOUW<br>LICHAAM EN VERANDER<br>JOUW LEVEN</h1>
@@ -518,6 +522,94 @@
         </div>
     </nav>
 
+    <script src="https://twgljs.org/dist/4.x/twgl-full.min.js"></script>
+    <script id="vs" type="x-shader/x-vertex">
+        attribute vec2 position;
+        uniform mat3 u_matrix;
+
+        varying vec2 v_texCoord;
+
+        void main() {
+            vec2 pos = (u_matrix * vec3(position, 1)).xy;
+            gl_Position = vec4(pos, 0, 1);
+            v_texCoord = position * .5 + .5;
+        }
+    </script>
+    <script id="fs" type="x-shader/x-fragment">
+        precision mediump float;
+
+        uniform sampler2D u_originalImage;
+        uniform sampler2D u_mapImage;
+        uniform vec2 u_mouse;
+        uniform float u_time;
+        uniform vec2 u_resolution;
+
+        varying vec2 v_texCoord;
+
+        // Simple noise function
+        float random(vec2 st) {
+            return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+        }
+
+        void main() {
+            vec4 map = texture2D(u_mapImage, v_texCoord);
+            vec2 distortion = (map.rg - 0.5) * u_mouse;
+            vec4 color = texture2D(u_originalImage, v_texCoord + distortion);
+            
+            // Add subtle film grain noise
+            vec2 noiseCoord = v_texCoord * u_resolution * 0.5;
+            float noise = random(noiseCoord + u_time * 0.01) * 0.08 - 0.04;
+            
+            color.rgb += noise;
+            gl_FragColor = color;
+        }
+    </script>
+    
+    <!-- Noise Overlay Shaders -->
+    <script id="noise-vs" type="x-shader/x-vertex">
+        attribute vec2 position;
+        varying vec2 v_texCoord;
+
+        void main() {
+            gl_Position = vec4(position, 0, 1);
+            v_texCoord = position * 0.5 + 0.5;
+        }
+    </script>
+    <script id="noise-fs" type="x-shader/x-fragment">
+        precision mediump float;
+        
+        uniform float u_time;
+        uniform vec2 u_resolution;
+        uniform float u_intensity;
+        
+        varying vec2 v_texCoord;
+
+        // Better noise function
+        float random(vec2 st) {
+            return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+        }
+
+        // Film grain noise
+        float filmGrain(vec2 uv, float time) {
+            float x = (uv.x + 4.0) * (uv.y + 4.0) * (time * 10.0);
+            return (mod((mod(x, 13.0) + 1.0) * (mod(x, 123.0) + 1.0), 0.01) - 0.005) * 1000.0;
+        }
+
+        void main() {
+            vec2 uv = v_texCoord;
+            
+            // Multiple noise layers for better grain
+            float grain1 = random(uv * 1000.0 + u_time * 0.1);
+            float grain2 = random(uv * 2000.0 + u_time * 0.2);
+            float grain3 = filmGrain(uv, u_time);
+            
+            // Combine noise layers
+            float noise = (grain1 + grain2 * 0.5 + grain3 * 0.3) / 1.8;
+            noise = (noise - 0.5) * u_intensity;
+            
+            gl_FragColor = vec4(noise, noise, noise, abs(noise));
+        }
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Draggable.min.js"></script>

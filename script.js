@@ -1,3 +1,189 @@
+// WebGL Displacement Effect
+function initWebGLEffect() {
+    // Check if device is mobile for different handling
+    const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    const canvas = document.getElementById("hero-canvas");
+    if (!canvas) return;
+    
+    const gl = canvas.getContext("webgl");
+    if (!gl) {
+        console.warn("WebGL not supported, fallback to normal hero section");
+        return;
+    }
+
+    let originalImage = { width: 1, height: 1 };
+    const originalTexture = twgl.createTexture(gl, {
+        src: "img/hero.webp", 
+        crossOrigin: '',
+    }, (err, texture, source) => {
+        originalImage = source;
+    });
+    
+    const mapTexture = twgl.createTexture(gl, {
+        src: "img/hero_depth.jpeg", 
+        crossOrigin: '',
+    });
+
+    const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+    const bufferInfo = twgl.primitives.createXYQuadBufferInfo(gl);
+
+    const mouse = [0, 0];
+    document.addEventListener('mousemove', (event) => {
+        mouse[0] = (event.clientX / gl.canvas.clientWidth * 2 - 1) * -0.01;
+        mouse[1] = (event.clientY / gl.canvas.clientHeight * 2 - 1) * -0.01;
+    });
+    
+    document.addEventListener('touchmove', (event) => {
+        if (event.touches[0]) {
+            mouse[0] = (event.touches[0].clientX / gl.canvas.clientWidth * 2 - 1) * -0.01;
+            mouse[1] = (event.touches[0].clientY / gl.canvas.clientHeight * 2 - 1) * -0.01;
+        }
+    });
+    
+    document.addEventListener('touchend', (event) => {
+        mouse[0] = 0;
+        mouse[1] = 0;
+    });
+    
+    let nMouse = [0, 0];
+
+    function sizeCanvasToDisplaySize(canvas) {
+        const displayWidth = window.innerWidth;
+        const displayHeight = window.innerHeight;
+        
+        if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+            canvas.width = displayWidth;
+            canvas.height = displayHeight;
+            canvas.style.width = displayWidth + 'px';
+            canvas.style.height = displayHeight + 'px';
+        }
+    }
+
+    function render() {
+        sizeCanvasToDisplaySize(gl.canvas);
+
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+        gl.clearColor(0, 0, 0, 0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
+        gl.useProgram(programInfo.program);
+        twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+
+        const canvasAspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+        const imageAspect = originalImage.width / originalImage.height;
+        
+        // Responsive zoom factor for all devices
+        const screenWidth = window.innerWidth;
+        const isMobileDevice = screenWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        let zoomFactor;
+        
+        if (isMobileDevice) {
+            // Mobile - 50% less zoom
+            zoomFactor = 1.5;
+        } else if (screenWidth <= 1200) {
+            // Small laptops
+            zoomFactor = 3.2;
+        } else if (screenWidth <= 1600) {
+            // Desktop
+            zoomFactor = 3.0;
+        } else {
+            // Large screens
+            zoomFactor = 2.8;
+        }
+        
+        const mat = m3.scaling((imageAspect / canvasAspect) * zoomFactor, -1 * zoomFactor);
+        
+        nMouse[0] += (mouse[0] - nMouse[0]) * 0.05;
+        nMouse[1] += (mouse[1] - nMouse[1]) * 0.05;
+
+        twgl.setUniforms(programInfo, {
+            u_matrix: mat,
+            u_originalImage: originalTexture,
+            u_mapImage: mapTexture,
+            u_mouse: nMouse,
+            u_time: performance.now() * 0.001,
+            u_resolution: [gl.canvas.width, gl.canvas.height],
+        });
+        
+        twgl.drawBufferInfo(gl, bufferInfo);
+        requestAnimationFrame(render);
+    }
+
+    // Matrix 3x3 utilities
+    const m3 = {
+        scaling: function(sx, sy) {
+            return [
+                sx, 0, 0,
+                0, sy, 0,
+                0, 0, 1,
+            ];
+        }
+    };
+
+    requestAnimationFrame(render);
+}
+
+// Global Noise Effect
+function initNoiseOverlay() {
+    const canvas = document.getElementById("noise-canvas");
+    if (!canvas) {
+        console.log("Noise canvas not found");
+        return;
+    }
+    
+    const gl = canvas.getContext("webgl");
+    if (!gl) {
+        console.log("WebGL not supported for noise");
+        return;
+    }
+
+    console.log("Initializing noise overlay");
+    
+    const programInfo = twgl.createProgramInfo(gl, ["noise-vs", "noise-fs"]);
+    const bufferInfo = twgl.primitives.createXYQuadBufferInfo(gl);
+
+    function resizeCanvas() {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+
+    function render() {
+        resizeCanvas();
+        
+        gl.clearColor(0, 0, 0, 0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+        gl.useProgram(programInfo.program);
+        twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+
+        twgl.setUniforms(programInfo, {
+            u_time: performance.now() * 0.001,
+            u_resolution: [canvas.width, canvas.height],
+            u_intensity: 0.5, // Back to high for debugging
+        });
+        
+        twgl.drawBufferInfo(gl, bufferInfo);
+        requestAnimationFrame(render);
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    requestAnimationFrame(render);
+}
+
+// Initialize effects when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initWebGLEffect();
+    initNoiseOverlay();
+});
+
 // Custom Cursor
 document.addEventListener('DOMContentLoaded', function() {
     const cursor = document.querySelector('.custom-cursor');

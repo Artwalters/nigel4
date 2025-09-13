@@ -98,6 +98,7 @@ body {
     width: 100%;
     position: relative;
     font-size: var(--text-normal);
+    min-height: 100vh;
 }
 
 html {
@@ -907,11 +908,7 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url('img/hero.webp');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-color: #000000;
     overflow: hidden;
 }
 
@@ -946,6 +943,30 @@ a {
     background-color: rgba(0, 0, 0, 0);
     z-index: 3;
     pointer-events: none;
+}
+
+.hero-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    display: block;
+    object-fit: cover;
+}
+
+.noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999999;
+    pointer-events: none;
+    mix-blend-mode: normal;
+    opacity: 0.9;
+    display: block;
 }
 
 .hero-container {
