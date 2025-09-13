@@ -3833,16 +3833,18 @@ textarea::placeholder {
     
     /* Follow Section Mobile */
     .follow-section {
-        padding: clamp(5rem, 12vw, 10rem) 0; /* Veel meer spacing voor follow section */
+        padding: clamp(7rem, 15vw, 12rem) 0; /* Nog meer spacing voor follow section */
     }
     
     .follow-title {
         font-size: var(--heading-h2);
         padding: 0 20px;
+        margin-bottom: clamp(3rem, 8vw, 5rem); /* Veel meer ruimte onder titel */
     }
     
     .follow-socials {
-        gap: 16px;
+        gap: clamp(20px, 5vw, 30px); /* Meer gap tussen social icons */
+        margin-bottom: clamp(2rem, 6vw, 4rem); /* Extra ruimte onder socials */
     }
     
     /* Footer Mobile */
