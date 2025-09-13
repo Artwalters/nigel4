@@ -27,9 +27,9 @@
 :root {
     /* Fluid Typography System using clamp() */
     /* Headings - scale from mobile to desktop and beyond */
-    --heading-h1: clamp(2.25rem, 1rem + 5vw, 9.36rem);       /* 36px -> 64px -> 150px (44% larger total) */
-    --heading-h2: clamp(1.75rem, 1.25rem + 2.5vw, 5.04rem);  /* 28px -> 42px -> 80px (44% larger total) */
-    --heading-h3: clamp(1.375rem, 1rem + 1.875vw, 3.6rem);   /* 22px -> 28px -> 58px (44% larger total) */
+    --heading-h1: clamp(2.7rem, 1.2rem + 6vw, 9.36rem);       /* 20% groter mobile start */
+    --heading-h2: clamp(2.1rem, 1.5rem + 3vw, 5.04rem);      /* 20% groter mobile start */
+    --heading-h3: clamp(1.65rem, 1.2rem + 2.25vw, 3.6rem);   /* 20% groter mobile start */
     
     /* Text content - fluid scaling */
     --text-large: clamp(1.125rem, 1rem + 0.625vw, 1.5rem);   /* 18px -> 20px -> 24px */
@@ -713,7 +713,7 @@ img {
 }
 
 /* Mobile styling for Nigel Info Panel */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     .nigel-info-panel {
         top: 10px;
         left: 10px;
@@ -748,7 +748,7 @@ img {
     .nigel-info-text {
         font-size: 15px;
     }
-}
+} */
 
 
 /* Professional Typography System */
@@ -922,7 +922,7 @@ a {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.35);
+    background: rgba(0, 0, 0, 0.0);
     z-index: 1;
 }
 
@@ -1067,9 +1067,9 @@ a {
     font-family: 'PPFormula', Arial, sans-serif;
     font-weight: 900;
     font-size: clamp(1.5rem, 3vw, 3.5rem);
-    color: rgba(255, 255, 255, 0.5);
+    color: #d4d4d4;
     letter-spacing: 0.3px;
-    margin-bottom: -1rem;
+    margin-bottom: -0.3rem;
 }
 
 .deco-text {
@@ -1094,7 +1094,7 @@ a {
     }
     
     .hero-title {
-        font-size: clamp(5.5rem, 18vw, 8rem);
+        font-size: clamp(8rem, 18vw, 8rem);
     }
     
     .hero-container {
@@ -1117,6 +1117,7 @@ a {
     .hero-deco-left, .hero-deco-right {
         align-items: center;
         text-align: center;
+        margin-bottom: 6rem;
     }
 }
 
@@ -3832,7 +3833,7 @@ textarea::placeholder {
     
     /* Follow Section Mobile */
     .follow-section {
-        padding: var(--space-2xl) 0;
+        padding: clamp(5rem, 12vw, 10rem) 0; /* Veel meer spacing voor follow section */
     }
     
     .follow-title {
@@ -3846,27 +3847,28 @@ textarea::placeholder {
     
     /* Footer Mobile */
     .footer {
-        padding: var(--space-2xl) 0 var(--space-xl) 0;
+        padding: clamp(4rem, 10vw, 8rem) 0 clamp(3rem, 8vw, 6rem) 0; /* Veel meer spacing */
     }
     
     .footer-grid {
         grid-template-columns: 1fr 1fr;
-        gap: 40px 20px;
+        gap: 60px 30px; /* Meer gap tussen kolommen */
         text-align: left;
+        margin-bottom: clamp(3rem, 8vw, 5rem); /* Meer ruimte onder grid */
     }
     
     .footer-column {
-        margin-bottom: 0;
+        margin-bottom: 2rem; /* Extra ruimte onder elke kolom */
     }
     
     .footer-column h4 {
         font-size: var(--text-small);
-        margin-bottom: 15px;
+        margin-bottom: 20px; /* Meer ruimte onder headers */
         letter-spacing: 1px;
     }
     
     .footer-column ul li {
-        margin-bottom: 8px;
+        margin-bottom: 12px; /* Meer ruimte tussen list items */
     }
     
     .footer-column ul li a {
@@ -3884,8 +3886,9 @@ textarea::placeholder {
     
     .footer-bottom {
         flex-direction: column;
-        gap: 20px;
+        gap: clamp(2rem, 6vw, 3rem); /* Meer gap tussen elementen */
         text-align: center;
+        padding-top: clamp(2rem, 6vw, 4rem); /* Meer padding boven */
     }
     
     .footer-logo {
@@ -3928,7 +3931,7 @@ textarea::placeholder {
     }
     
     .hero-title {
-        font-size: clamp(3rem, 12vw, 6rem);
+        font-size: clamp(3.6rem, 14.4vw, 7.2rem); /* 20% groter */
         padding: 0;
         word-wrap: break-word;
         line-height: 1.0;
@@ -4294,12 +4297,12 @@ textarea::placeholder {
 @media (max-width: 480px) {
     /* Adjust mobile typography for very small screens */
     :root {
-        --heading-h1-mobile: 36px;  /* Hero title */
-        --heading-h2-mobile: 24px;  /* Section titles */
-        --heading-h3-mobile: 18px;  /* Subsection titles */
-        --text-large-mobile: 16px;
-        --text-normal-mobile: 14px;
-        --text-small-mobile: 12px;
+        --heading-h1-mobile: 43.2px;  /* Hero title - 20% groter */
+        --heading-h2-mobile: 28.8px;  /* Section titles - 20% groter */
+        --heading-h3-mobile: 21.6px;  /* Subsection titles - 20% groter */
+        --text-large-mobile: 19.2px;  /* 20% groter */
+        --text-normal-mobile: 16.8px; /* 20% groter */
+        --text-small-mobile: 14.4px;  /* 20% groter */
     }
     
     .container {
@@ -4316,7 +4319,7 @@ textarea::placeholder {
     .hero-title {
         font-size: var(--heading-h1);
         padding: 0 10px;
-        margin-bottom: 25px;
+        margin-bottom: 8rem;
     }
     
     .hero-buttons {
