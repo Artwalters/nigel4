@@ -12,8 +12,8 @@
     <!-- Custom Cursor -->
     <div class="custom-cursor"></div>
     
-    <!-- Noise Overlay -->
-    <canvas id="noise-canvas" class="noise-overlay"></canvas>
+    <!-- Combined Effects Overlay -->
+    <canvas id="effects-canvas" class="effects-overlay"></canvas>
 
     <!-- Navigation -->
     <nav class="navbar">
@@ -598,16 +598,64 @@
         void main() {
             vec2 uv = v_texCoord;
             
-            // Multiple noise layers for better grain
-            float grain1 = random(uv * 1000.0 + u_time * 0.1);
-            float grain2 = random(uv * 2000.0 + u_time * 0.2);
-            float grain3 = filmGrain(uv, u_time);
+            // Scale noise based on screen size for consistent grain size
+            float screenScale = max(u_resolution.x, u_resolution.y) / 1920.0; // Normalize to 1920p
+            float grainScale = max(screenScale, 0.5); // Minimum scale to prevent too fine grain
+            
+            // Multiple noise layers with responsive scaling
+            float grain1 = random(uv * 800.0 * grainScale + u_time * 0.1);
+            float grain2 = random(uv * 1600.0 * grainScale + u_time * 0.2);
+            float grain3 = filmGrain(uv * grainScale, u_time);
             
             // Combine noise layers
             float noise = (grain1 + grain2 * 0.5 + grain3 * 0.3) / 1.8;
             noise = (noise - 0.5) * u_intensity;
             
             gl_FragColor = vec4(noise, noise, noise, abs(noise));
+        }
+    </script>
+    
+    <!-- Lens Effect Shaders -->
+    <script id="lens-vs" type="x-shader/x-vertex">
+        attribute vec2 position;
+        varying vec2 v_texCoord;
+
+        void main() {
+            gl_Position = vec4(position, 0, 1);
+            v_texCoord = position * 0.5 + 0.5;
+        }
+    </script>
+    <script id="lens-fs" type="x-shader/x-fragment">
+        precision mediump float;
+        
+        uniform sampler2D u_texture;
+        uniform vec2 u_lensCenter;
+        uniform float u_lensRadius;
+        uniform float u_magnification;
+        uniform vec2 u_resolution;
+        
+        varying vec2 v_texCoord;
+
+        void main() {
+            vec2 center = u_lensCenter;
+            float radius = u_lensRadius;
+            
+            vec2 coord = v_texCoord;
+            vec2 distance = coord - center;
+            float dist = length(distance);
+            
+            if (dist < radius) {
+                // Inside lens - apply magnification
+                vec2 direction = normalize(distance);
+                float magnifiedDist = dist * u_magnification;
+                coord = center + direction * magnifiedDist;
+                
+                // Add subtle lens distortion
+                float distortion = 1.0 - (dist / radius) * 0.1;
+                coord = center + (coord - center) * distortion;
+            }
+            
+            gl_FragColor = texture2D(u_texture, coord);
         }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>

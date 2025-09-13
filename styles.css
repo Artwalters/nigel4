@@ -956,7 +956,7 @@ a {
     object-fit: cover;
 }
 
-.noise-overlay {
+.effects-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -964,8 +964,8 @@ a {
     height: 100vh;
     z-index: 999999;
     pointer-events: none;
-    mix-blend-mode: normal;
-    opacity: 0.9;
+    mix-blend-mode: overlay;
+    opacity: 0.5;
     display: block;
 }
 

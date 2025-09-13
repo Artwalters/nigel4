@@ -29,22 +29,28 @@ function initWebGLEffect() {
     const bufferInfo = twgl.primitives.createXYQuadBufferInfo(gl);
 
     const mouse = [0, 0];
-    document.addEventListener('mousemove', (event) => {
-        mouse[0] = (event.clientX / gl.canvas.clientWidth * 2 - 1) * -0.01;
-        mouse[1] = (event.clientY / gl.canvas.clientHeight * 2 - 1) * -0.01;
-    });
+    let autoAnimTime = 0;
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     
-    document.addEventListener('touchmove', (event) => {
-        if (event.touches[0]) {
-            mouse[0] = (event.touches[0].clientX / gl.canvas.clientWidth * 2 - 1) * -0.01;
-            mouse[1] = (event.touches[0].clientY / gl.canvas.clientHeight * 2 - 1) * -0.01;
-        }
-    });
-    
-    document.addEventListener('touchend', (event) => {
-        mouse[0] = 0;
-        mouse[1] = 0;
-    });
+    if (!isTouchDevice) {
+        // Desktop - mouse control
+        document.addEventListener('mousemove', (event) => {
+            mouse[0] = (event.clientX / gl.canvas.clientWidth * 2 - 1) * -0.01;
+            mouse[1] = (event.clientY / gl.canvas.clientHeight * 2 - 1) * -0.01;
+        });
+    } else {
+        // Touch devices - auto animation
+        document.addEventListener('touchmove', (event) => {
+            if (event.touches[0]) {
+                mouse[0] = (event.touches[0].clientX / gl.canvas.clientWidth * 2 - 1) * -0.01;
+                mouse[1] = (event.touches[0].clientY / gl.canvas.clientHeight * 2 - 1) * -0.01;
+            }
+        });
+        
+        document.addEventListener('touchend', (event) => {
+            // Don't reset on touch end, keep auto animation
+        });
+    }
     
     let nMouse = [0, 0];
 
@@ -94,6 +100,16 @@ function initWebGLEffect() {
         
         const mat = m3.scaling((imageAspect / canvasAspect) * zoomFactor, -1 * zoomFactor);
         
+        // Auto animation for touch devices
+        if (isTouchDevice) {
+            autoAnimTime += 0.01;
+            // Create smooth circular motion
+            const autoX = Math.sin(autoAnimTime * 0.5) * 0.008;
+            const autoY = Math.cos(autoAnimTime * 0.7) * 0.006;
+            mouse[0] = autoX;
+            mouse[1] = autoY;
+        }
+        
         nMouse[0] += (mouse[0] - nMouse[0]) * 0.05;
         nMouse[1] += (mouse[1] - nMouse[1]) * 0.05;
 
@@ -124,21 +140,21 @@ function initWebGLEffect() {
     requestAnimationFrame(render);
 }
 
-// Global Noise Effect
-function initNoiseOverlay() {
-    const canvas = document.getElementById("noise-canvas");
+// Combined Effects (Noise only for now)
+function initCombinedEffects() {
+    const canvas = document.getElementById("effects-canvas");
     if (!canvas) {
-        console.log("Noise canvas not found");
+        console.log("Effects canvas not found");
         return;
     }
     
     const gl = canvas.getContext("webgl");
     if (!gl) {
-        console.log("WebGL not supported for noise");
+        console.log("WebGL not supported for effects");
         return;
     }
 
-    console.log("Initializing noise overlay");
+    console.log("Initializing combined effects");
     
     const programInfo = twgl.createProgramInfo(gl, ["noise-vs", "noise-fs"]);
     const bufferInfo = twgl.primitives.createXYQuadBufferInfo(gl);
@@ -167,7 +183,7 @@ function initNoiseOverlay() {
         twgl.setUniforms(programInfo, {
             u_time: performance.now() * 0.001,
             u_resolution: [canvas.width, canvas.height],
-            u_intensity: 0.5, // Back to high for debugging
+            u_intensity: 0.3, // Reduced intensity
         });
         
         twgl.drawBufferInfo(gl, bufferInfo);
@@ -178,10 +194,12 @@ function initNoiseOverlay() {
     requestAnimationFrame(render);
 }
 
+// Note: Lens effect removed to prevent WebGL context issues
+
 // Initialize effects when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     initWebGLEffect();
-    initNoiseOverlay();
+    initCombinedEffects();
 });
 
 // Custom Cursor
