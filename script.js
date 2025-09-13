@@ -1230,46 +1230,110 @@ ScrollTrigger.create({
     once: true
 });
 
-// List items stagger animation - Trap effect van links naar rechts
+// List items stagger animation - Tekst komt van onder naar boven achter lijnen
 document.addEventListener('DOMContentLoaded', function() {
     // Selecteer alle drie de lijsten
     const lists = [
-        '.about .services-list li',
-        '.philosophy .philosophy-list li',
-        '.onboarding .services-list li'
+        { selector: '.about .services-list', items: null },
+        { selector: '.philosophy .philosophy-list', items: null },
+        { selector: '.onboarding .services-list', items: null }
     ];
     
-    lists.forEach(selector => {
-        const items = document.querySelectorAll(selector);
+    lists.forEach(listObj => {
+        const list = document.querySelector(listObj.selector);
+        if (!list) return;
+        
+        const items = list.querySelectorAll('li');
+        listObj.items = items;
         
         if (items.length > 0) {
-            // Set initial state - items zijn onzichtbaar en links gepositioneerd
-            gsap.set(items, {
-                opacity: 0,
-                x: -100,
-                y: -20,
-                transformOrigin: "left center"
+            // Wrap elke li tekst in containers voor overflow hidden effect
+            items.forEach(item => {
+                const text = item.innerHTML;
+                item.innerHTML = `
+                    <div class="li-text-container">
+                        <span class="li-text">${text}</span>
+                    </div>
+                `;
             });
             
-            // Create the stagger animation
-            gsap.to(items, {
-                scrollTrigger: {
-                    trigger: items[0].closest('ul'),
-                    start: "top 80%",
-                    end: "bottom 60%",
-                    toggleActions: "play none none reverse",
-                    // markers: true // Uncomment voor debugging
-                },
-                opacity: 1,
-                x: 0,
-                y: 0,
-                duration: 0.8,
-                stagger: {
-                    each: 0.12,
-                    from: "start",
-                    ease: "power2.inOut"
-                },
-                ease: "power3.out"
+            // Selecteer de tekst containers en spans
+            const textContainers = list.querySelectorAll('.li-text-container');
+            const textElements = list.querySelectorAll('.li-text');
+            
+            // Set initial state - tekst begint onder de container
+            gsap.set(textElements, {
+                y: "100%", // Start volledig onder de container
+                opacity: 1
+            });
+            
+            // Create timeline voor tekst animatie
+            const textTimeline = gsap.timeline({
+                paused: true
+            });
+            
+            // Voeg elke tekst toe aan de timeline
+            textElements.forEach((textElement, index) => {
+                textTimeline.to(textElement, {
+                    y: "0%", // Beweeg naar normale positie
+                    duration: 0.6,
+                    ease: "power3.out"
+                }, index * 0.3); // Zelfde timing als lijnen
+            });
+            
+            // ScrollTrigger om de tekst timeline te starten
+            ScrollTrigger.create({
+                trigger: list,
+                start: "top 80%",
+                onEnter: () => textTimeline.play(),
+                onLeaveBack: () => textTimeline.reverse()
+            });
+        }
+    });
+});
+
+// List item ::after lines stagger animation - Horizontale lijnen vullen van links naar rechts
+document.addEventListener('DOMContentLoaded', function() {
+    // Selecteer alle drie de lijsten
+    const lists = [
+        { selector: '.about .services-list', items: null },
+        { selector: '.philosophy .philosophy-list', items: null },
+        { selector: '.onboarding .services-list', items: null }
+    ];
+    
+    lists.forEach(listObj => {
+        const list = document.querySelector(listObj.selector);
+        if (!list) return;
+        
+        const items = list.querySelectorAll('li');
+        listObj.items = items;
+        
+        if (items.length > 0) {
+            // Set initial state voor de ::after lijnen
+            items.forEach((item, index) => {
+                item.style.setProperty('--line-scale', '0');
+            });
+            
+            // Create timeline voor deze lijst
+            const tl = gsap.timeline({
+                paused: true
+            });
+            
+            // Voeg elke lijn toe aan de timeline met vaste delays
+            items.forEach((item, index) => {
+                tl.to(item, {
+                    '--line-scale': '1',
+                    duration: 0.6,
+                    ease: "power3.out"
+                }, index * 0.3); // Vaste 0.3s tussen elke lijn
+            });
+            
+            // ScrollTrigger om de hele timeline te starten
+            ScrollTrigger.create({
+                trigger: list,
+                start: "top 80%",
+                onEnter: () => tl.play(),
+                onLeaveBack: () => tl.reverse()
             });
         }
     });

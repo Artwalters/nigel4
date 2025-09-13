@@ -28,7 +28,9 @@
             background: #0a0d0f;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
+            align-items: flex-start;
+            padding-top: 8rem;
         }
 
         .trajectory-right {
@@ -46,6 +48,8 @@
         .trajectory-content {
             max-width: 100%;
             width: 100%;
+            position: relative;
+            top: 0;
         }
 
         .trajectory-title {
@@ -100,6 +104,12 @@
             list-style: none;
             padding: 0;
             margin: 0 0 2.5rem 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            min-height: 380px;
+            height: 380px;
+            overflow: hidden;
         }
 
         .trajectory-features li {
@@ -248,16 +258,63 @@
 
         @media (max-width: 1024px) {
             .trajectory-page {
+                height: auto;
+                min-height: 100vh;
                 flex-direction: column;
+                overflow: visible;
             }
             
-            .trajectory-left, .trajectory-right {
-                max-width: 100%;
-                padding: var(--space-md);
+            .trajectory-left {
+                flex: none;
+                padding: 2rem 1.5rem;
+                padding-top: 2rem;
+                min-height: auto;
+                justify-content: flex-start;
+            }
+            
+            .trajectory-features {
+                min-height: auto;
+                height: auto;
+                overflow: visible;
+            }
+            
+            .trajectory-right {
+                flex: none;
+                padding: 2rem 1.5rem;
+                background: rgba(15, 20, 25, 0.9);
+                border-left: none;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                overflow-y: visible;
+                align-items: stretch;
             }
             
             .trajectory-title {
                 font-size: var(--heading-h2);
+                margin-bottom: 1.5rem;
+            }
+            
+            .trajectory-content {
+                padding-bottom: 2rem;
+            }
+            
+            .back-button {
+                position: relative;
+                top: auto;
+                left: auto;
+                margin: 1rem 0 0 1.5rem;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 8px 16px;
+                font-size: 12px;
+                opacity: 0.7;
+                display: inline-flex;
+                width: auto;
+            }
+            
+            .back-button:hover {
+                opacity: 1;
+                background: rgba(255, 255, 255, 0.1);
+                transform: none;
             }
         }
     </style>

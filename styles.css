@@ -137,9 +137,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Make all other text slightly darker */
-p, span, li, a, div, label, input, textarea, button {
-    color: rgba(239, 238, 236, 0.75);
-}
 
 /* Keep navigation and important UI elements brighter */
 .nav-link, .nav-brand {
@@ -904,7 +901,7 @@ a {
 
 /* Hero Section */
 .hero {
-    height: 100vh;
+    height: 100dvh;
     width: 100%;
     position: relative;
     display: flex;
@@ -959,7 +956,7 @@ a {
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -1069,7 +1066,7 @@ a {
 .deco-number {
     font-family: 'PPFormula', Arial, sans-serif;
     font-weight: 900;
-    font-size: clamp(2rem, 3vw, 3.5rem);
+    font-size: clamp(1.5rem, 4dvh, 3.5rem);
     color: rgba(255, 255, 255, 0.5);
     letter-spacing: 0.3px;
     margin-bottom: -1rem;
@@ -1399,6 +1396,20 @@ a {
     margin-bottom: 30px;
 }
 
+/* Text animation containers */
+.li-text-container {
+    overflow: hidden;
+    position: relative;
+    height: auto;
+}
+
+.li-text {
+    display: block;
+    transform: translateY(0);
+    transition: transform 0.1s ease;
+}
+
+
 .services-list li {
     font-size: var(--text-normal);
     font-weight: var(--weight-normal);
@@ -1422,19 +1433,9 @@ a {
         rgba(255, 255, 255, 0.25) 0%, 
         rgba(255, 255, 255, 0.25) 85%, 
         rgba(255, 255, 255, 0) 100%);
-}
-
-.services-list li:first-child::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(to right, 
-        rgba(255, 255, 255, 0.25) 0%, 
-        rgba(255, 255, 255, 0.25) 85%, 
-        rgba(255, 255, 255, 0) 100%);
+    transform: scaleX(var(--line-scale, 0));
+    transform-origin: left center;
+    transition: transform 0.1s ease;
 }
 
 
@@ -1528,12 +1529,15 @@ a {
         rgba(255, 255, 255, 0.25) 0%, 
         rgba(255, 255, 255, 0.25) 85%, 
         rgba(255, 255, 255, 0) 100%);
+    transform: scaleX(var(--line-scale, 0));
+    transform-origin: left center;
+    transition: transform 0.1s ease;
 }
 
-.philosophy-list li:first-child::before {
+.onboarding .services-list li::after {
     content: '';
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
     right: 0;
     height: 1px;
@@ -1541,6 +1545,9 @@ a {
         rgba(255, 255, 255, 0.25) 0%, 
         rgba(255, 255, 255, 0.25) 85%, 
         rgba(255, 255, 255, 0) 100%);
+    transform: scaleX(var(--line-scale, 0));
+    transform-origin: left center;
+    transition: transform 0.1s ease;
 }
 
 
@@ -2109,7 +2116,7 @@ a {
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #4a4a4a;
+    background-color: black;
     color: #efeeec;
     padding: 6px 12px;
     border-radius: 6px;
@@ -2325,20 +2332,6 @@ a {
     position: relative;
 }
 
-.onboarding::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: var(--container-width);
-    height: 1px;
-    background: linear-gradient(to right, 
-        rgba(255, 255, 255, 0) 0%, 
-        rgba(255, 255, 255, 0.25) 20%, 
-        rgba(255, 255, 255, 0.25) 80%, 
-        rgba(255, 255, 255, 0) 100%);
-}
 
 .onboarding-container {
     max-width: var(--container-width);
@@ -2394,15 +2387,6 @@ a {
         font-family: 'PPFormula', Arial, sans-serif !important;
     }
     
-    .step-subtitle {
-        color: #666666 !important;
-        font-size: var(--text-small) !important;
-        margin-bottom: 12px !important;
-        line-height: 1.2 !important;
-        text-transform: uppercase !important;
-        font-family: 'PPFormula', Arial, sans-serif !important;
-        font-weight: 900 !important;
-    }
     
     .checkbox-item,
     .radio-item {
@@ -2448,9 +2432,6 @@ a {
         margin-bottom: 6px !important;
     }
     
-    #step-4 .step-subtitle {
-        margin-bottom: 20px !important;
-    }
     
     /* Hide desktop line breaks on mobile */
     .desktop-br {
@@ -2561,15 +2542,6 @@ a {
         font-family: 'PPFormula', Arial, sans-serif !important;
     }
     
-    .step-subtitle {
-        color: #666666 !important;
-        font-size: var(--text-normal) !important;
-        margin-bottom: 20px !important;
-        text-align: left !important;
-        text-transform: uppercase !important;
-        font-family: 'PPFormula', Arial, sans-serif !important;
-        font-weight: 900 !important;
-    }
     
     .checkbox-item,
     .radio-item {
@@ -2677,6 +2649,20 @@ a {
     margin-left: 0;
     max-width: 400px;
     width: 100%;
+}
+
+/* Zorg ervoor dat alleen formulier tekst zwart is */
+.onboarding-form * {
+    color: #000000 !important;
+}
+
+.onboarding-form .field-group label {
+    color: #333333 !important;
+}
+
+.onboarding-form .field-group input::placeholder,
+.onboarding-form .field-group textarea::placeholder {
+    color: #666666 !important;
 }
 
 /* Desktop layout - Show line breaks for hero title */
@@ -2801,14 +2787,6 @@ a {
     font-family: 'PPFormula', Arial, sans-serif;
 }
 
-.step-subtitle {
-    font-size: var(--text-small);
-    color: #666666;
-    margin-bottom: 24px;
-    text-transform: uppercase;
-    font-family: 'PPFormula', Arial, sans-serif;
-    font-weight: 900;
-}
 
 /* Error Messages */
 .error-message {
@@ -3105,17 +3083,6 @@ textarea::placeholder {
     font-family: 'PPFormula', Arial, sans-serif;
 }
 
-.step-subtitle {
-    font-size: var(--text-small);
-    color: #6b7280;
-    text-align: left;
-    margin-bottom: 24px;
-    opacity: 1;
-    font-weight: 900;
-    line-height: 1.4;
-    text-transform: uppercase;
-    font-family: 'PPFormula', Arial, sans-serif;
-}
 
 /* Intro Step Styling */
 .intro-step {
@@ -3415,20 +3382,6 @@ textarea::placeholder {
     border-bottom: none;
 }
 
-.follow-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: var(--container-width);
-    height: 1px;
-    background: linear-gradient(to right, 
-        rgba(255, 255, 255, 0) 0%, 
-        rgba(255, 255, 255, 0.25) 20%, 
-        rgba(255, 255, 255, 0.25) 80%, 
-        rgba(255, 255, 255, 0) 100%);
-}
 
 .follow-section::after {
     content: '';
@@ -3949,8 +3902,8 @@ textarea::placeholder {
     
     /* Hero Mobile */
     .hero {
-        min-height: 100vh;
-        height: 100vh;
+        min-height: 100dvh;
+        height: 100dvh;
         background-attachment: scroll;
         background-size: cover;
         background-position: center center;
@@ -3967,19 +3920,19 @@ textarea::placeholder {
     .hero-content {
         padding: 20px;
         width: 100%;
-        height: 100vh;
+        height: 100dvh;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
-        padding-bottom: 80px;
+        padding-bottom: clamp(60px, 8dvh, 100px);
     }
     
     .hero-title {
-        font-size: var(--heading-h1);
+        font-size: clamp(3rem, 8dvh, 6rem);
         padding: 0;
         word-wrap: break-word;
         line-height: 1.0;
-        margin-bottom: 40px;
+        margin-bottom: clamp(20px, 4dvh, 40px);
         margin-top: 0;
     }
     
@@ -4468,14 +4421,6 @@ textarea::placeholder {
         font-family: 'PPFormula', Arial, sans-serif !important;
     }
     
-    .step-subtitle {
-        color: #666666 !important;
-        font-size: var(--text-normal) !important;
-        text-align: left !important;
-        text-transform: uppercase !important;
-        font-family: 'PPFormula', Arial, sans-serif !important;
-        font-weight: 900 !important;
-    }
     
     .onboarding-content {
         text-align: left !important;
