@@ -1,3 +1,97 @@
+// Custom Cursor
+document.addEventListener('DOMContentLoaded', function() {
+    const cursor = document.querySelector('.custom-cursor');
+    let mouseX = 0;
+    let mouseY = 0;
+    let cursorX = 0;
+    let cursorY = 0;
+    
+    // Only initialize cursor on desktop
+    if (window.innerWidth > 768) {
+        // Track mouse position
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        // Smooth cursor following with delay
+        function updateCursor() {
+            cursorX += (mouseX - cursorX) * 0.15; // 0.15 creates subtle delay
+            cursorY += (mouseY - cursorY) * 0.15;
+            
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            
+            requestAnimationFrame(updateCursor);
+        }
+        
+        updateCursor();
+        
+        // Hover effects for clickable elements
+        const hoverElements = document.querySelectorAll('a, button, .package-btn, .nav-link, .nav-brand');
+        
+        hoverElements.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+            });
+        });
+    }
+});
+
+// Navigation scroll trigger
+document.addEventListener('DOMContentLoaded', function() {
+    const navbarTop = document.querySelector('.navbar');
+    const navbarBottom = document.querySelector('.navbar-bottom');
+    
+    if (navbarTop && navbarBottom) {
+        // Initially hide both navbars
+        navbarTop.classList.add('hidden');
+        navbarBottom.classList.remove('visible');
+        
+        let ticking = false;
+        
+        function updateNavbars() {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            const distanceFromBottom = documentHeight - (scrollY + windowHeight);
+            
+            // Top navbar: Show only when at very top (within 50px)
+            if (scrollY <= 50) {
+                navbarTop.classList.remove('hidden');
+            } else {
+                navbarTop.classList.add('hidden');
+            }
+            
+            // Bottom navbar: Show only when near bottom (within 100px)
+            if (distanceFromBottom <= 100) {
+                navbarBottom.classList.add('visible');
+            } else {
+                navbarBottom.classList.remove('visible');
+            }
+            
+            ticking = false;
+        }
+        
+        function requestTick() {
+            if (!ticking) {
+                requestAnimationFrame(updateNavbars);
+                ticking = true;
+            }
+        }
+        
+        window.addEventListener('scroll', requestTick);
+        window.addEventListener('resize', requestTick); // Also check on resize
+        
+        // Check initial position
+        updateNavbars();
+    }
+});
+
 // Check if mobile device (excluding iPad for better tablet experience)
 const isMobile = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768 && !/iPad/i.test(navigator.userAgent));
 
@@ -1134,4 +1228,131 @@ ScrollTrigger.create({
         }
     },
     once: true
+});
+
+// List items stagger animation - Trap effect van links naar rechts
+document.addEventListener('DOMContentLoaded', function() {
+    // Selecteer alle drie de lijsten
+    const lists = [
+        '.about .services-list li',
+        '.philosophy .philosophy-list li',
+        '.onboarding .services-list li'
+    ];
+    
+    lists.forEach(selector => {
+        const items = document.querySelectorAll(selector);
+        
+        if (items.length > 0) {
+            // Set initial state - items zijn onzichtbaar en links gepositioneerd
+            gsap.set(items, {
+                opacity: 0,
+                x: -100,
+                y: -20,
+                transformOrigin: "left center"
+            });
+            
+            // Create the stagger animation
+            gsap.to(items, {
+                scrollTrigger: {
+                    trigger: items[0].closest('ul'),
+                    start: "top 80%",
+                    end: "bottom 60%",
+                    toggleActions: "play none none reverse",
+                    // markers: true // Uncomment voor debugging
+                },
+                opacity: 1,
+                x: 0,
+                y: 0,
+                duration: 0.8,
+                stagger: {
+                    each: 0.12,
+                    from: "start",
+                    ease: "power2.inOut"
+                },
+                ease: "power3.out"
+            });
+        }
+    });
+});
+
+// Bicep emoji hover effect voor footer title
+document.addEventListener('DOMContentLoaded', function() {
+    const followTitle = document.querySelector('.follow-title');
+    const bicepEmoji = document.querySelector('.bicep-emoji');
+    
+    if (followTitle && bicepEmoji) {
+        let mouseX = 0;
+        let emojiX = 0;
+        let centerX = 0;
+        let fixedY = 0;
+        let isHovering = false;
+        let animationScale = 0;
+        
+        // Update title center position
+        function updateTitleCenter() {
+            const titleRect = followTitle.getBoundingClientRect();
+            centerX = titleRect.left + (titleRect.width / 2);
+            fixedY = titleRect.top + (titleRect.height / 2) - 120;
+        }
+        
+        // Initial setup
+        updateTitleCenter();
+        window.addEventListener('resize', updateTitleCenter);
+        window.addEventListener('scroll', updateTitleCenter);
+        
+        // Mouse move handler
+        function handleMouseMove(e) {
+            mouseX = e.clientX;
+        }
+        
+        // Smooth emoji animation
+        function animateEmoji() {
+            if (isHovering) {
+                // Scale in animatie
+                animationScale += (1 - animationScale) * 0.15;
+                
+                // Beweeg van center naar muis positie
+                emojiX += (mouseX - emojiX) * 0.05;
+            } else {
+                // Scale out animatie
+                animationScale += (0 - animationScale) * 0.15;
+                
+                // Beweeg terug naar center
+                emojiX += (centerX - emojiX) * 0.1;
+            }
+            
+            // Positioneer emoji
+            bicepEmoji.style.left = (emojiX - 120) + 'px';
+            bicepEmoji.style.top = fixedY + 'px';
+            
+            // Apply scale en opacity gebaseerd op animationScale
+            bicepEmoji.style.opacity = animationScale;
+            
+            // Subtiele rotatie alleen tijdens hover
+            const rotation = isHovering ? (mouseX - emojiX) * 0.05 : 0;
+            bicepEmoji.style.transform = `scale(${animationScale}) rotate(${rotation}deg)`;
+            
+            requestAnimationFrame(animateEmoji);
+        }
+        
+        // Start animation loop
+        animateEmoji();
+        
+        // Hover events
+        followTitle.addEventListener('mouseenter', function(e) {
+            isHovering = true;
+            updateTitleCenter();
+            // Start vanuit het midden
+            emojiX = centerX;
+            mouseX = e.clientX;
+            document.addEventListener('mousemove', handleMouseMove);
+        });
+        
+        followTitle.addEventListener('mouseleave', function() {
+            isHovering = false;
+            document.removeEventListener('mousemove', handleMouseMove);
+            // Zet muis positie naar center voor smooth terugkeer
+            mouseX = centerX;
+        });
+    }
 });
