@@ -998,6 +998,16 @@ a {
     letter-spacing: -0.02em;
 }
 
+.title-line-container {
+    overflow: hidden;
+    display: block;
+}
+
+.title-line {
+    display: block;
+    transform: translateY(120%);
+}
+
 .hero-subtitle {
     font-size: clamp(1.1rem, 2vw, 1.4rem);
     line-height: 1.6;
@@ -1635,7 +1645,6 @@ a {
     line-height: 0.9;
     color: #efeeec;
     text-transform: uppercase;
-    max-width: 700px;
     margin: 0 auto;
     text-align: center;
     letter-spacing: 0.02em;

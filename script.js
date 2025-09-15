@@ -1628,7 +1628,84 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize page transitions
     initPageTransitions();
+
+    // Initialize all title animations with scroll triggers
+    initAllTitleAnimations();
+
+    // Play hero title animation on page load
+    setTimeout(() => {
+        playHeroTitleAnimation();
+    }, 500); // 500ms delay before hero animation starts
 });
+
+// ====================================
+// TITLE STAGGER ANIMATIONS
+// ====================================
+function createTitleStaggerAnimation(selector) {
+    const titleLines = document.querySelectorAll(`${selector} .title-line`);
+
+    if (titleLines.length === 0) return null;
+
+    // Create timeline for title stagger animation
+    const titleTimeline = gsap.timeline({ paused: true });
+
+    // Reset all lines to starting position
+    gsap.set(titleLines, { y: "120%" });
+
+    // Add each line to timeline with stagger
+    titleLines.forEach((line, index) => {
+        titleTimeline.to(line, {
+            y: "10%",
+            duration: 1.0,
+            ease: "power3.out"
+        }, index * 0.25); // Each line starts 0.25s after the previous
+    });
+
+    return titleTimeline;
+}
+
+function initHeroTitleAnimation() {
+    return createTitleStaggerAnimation('.hero-title');
+}
+
+function playHeroTitleAnimation() {
+    const heroTitleTL = initHeroTitleAnimation();
+    if (heroTitleTL) {
+        heroTitleTL.play();
+    }
+}
+
+function initAllTitleAnimations() {
+    // Define all titles that should have stagger animations
+    const titleSelectors = [
+        '.intro-title',
+        '.about-title',
+        '.philosophy-title',
+        '.packages-title',
+        '.reviews-hero-title',
+        '.onboarding-title',
+        '.follow-title'
+    ];
+
+    titleSelectors.forEach(selector => {
+        const titleElement = document.querySelector(selector);
+        if (!titleElement) return;
+
+        // Create timeline for this title
+        const timeline = createTitleStaggerAnimation(selector);
+        if (!timeline) return;
+
+        // Create scroll trigger - only plays once
+        ScrollTrigger.create({
+            trigger: titleElement,
+            start: "top 80%",
+            once: true, // Only trigger once, never again
+            onEnter: () => {
+                timeline.play();
+            }
+        });
+    });
+}
 
 // ====================================
 // PAGE TRANSITIONS
@@ -1697,7 +1774,11 @@ function initPageTransitions() {
                 transformOrigin: 'bottom',
                 duration: 0.9,
                 ease: 'power4.inOut'
-            }, 0.1);
+            }, 0.1)
+            .call(() => {
+                // Play hero title animation after transition
+                playHeroTitleAnimation();
+            }, null, 0.4); // Start hero animation 0.4s into the black screen exit
 
         // Clean up
         sessionStorage.removeItem('pageTransitionActive');
