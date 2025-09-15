@@ -4667,6 +4667,53 @@ textarea::placeholder {
     }
 }
 
+/* Laptop optimization - more compact coaching section */
+@media (min-width: 1025px) and (max-width: 1440px) {
+    .trajectory-right {
+        padding: 3rem 3.5rem;
+        padding-top: 6rem;
+    }
+
+    .trajectory-title {
+        font-size: clamp(2.5rem, 4vw, 3.5rem);
+        margin-bottom: 1.5rem;
+        line-height: 1.0;
+    }
+
+    .trajectory-description {
+        font-size: var(--text-normal);
+        line-height: 1.5;
+        margin-bottom: 2rem;
+    }
+
+    .trajectory-price {
+        font-size: clamp(1.8rem, 3vw, 2.5rem);
+        margin-top: 0.8rem;
+    }
+
+    .trajectory-features {
+        min-height: 300px;
+        height: 300px;
+        margin-bottom: 2rem;
+    }
+
+    .trajectory-features li {
+        font-size: var(--text-small);
+        padding: 12px 0;
+        line-height: 1.4;
+    }
+
+    .plan-switcher {
+        margin-bottom: 1.5rem;
+        padding: 6px;
+    }
+
+    .plan-option {
+        padding: 12px 20px;
+        font-size: 13px;
+    }
+}
+
 .trajectory-left {
     flex: 0 0 40%;
     padding: 6rem 3rem 4rem 3rem;
