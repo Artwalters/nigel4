@@ -52,6 +52,11 @@
     --weight-medium: 300;   /* Important text - Light font */
     --weight-normal: 200;   /* Body text - Light font */
     --weight-light: 200;    /* Details - Light font */
+
+    /* Colors */
+    --text-primary: #efeeec;    /* Main text color */
+    --text-secondary: rgba(255, 255, 255, 0.8);  /* Secondary text */
+    --text-muted: rgba(255, 255, 255, 0.6);      /* Muted text */
 }
 
 
@@ -2064,6 +2069,53 @@ a {
     transform: scaleX(-1);
 }
 
+.trajectory-rocks {
+    height: 80vh;
+    width: 100%;
+    background-image: url("img/bg-rocks.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    bottom: -15rem;
+    right: 0;
+    z-index: -1;
+    transform: scaleX(-1);
+}
+
+@media (max-width: 1024px) {
+    .trajectory-rocks {
+        top: 29rem;
+        left: 0;
+        height: 50vh;
+        bottom: auto;
+        right: auto;
+    }
+}
+
+.trajectory-rocks::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+
+.trajectory-rocks::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.019) 12%, rgba(0, 0, 0, 0.037) 17.15%, rgba(0, 0, 0, 0.075) 24.5%, rgba(0, 0, 0, 0.15) 35%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 1) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
 .rocks-background::before {
     content: '';
     position: absolute;
@@ -3699,8 +3751,8 @@ textarea::placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
+    width: 88px;
+    height: 88px;
     background-color: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 50%;
@@ -3717,8 +3769,34 @@ textarea::placeholder {
 }
 
 .footer-socials .social-icon svg {
-    width: 20px;
-    height: 20px;
+    width: 40px;
+    height: 40px;
+}
+
+/* Desktop and tablet - larger social icons (all screens except mobile) */
+@media (min-width: 769px) {
+    .social-icon,
+    .follow-socials .social-icon,
+    .footer-socials .social-icon {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    .social-icon svg,
+    .follow-socials .social-icon svg,
+    .footer-socials .social-icon svg {
+        width: 28px !important;
+        height: 28px !important;
+    }
+
+    .footer-column h4 {
+        margin-bottom: 32px !important;
+    }
+
+    .follow-socials {
+        margin-top: 50px !important;
+        margin-bottom: 50px !important;
+    }
 }
 
 /* ===============================================
@@ -3945,6 +4023,16 @@ textarea::placeholder {
     
     .footer-socials {
         order: 2;
+    }
+
+    .footer-socials .social-icon {
+        width: 44px;
+        height: 44px;
+    }
+
+    .footer-socials .social-icon svg {
+        width: 20px;
+        height: 20px;
     }
     
     /* Hero Mobile */
@@ -4479,8 +4567,8 @@ textarea::placeholder {
         background: transparent !important;
     }
     
-    .form-input,
-    .form-textarea {
+    .onboarding-form-panel .form-input,
+    .onboarding-form-panel .form-textarea {
         color: #000000 !important;
         background: white !important;
         border: 1px solid #ccc !important;
@@ -4576,25 +4664,28 @@ textarea::placeholder {
 .trajectory-left {
     flex: 0 0 40%;
     padding: 6rem 3rem 4rem 3rem;
-    background: rgba(15, 20, 25, 0.8);
-    backdrop-filter: blur(20px);
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
     border-right: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: flex-start;
     justify-content: center;
     overflow-y: auto;
     height: 100vh;
+    position: relative;
+    z-index: 1;
 }
 
 .trajectory-right {
     flex: 1;
     padding: 4rem 5rem;
-    background: #0a0d0f;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     padding-top: 8rem;
+    position: relative;
+    z-index: 1;
 }
 
 .trajectory-content {
@@ -4631,7 +4722,7 @@ textarea::placeholder {
     padding: 14px 24px;
     background: transparent;
     border: none;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-primary);
     font-family: 'PPFormula', Arial, sans-serif;
     font-weight: 900;
     text-transform: uppercase;
@@ -4650,7 +4741,7 @@ textarea::placeholder {
 .trajectory-description {
     font-size: var(--text-large);
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--text-primary);
     margin-bottom: 2.5rem;
     overflow: hidden;
     position: relative;
@@ -4752,7 +4843,7 @@ textarea::placeholder {
     padding-top: 0;
     display: flex;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: flex-start;
     min-height: auto;
 }
 
@@ -4772,8 +4863,34 @@ textarea::placeholder {
     border-radius: 0;
     padding: 0;
     width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
+    max-width: 100%;
+    margin: 0;
+}
+
+.selected-plan-indicator {
+    background: rgba(255, 76, 36, 0.1);
+    border: 1px solid rgba(255, 76, 36, 0.3);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.plan-label {
+    font-size: var(--text-small);
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.plan-name {
+    font-family: 'PPFormula', Arial, sans-serif;
+    font-size: var(--text-normal);
+    font-weight: 900;
+    color: #ff4c24;
+    text-transform: uppercase;
 }
 
 .trajectory-form .form-group {
@@ -4805,8 +4922,35 @@ textarea::placeholder {
     box-sizing: border-box;
 }
 
+/* Consistent gray placeholder text */
+.trajectory-form .form-input::placeholder,
+.trajectory-form .form-textarea::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+    opacity: 1; /* Firefox fix */
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+.trajectory-form .form-input::-webkit-input-placeholder,
+.trajectory-form .form-textarea::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Firefox */
+.trajectory-form .form-input::-moz-placeholder,
+.trajectory-form .form-textarea::-moz-placeholder {
+    color: rgba(255, 255, 255, 0.4);
+    opacity: 1;
+}
+
+/* IE/Edge */
+.trajectory-form .form-input:-ms-input-placeholder,
+.trajectory-form .form-textarea:-ms-input-placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
 .trajectory-form select.form-input {
     cursor: pointer;
+    padding-left: 20px;
 }
 
 .trajectory-form select.form-input option {
@@ -4882,14 +5026,22 @@ textarea::placeholder {
         min-height: 100vh;
         flex-direction: column;
         overflow: visible;
+        align-items: stretch;
     }
     
     .trajectory-left {
         flex: none;
+        width: 100%;
         padding: 2rem 1.5rem;
         padding-top: 5rem;
+        background: rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
         min-height: auto;
         justify-content: flex-start;
+        order: 2; /* Move form to bottom on mobile */
+        border-right: none;
+        position: relative;
+        z-index: 1;
     }
     
     .trajectory-features {
@@ -4900,12 +5052,16 @@ textarea::placeholder {
     
     .trajectory-right {
         flex: none;
+        width: 100%;
         padding: 2rem 1.5rem;
-        background: rgba(15, 20, 25, 0.9);
+        padding-top: 5rem; /* Add more top spacing for back button */
         border-left: none;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-top: none;
         overflow-y: visible;
         align-items: stretch;
+        order: 1; /* Move coaching content to top on mobile */
+        position: relative;
+        z-index: 1;
     }
     
     .trajectory-title {
@@ -4915,7 +5071,21 @@ textarea::placeholder {
     
     .trajectory-content {
         padding-bottom: 2rem;
+        width: 100%;
+        max-width: none;
     }
+
+    .form-container {
+        width: 100%;
+        max-width: none;
+        padding: 0;
+    }
+
+    .trajectory-form {
+        max-width: none;
+        width: 100%;
+    }
+
     
     .back-button {
         position: relative;

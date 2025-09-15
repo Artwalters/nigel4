@@ -105,16 +105,6 @@
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label" for="budget">Budget indicatie (optioneel)</label>
-                        <select class="form-input" id="budget" name="budget">
-                            <option value="">Geen voorkeur</option>
-                            <option value="basic">€200-400 per maand</option>
-                            <option value="premium">€400-800 per maand</option>
-                            <option value="elite">€800+ per maand</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
                         <label class="form-label" for="message">Extra informatie</label>
                         <textarea class="form-textarea" id="message" name="message" placeholder="Vertel ons meer over jezelf, je situatie, of stel een vraag..."></textarea>
                     </div>
@@ -130,7 +120,7 @@
                     
                     <input type="hidden" id="selectedPlan" name="plan" value="basic">
                     
-                    <button type="submit" class="form-submit">Start mijn gratis intake</button>
+                    <button type="submit" class="form-submit">Start gratis intake - Basic Coaching</button>
                     
                     <p style="text-align: center; color: rgba(255,255,255,0.5); margin-top: 1rem; font-size: 0.8rem;">
                         Door dit formulier in te vullen ga je akkoord met een gratis kennismakingsgesprek. Geen verplichtingen.
@@ -189,6 +179,8 @@
         </div>
     </div>
 
+    <!-- Rocks Background -->
+    <div class="trajectory-rocks"></div>
 
     <script>
         const planData = {
@@ -249,6 +241,13 @@
                 // Get selected plan
                 const selectedPlan = this.dataset.plan;
                 const planInfo = planData[selectedPlan];
+
+                // Update the form's selected plan value
+                document.getElementById('selectedPlan').value = selectedPlan;
+
+                // Update submit button text to include plan name
+                const submitButton = document.querySelector('.form-submit');
+                submitButton.textContent = `Start gratis intake - ${planInfo.title}`;
 
                 // Store the new content to update after exit animation
                 window.pendingContentUpdate = {
