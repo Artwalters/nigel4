@@ -5042,6 +5042,8 @@ textarea::placeholder {
         border-right: none;
         position: relative;
         z-index: 1;
+        overflow-y: visible;
+        height: auto;
     }
     
     .trajectory-features {
