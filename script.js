@@ -1662,9 +1662,8 @@ function initAllTitleAnimations() {
 function initPageTransitions() {
     const $frameOrange = document.querySelector('.page-transition__orange');
     const $frameBlack = document.querySelector('.page-transition__black');
-    const $logo = document.querySelector('.transition-logo');
 
-    if (!$frameOrange || !$frameBlack || !$logo) return;
+    if (!$frameOrange || !$frameBlack) return;
 
     // Handle all links to trajectory.html (including with query parameters)
     const navLinks = document.querySelectorAll('a[href^="trajectory.html"]');
@@ -1691,45 +1690,43 @@ function initPageTransitions() {
                     transformOrigin: 'top',
                     duration: 0.9,
                     ease: 'power4.inOut'
-                }, 0.1)
-                .to($logo, {
-                    opacity: 1,
-                    duration: 0.3,
-                    ease: 'power2.out'
-                }, 0.4);
+                }, 0.1);
 
             // Navigate when black screen is fully visible
             setTimeout(() => {
                 sessionStorage.setItem('pageTransitionActive', 'true');
                 window.location.href = href;
-            }, 1050);
+            }, 1100);
         });
     });
 
-    // Check if we're coming from another page - play exit animation (bottom to top)
+    // Always play page load animation (on every refresh or page visit)
+    // Start with frames fully covering screen at bottom position
+    gsap.set($frameOrange, { yPercent: 0, scaleY: 1 });
+    gsap.set($frameBlack, { yPercent: 0, scaleY: 1 });
+
+    // GSAP animation - slides up from bottom to top
+    gsap.timeline({ delay: 0.3 })
+        .to($frameBlack, {
+            yPercent: -100,
+            duration: 0.8,
+            ease: 'power2.inOut'
+        })
+        .to($frameOrange, {
+            yPercent: -100,
+            duration: 0.8,
+            ease: 'power2.inOut'
+        }, 0.1)
+        .call(() => {
+            // Reset frames for next transition
+            gsap.set($frameOrange, { yPercent: 0, scaleY: 0 });
+            gsap.set($frameBlack, { yPercent: 0, scaleY: 0 });
+            // Play hero title animation after transition
+            playHeroTitleAnimation();
+        });
+
+    // Clean up session storage if it exists
     if (sessionStorage.getItem('pageTransitionActive')) {
-        // Show logo initially
-        gsap.set($logo, { opacity: 1 });
-
-        // GSAP animation for smooth exit
-        gsap.timeline({ delay: 0.08 })
-            .to($logo, {
-                opacity: 0,
-                duration: 0.2,
-                ease: 'power2.in'
-            })
-            .to($frameBlack, {
-                scaleY: 0,
-                transformOrigin: 'bottom',
-                duration: 0.9,
-                ease: 'power4.inOut'
-            }, 0.1)
-            .call(() => {
-                // Play hero title animation after transition
-                playHeroTitleAnimation();
-            }, null, 0.4); // Start hero animation 0.4s into the black screen exit
-
-        // Clean up
         sessionStorage.removeItem('pageTransitionActive');
     }
 }

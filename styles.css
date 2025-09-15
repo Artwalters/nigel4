@@ -900,6 +900,16 @@ a {
     color: #ff4c24;
 }
 
+/* Left-positioned Navigation for Trajectory Page */
+.navbar-left {
+    justify-content: flex-start;
+}
+
+.navbar-left .nav-container {
+    justify-content: flex-start;
+    padding: 1.5rem 2.5rem;
+}
+
 /* Hero Section */
 .hero {
     height: 100vh;
@@ -4564,7 +4574,20 @@ textarea::placeholder {
 }
 
 .trajectory-left {
-    flex: 0 0 33.333%;
+    flex: 0 0 40%;
+    padding: 6rem 3rem 4rem 3rem;
+    background: rgba(15, 20, 25, 0.8);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow-y: auto;
+    height: 100vh;
+}
+
+.trajectory-right {
+    flex: 1;
     padding: 4rem 5rem;
     background: #0a0d0f;
     display: flex;
@@ -4572,18 +4595,6 @@ textarea::placeholder {
     justify-content: flex-start;
     align-items: flex-start;
     padding-top: 8rem;
-}
-
-.trajectory-right {
-    flex: 1;
-    padding: 4rem 6rem;
-    background: rgba(15, 20, 25, 0.8);
-    backdrop-filter: blur(20px);
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    overflow-y: auto;
 }
 
 .trajectory-content {
@@ -4595,12 +4606,14 @@ textarea::placeholder {
 
 .trajectory-title {
     font-family: 'PPFormula', Arial, sans-serif;
-    font-size: clamp(2.5rem, 4vw, 4rem);
+    font-size: var(--heading-h2);
     font-weight: 900;
     text-transform: uppercase;
     color: #efeeec;
     margin-bottom: 2rem;
     line-height: 1.1;
+    overflow: hidden;
+    position: relative;
 }
 
 .plan-switcher {
@@ -4635,10 +4648,22 @@ textarea::placeholder {
 }
 
 .trajectory-description {
-    font-size: clamp(1.1rem, 1.3vw, 1.4rem);
+    font-size: var(--text-large);
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.8);
     margin-bottom: 2.5rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.trajectory-price {
+    font-family: 'PPFormula', Arial, sans-serif;
+    font-size: var(--heading-h3);
+    font-weight: 900;
+    color: #ff4c24;
+    margin-top: 1rem;
+    overflow: hidden;
+    position: relative;
 }
 
 .trajectory-features {
@@ -4654,39 +4679,86 @@ textarea::placeholder {
 }
 
 .trajectory-features li {
-    padding: 14px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: clamp(1rem, 1.1vw, 1.2rem);
-    color: rgba(255, 255, 255, 0.85);
-    display: flex;
-    align-items: center;
-    gap: 16px;
+    font-size: var(--text-normal);
+    font-weight: var(--weight-normal);
+    text-transform: none;
+    padding: 16px 0;
+    letter-spacing: 0.05em;
+    border-bottom: none;
+    position: relative;
+    cursor: default;
+    color: #efeeec;
 }
 
-.trajectory-features li:before {
-    content: "✓";
-    color: #ff4c24;
-    font-weight: bold;
-    font-size: 18px;
+.trajectory-features li::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(to right,
+        rgba(255, 255, 255, 0.25) 0%,
+        rgba(255, 255, 255, 0.25) 85%,
+        rgba(255, 255, 255, 0) 100%);
+    transform: scaleX(var(--line-scale, 0));
+    transform-origin: left center;
+    transition: transform 0.6s ease;
 }
 
-.trajectory-price {
-    font-family: 'PPFormula', Arial, sans-serif;
-    font-size: clamp(2rem, 3vw, 3.5rem);
-    font-weight: 900;
-    color: #ff4c24;
-    margin-top: 1rem;
+/* Text animation containers for trajectory features */
+.trajectory-features .li-text-container {
+    overflow: hidden;
+    position: relative;
+    height: 1.6em;
 }
+
+.trajectory-features .li-text {
+    display: inline-block;
+    transition: transform 0.6s ease;
+    line-height: 1.6;
+}
+
+/* Text containers for description lines */
+.desc-line-container {
+    overflow: hidden;
+    position: relative;
+    height: 1.6em;
+    margin-bottom: 0.3rem;
+}
+
+.desc-line {
+    display: inline-block;
+    transition: transform 0.6s ease;
+    line-height: 1.6;
+}
+
+.price-text-container {
+    overflow: hidden;
+    position: relative;
+    height: 1.2em;
+}
+
+.price-text {
+    display: inline-block;
+    transition: transform 0.6s ease;
+    line-height: 1.2;
+}
+
 
 .form-container {
     max-width: 100%;
     width: 100%;
-    padding-top: 2rem;
+    padding-top: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    min-height: auto;
 }
 
 .form-title {
     font-family: 'PPFormula', Arial, sans-serif;
-    font-size: clamp(1.8rem, 2.5vw, 2.5rem);
+    font-size: var(--heading-h3);
     font-weight: 900;
     text-transform: uppercase;
     color: #efeeec;
@@ -4695,39 +4767,41 @@ textarea::placeholder {
 }
 
 .trajectory-form {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 3rem;
-    backdrop-filter: blur(20px);
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
 }
 
 .trajectory-form .form-group {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .trajectory-form .form-label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     font-size: var(--text-small);
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.8);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.9);
+    text-transform: none;
+    letter-spacing: 0;
 }
 
-.trajectory-form .form-input, 
-.trajectory-form .form-textarea, 
+.trajectory-form .form-input,
+.trajectory-form .form-textarea,
 .trajectory-form select.form-input {
     width: 100%;
-    padding: 14px 18px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
     color: #efeeec;
-    font-size: 0.95rem;
+    font-size: var(--text-normal);
     font-family: 'Inter', sans-serif;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     box-sizing: border-box;
 }
 
@@ -4740,34 +4814,34 @@ textarea::placeholder {
     color: #efeeec;
 }
 
-.trajectory-form .form-input:focus, 
-.trajectory-form .form-textarea:focus, 
+.trajectory-form .form-input:focus,
+.trajectory-form .form-textarea:focus,
 .trajectory-form select.form-input:focus {
     outline: none;
     border-color: #ff4c24;
-    box-shadow: 0 0 0 3px rgba(255, 76, 36, 0.1);
-    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 0 2px rgba(255, 76, 36, 0.15);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .trajectory-form .form-textarea {
-    min-height: 100px;
+    min-height: 80px;
     resize: vertical;
 }
 
 .trajectory-form .form-submit {
     width: 100%;
-    padding: 18px 32px;
+    padding: 16px 32px;
     background: #ff4c24;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     color: #efeeec;
     font-family: 'PPFormula', Arial, sans-serif;
     font-weight: 900;
-    font-size: 16px;
+    font-size: var(--text-normal);
     text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: var(--space-sm);
+    transition: all 0.2s ease;
+    margin-top: 1rem;
 }
 
 .trajectory-form .form-submit:hover {
@@ -4813,7 +4887,7 @@ textarea::placeholder {
     .trajectory-left {
         flex: none;
         padding: 2rem 1.5rem;
-        padding-top: 2rem;
+        padding-top: 5rem;
         min-height: auto;
         justify-content: flex-start;
     }
@@ -4835,7 +4909,7 @@ textarea::placeholder {
     }
     
     .trajectory-title {
-        font-size: var(--heading-h2);
+        font-size: var(--heading-h3);
         margin-bottom: 1.5rem;
     }
     

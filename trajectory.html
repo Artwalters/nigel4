@@ -11,9 +11,6 @@
     <div class="page-transition">
         <div class="page-transition__orange"></div>
         <div class="page-transition__black"></div>
-        <div class="transition-logo">
-            <img src="img/likenigel.svg" alt="Fitlike Nigel" class="transition-logo-img">
-        </div>
     </div>
 
     <!-- Immediate transition check -->
@@ -30,41 +27,17 @@
         }
     </script>
 
-    <a href="index.html" class="back-button">
-        ← Terug naar overzicht
-    </a>
+    <!-- Navigation -->
+    <nav class="navbar navbar-left">
+        <div class="nav-container">
+            <a href="index.html" class="nav-link">Terug</a>
+        </div>
+    </nav>
+
 
     <div class="trajectory-page">
         <div class="trajectory-left">
-            <div class="trajectory-content">
-                <div class="plan-switcher">
-                    <button class="plan-option active" data-plan="basic">Basic</button>
-                    <button class="plan-option" data-plan="pro">Pro</button>
-                    <button class="plan-option" data-plan="elite">Elite</button>
-                </div>
-                
-                <h1 class="trajectory-title" id="plan-title">Basic Coaching</h1>
-                
-                <div class="trajectory-description" id="plan-description">
-                    Start je transformatie met onze basis coaching. Perfect voor wie net begint en wil kennismaken met professionele begeleiding.
-                </div>
-                
-                <ul class="trajectory-features" id="plan-features">
-                    <li>4 coaching sessies per maand</li>
-                    <li>Persoonlijk actieplan</li>
-                    <li>WhatsApp ondersteuning</li>
-                    <li>Voortgangsrapportage</li>
-                </ul>
-                
-                <div class="trajectory-price" id="plan-price">€297/maand</div>
-            </div>
-        </div>
-        
-        <div class="trajectory-right">
             <div class="form-container">
-                <h2 class="form-title">Start je transformatie</h2>
-                <p style="text-align: center; color: rgba(255,255,255,0.7); margin-bottom: 2rem; font-size: 0.9rem;">Vul onderstaande gegevens in om je coaching traject te starten. We nemen binnen 24 uur contact met je op voor een gratis intake gesprek.</p>
-                
                 <form class="trajectory-form" id="trajectoryForm">
                     <div class="form-group">
                         <label class="form-label" for="name">Volledige naam *</label>
@@ -165,48 +138,103 @@
                 </form>
             </div>
         </div>
+
+        <div class="trajectory-right">
+            <div class="trajectory-content">
+                <div class="plan-switcher">
+                    <button class="plan-option active" data-plan="basic">Basic</button>
+                    <button class="plan-option" data-plan="pro">Pro</button>
+                    <button class="plan-option" data-plan="elite">Elite</button>
+                </div>
+
+                <h1 class="trajectory-title" id="plan-title">
+                    <div class="title-line-container">
+                        <span class="title-line">Basic Coaching</span>
+                    </div>
+                </h1>
+
+                <div class="trajectory-description" id="plan-description">
+                    <!-- Description lines will be dynamically generated -->
+                </div>
+
+                <ul class="trajectory-features" id="plan-features">
+                    <li>
+                        <div class="li-text-container">
+                            <span class="li-text">4 coaching sessies per maand</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="li-text-container">
+                            <span class="li-text">Persoonlijk actieplan</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="li-text-container">
+                            <span class="li-text">WhatsApp ondersteuning</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="li-text-container">
+                            <span class="li-text">Voortgangsrapportage</span>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="trajectory-price" id="plan-price">
+                    <div class="price-text-container">
+                        <span class="price-text">€297/maand</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
 
     <script>
         const planData = {
             basic: {
                 title: 'Basic Coaching',
-                description: 'Start je transformatie met onze basis coaching. Perfect voor wie net begint en wil kennismaken met professionele begeleiding.',
+                description: 'Perfect voor beginners die hun eerste stappen willen zetten richting een gezondere levensstijl. Dit pakket biedt solide fundamenten met persoonlijke begeleiding en ondersteuning om jouw doelen stap voor stap te bereiken. Ideaal voor mensen die bewezen methoden willen toepassen zonder overweldigende complexiteit.',
                 features: [
-                    '4 coaching sessies per maand',
-                    'Persoonlijk actieplan',
-                    'WhatsApp ondersteuning',
-                    'Voortgangsrapportage'
+                    'Persoonlijk voedings- & trainingsschema',
+                    'Wekelijkse check-ins via mail',
+                    'WhatsApp ondersteuning (werkdagen)',
+                    'Maandelijkse voortgangsanalyse',
+                    'Toegang tot online portal',
+                    'Basis supplement advies'
                 ],
-                price: '€297/maand'
+                price: '€89/maand'
             },
             pro: {
                 title: 'Pro Coaching',
-                description: 'Intensievere begeleiding voor ambitieuze professionals. Meer sessies en diepgaande ondersteuning voor snellere resultaten.',
+                description: 'Voor ambitieuze mensen die serieus werk willen maken van hun transformatie. Dit pakket combineert intensieve begeleiding met geavanceerde strategieën voor optimale resultaten. Je krijgt directe toegang tot professionele coaching tools en een dedicated aanpak die past bij jouw drukke schema.',
                 features: [
-                    '8 coaching sessies per maand',
-                    'Gepersonaliseerd ontwikkelplan',
-                    '24/7 WhatsApp ondersteuning',
-                    'Wekelijkse voortgangsrapportage',
-                    'Video call sessies',
-                    'Persoonlijke werkboeken'
+                    'Alles van Basic pakket',
+                    '1-op-1 coaching via PT Distinction app',
+                    'Wekelijkse video check-ins',
+                    'Gepersonaliseerde voedingsschema\'s',
+                    'Maandelijkse lichaamsmeting analyse',
+                    'Priority WhatsApp support',
+                    'Supplement protocol op maat',
+                    'Trainingsschema aanpassingen'
                 ],
-                price: '€597/maand'
+                price: '€129/maand'
             },
             elite: {
                 title: 'Elite Coaching',
-                description: 'Het ultieme coaching programma voor executives en ondernemers. Maximale ondersteuning en resultaten op alle levensgebieden.',
+                description: 'Het meest complete coaching programma voor executives, ondernemers en iedereen die maximale resultaten wil behalen. Onbeperkte toegang tot persoonlijke begeleiding, geavanceerde biometrics en een holistische aanpak die verder gaat dan alleen fitness. Dit is investeren in je beste versie van jezelf.',
                 features: [
-                    'Onbeperkte coaching sessies',
-                    '1-op-1 strategische planning',
-                    'Direct telefonische bereikbaarheid',
-                    'Maandelijkse evaluaties',
-                    'Live video sessies',
-                    'Exclusieve masterclasses',
-                    'Netwerk toegang',
-                    'Persoonlijke mentor'
+                    'Alles van Pro pakket',
+                    'Onbeperkte 1-op-1 sessies',
+                    'Weekly voice call met Nigel',
+                    'Geavanceerde biometric tracking',
+                    'Lifestyle & mindset coaching',
+                    '24/7 priority WhatsApp access',
+                    'Maandelijkse strategische planning',
+                    'Exclusieve groep masterclasses',
+                    'Direct telefonische bereikbaarheid'
                 ],
-                price: '€1297/maand'
+                price: '€179/maand'
             }
         };
 
@@ -217,33 +245,38 @@
                 
                 // Add active class to clicked button
                 this.classList.add('active');
-                
+
                 // Get selected plan
                 const selectedPlan = this.dataset.plan;
                 const planInfo = planData[selectedPlan];
-                
-                // Update content
-                document.getElementById('plan-title').textContent = planInfo.title;
-                document.getElementById('plan-description').textContent = planInfo.description;
-                document.getElementById('plan-price').textContent = planInfo.price;
-                document.getElementById('selectedPlan').value = selectedPlan;
-                
-                // Update features list
-                const featuresList = document.getElementById('plan-features');
-                featuresList.innerHTML = '';
-                planInfo.features.forEach(feature => {
-                    const li = document.createElement('li');
-                    li.textContent = feature;
-                    featuresList.appendChild(li);
-                });
+
+                // Store the new content to update after exit animation
+                window.pendingContentUpdate = {
+                    title: planInfo.title,
+                    description: planInfo.description,
+                    price: planInfo.price,
+                    features: planInfo.features,
+                    selectedPlan: selectedPlan
+                };
+
+                // Trigger exit animation first
+                if (window.animateTrajectoryContent) {
+                    window.animateTrajectoryContent();
+                }
+
+                // Don't update content here - let the animation handle it
             });
         });
 
         // Check URL parameters and set initial plan
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize default description with line structure
+            const defaultDescription = planData.basic.description;
+            document.getElementById('plan-description').innerHTML = createDescriptionHTML(defaultDescription);
+
             const urlParams = new URLSearchParams(window.location.search);
             const planFromUrl = urlParams.get('plan');
-            
+
             if (planFromUrl && planData[planFromUrl]) {
                 // Find and click the corresponding plan button
                 const targetButton = document.querySelector(`[data-plan="${planFromUrl}"]`);
@@ -271,21 +304,181 @@
 
     <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Navigation Scroll Trigger Script -->
+    <script>
+        // Initialize navigation scroll trigger for trajectory page
+        function initNavigationScrollTrigger() {
+            const navbarTop = document.querySelector('.navbar');
+
+            if (navbarTop) {
+                // Initially hide navbar
+                navbarTop.classList.add('hidden');
+
+                let ticking = false;
+
+                function updateNavbar() {
+                    const scrollY = window.scrollY;
+
+                    // Top navbar: Show only when at very top (within 50px)
+                    if (scrollY <= 50) {
+                        navbarTop.classList.remove('hidden');
+                    } else {
+                        navbarTop.classList.add('hidden');
+                    }
+
+                    ticking = false;
+                }
+
+                function requestTick() {
+                    if (!ticking) {
+                        requestAnimationFrame(updateNavbar);
+                        ticking = true;
+                    }
+                }
+
+                window.addEventListener('scroll', requestTick);
+                window.addEventListener('resize', requestTick);
+
+                // Check initial position
+                updateNavbar();
+            }
+        }
+
+        // Initialize navigation on page load
+        document.addEventListener('DOMContentLoaded', initNavigationScrollTrigger);
+
+        // Function to split text into lines based on character count
+        function splitDescriptionIntoLines(text, maxCharsPerLine = 90) {
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = '';
+
+            for (const word of words) {
+                if ((currentLine + word).length <= maxCharsPerLine) {
+                    currentLine += (currentLine ? ' ' : '') + word;
+                } else {
+                    if (currentLine) lines.push(currentLine);
+                    currentLine = word;
+                }
+            }
+            if (currentLine) lines.push(currentLine);
+            return lines;
+        }
+
+        // Function to create description HTML with line containers
+        function createDescriptionHTML(description) {
+            const lines = splitDescriptionIntoLines(description);
+            return lines.map(line => `
+                <div class="desc-line-container">
+                    <span class="desc-line">${line}</span>
+                </div>
+            `).join('');
+        }
+
+        // Initialize trajectory animations
+        function initTrajectoryAnimations() {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Title stagger animation function (same as index page)
+            function createTitleStaggerAnimation(selector) {
+                const titleLines = document.querySelectorAll(`${selector} .title-line`);
+                if (titleLines.length === 0) return null;
+
+                const titleTimeline = gsap.timeline({ paused: true });
+                gsap.set(titleLines, { y: "130%" });
+
+                titleLines.forEach((line, index) => {
+                    titleTimeline.to(line, {
+                        y: "10%",
+                        duration: 1.0,
+                        ease: "power3.out"
+                    }, index * 0.25);
+                });
+
+                return titleTimeline;
+            }
+
+            // Reset initial states to make everything visible
+            function resetInitialStates() {
+                // Make title visible
+                const titleLines = document.querySelectorAll('.trajectory-title .title-line');
+                gsap.set(titleLines, { y: "0%" });
+
+                // Make description lines visible
+                const descriptionLines = document.querySelectorAll('.desc-line');
+                gsap.set(descriptionLines, { y: "0%" });
+
+                // Make features visible and show lines
+                const textElements = document.querySelectorAll('.trajectory-features .li-text');
+                const items = document.querySelectorAll('.trajectory-features li');
+
+                gsap.set(textElements, { y: "0%" });
+                items.forEach(item => item.style.setProperty('--line-scale', '1'));
+
+                // Make price visible
+                const priceText = document.querySelector('.price-text');
+                if (priceText) {
+                    gsap.set(priceText, { y: "0%" });
+                }
+            }
+
+            // Call reset function when page loads
+            setTimeout(resetInitialStates, 100);
+
+            // Simple content update without animations
+            window.animateTrajectoryContent = function() {
+                const update = window.pendingContentUpdate;
+                if (update) {
+                    const titleElement = document.querySelector('#plan-title .title-line');
+                    if (titleElement) {
+                        titleElement.textContent = update.title;
+                    }
+                    document.getElementById('plan-description').innerHTML = createDescriptionHTML(update.description);
+                    document.querySelector('.price-text').textContent = update.price;
+                    document.getElementById('selectedPlan').value = update.selectedPlan;
+
+                    // Update features list
+                    const featuresList = document.getElementById('plan-features');
+                    featuresList.innerHTML = '';
+                    update.features.forEach(feature => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `
+                            <div class="li-text-container">
+                                <span class="li-text">${feature}</span>
+                            </div>
+                        `;
+                        featuresList.appendChild(li);
+                    });
+
+                    window.pendingContentUpdate = null;
+
+                    // Reset states after content update to make everything visible
+                    setTimeout(() => {
+                        resetInitialStates();
+                    }, 50);
+                }
+            };
+        }
+
+        // Initialize animations on page load
+        document.addEventListener('DOMContentLoaded', initTrajectoryAnimations);
+    </script>
 
     <!-- Page Transition Script -->
     <script>
         // Page transition for trajectory page
         const $frameOrange = document.querySelector('.page-transition__orange');
         const $frameBlack = document.querySelector('.page-transition__black');
-        const $logo = document.querySelector('.transition-logo');
 
-        if ($frameOrange && $frameBlack && $logo) {
-            // Handle back button
-            const backButton = document.querySelector('.back-button');
-            if (backButton) {
-                backButton.addEventListener('click', (e) => {
+        if ($frameOrange && $frameBlack) {
+            // Handle navigation links (including the "Terug" link)
+            const navLinks = document.querySelectorAll('a[href="index.html"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const href = backButton.getAttribute('href');
+                    const href = link.getAttribute('href');
 
                     // Create enter animation (top to bottom)
                     const tlEnter = gsap.timeline()
@@ -304,46 +497,41 @@
                             transformOrigin: 'top',
                             duration: 0.9,
                             ease: 'power4.inOut'
-                        }, 0.1)
-                        .to($logo, {
-                            opacity: 1,
-                            duration: 0.3,
-                            ease: 'power2.out'
-                        }, 0.4);
+                        }, 0.1);
 
                     // Navigate when black screen is fully visible
                     setTimeout(() => {
                         sessionStorage.setItem('pageTransitionActive', 'true');
                         window.location.href = href;
-                    }, 1050);
+                    }, 1100);
                 });
-            }
+            });
 
-            // Check if coming from index - play exit animation (bottom to top)
+            // Always play page load animation (on every refresh or page visit)
+            // Start with frames fully covering screen at bottom position
+            gsap.set($frameOrange, { yPercent: 0, scaleY: 1 });
+            gsap.set($frameBlack, { yPercent: 0, scaleY: 1 });
+
+            // GSAP animation - slides up from bottom to top
+            gsap.timeline({ delay: 0.3 })
+                .to($frameBlack, {
+                    yPercent: -100,
+                    duration: 0.8,
+                    ease: 'power2.inOut'
+                })
+                .to($frameOrange, {
+                    yPercent: -100,
+                    duration: 0.8,
+                    ease: 'power2.inOut'
+                }, 0.1)
+                .call(() => {
+                    // Reset frames for next transition
+                    gsap.set($frameOrange, { yPercent: 0, scaleY: 0 });
+                    gsap.set($frameBlack, { yPercent: 0, scaleY: 0 });
+                });
+
+            // Clean up session storage if it exists
             if (sessionStorage.getItem('pageTransitionActive')) {
-                // Start with black screen already visible to hide content
-                gsap.set($frameBlack, { scaleY: 1, transformOrigin: 'bottom' });
-                gsap.set($frameOrange, { scaleY: 0 });
-
-                // Show logo initially
-                gsap.set($logo, { opacity: 1 });
-
-                // Small delay before exit animation to ensure page is loaded
-                gsap.timeline()
-                    .set({}, {}, 0.08) // Small delay
-                    .to($logo, {
-                        opacity: 0,
-                        duration: 0.15,
-                        ease: 'power2.in'
-                    }, 0.08)
-                    .to($frameBlack, {
-                        scaleY: 0,
-                        transformOrigin: 'bottom',
-                        duration: 0.9,
-                        ease: 'power4.inOut'
-                    }, 0.15);
-
-                // Clean up
                 sessionStorage.removeItem('pageTransitionActive');
             }
         }
