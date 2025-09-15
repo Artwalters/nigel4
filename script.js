@@ -1,8 +1,12 @@
-// WebGL Displacement Effect
+// ====================================
+// GLOBAL VARIABLES & MOBILE DETECTION
+// ====================================
+const isMobile = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768 && !/iPad/i.test(navigator.userAgent));
+
+// ====================================
+// WEBGL DISPLACEMENT EFFECT
+// ====================================
 function initWebGLEffect() {
-    // Check if device is mobile for different handling
-    const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
     const canvas = document.getElementById("hero-canvas");
     if (!canvas) return;
     
@@ -39,16 +43,12 @@ function initWebGLEffect() {
             mouse[1] = (event.clientY / gl.canvas.clientHeight * 2 - 1) * -0.01;
         });
     } else {
-        // Touch devices - auto animation
+        // Touch devices - touch control
         document.addEventListener('touchmove', (event) => {
             if (event.touches[0]) {
                 mouse[0] = (event.touches[0].clientX / gl.canvas.clientWidth * 2 - 1) * -0.01;
                 mouse[1] = (event.touches[0].clientY / gl.canvas.clientHeight * 2 - 1) * -0.01;
             }
-        });
-        
-        document.addEventListener('touchend', (event) => {
-            // Don't reset on touch end, keep auto animation
         });
     }
     
@@ -81,10 +81,9 @@ function initWebGLEffect() {
         
         // Responsive zoom factor for all devices
         const screenWidth = window.innerWidth;
-        const isMobileDevice = screenWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         let zoomFactor;
         
-        if (isMobileDevice) {
+        if (isMobile) {
             // Mobile - 50% less zoom
             zoomFactor = 1.5;
         } else if (screenWidth <= 1200) {
@@ -140,7 +139,9 @@ function initWebGLEffect() {
     requestAnimationFrame(render);
 }
 
-// Combined Effects (Noise only for now)
+// ====================================
+// WEBGL NOISE OVERLAY EFFECT
+// ====================================
 function initCombinedEffects() {
     const canvas = document.getElementById("effects-canvas");
     if (!canvas) {
@@ -194,16 +195,10 @@ function initCombinedEffects() {
     requestAnimationFrame(render);
 }
 
-// Note: Lens effect removed to prevent WebGL context issues
-
-// Initialize effects when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    initWebGLEffect();
-    initCombinedEffects();
-});
-
-// Custom Cursor
-document.addEventListener('DOMContentLoaded', function() {
+// ====================================
+// CUSTOM CURSOR EFFECT
+// ====================================
+function initCustomCursor() {
     const cursor = document.querySelector('.custom-cursor');
     let mouseX = 0;
     let mouseY = 0;
@@ -244,10 +239,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-});
+}
 
-// Navigation scroll trigger
-document.addEventListener('DOMContentLoaded', function() {
+// ====================================
+// NAVIGATION SCROLL TRIGGER
+// ====================================
+function initNavigationScrollTrigger() {
     const navbarTop = document.querySelector('.navbar');
     const navbarBottom = document.querySelector('.navbar-bottom');
     
@@ -289,49 +286,70 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         window.addEventListener('scroll', requestTick);
-        window.addEventListener('resize', requestTick); // Also check on resize
+        window.addEventListener('resize', requestTick);
         
         // Check initial position
         updateNavbars();
     }
-});
-
-// Check if mobile device (excluding iPad for better tablet experience)
-const isMobile = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768 && !/iPad/i.test(navigator.userAgent));
-
-// Initialize Lenis smooth scroll - optimized for performance
-const lenis = new Lenis({
-    duration: isMobile ? 0.4 : 0.8,
-    easing: (t) => 1 - Math.pow(1 - t, 2), // Lighter easing
-    direction: 'vertical',
-    gestureDirection: 'vertical',
-    smooth: !isMobile, // Disable smooth scroll on mobile
-    mouseMultiplier: 1.2,
-    smoothTouch: false, // Disable smooth touch completely
-    touchMultiplier: 2, // Faster touch response
-    infinite: false,
-    lerp: isMobile ? 1 : 0.12, // Instant on mobile
-    wheelMultiplier: 1.2,
-    autoResize: true,
-    syncTouch: false // Native scroll on mobile
-});
-
-// Update ScrollTrigger on Lenis scroll
-lenis.on('scroll', ScrollTrigger.update);
-
-// GSAP ticker for Lenis with requestAnimationFrame
-function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
 }
-requestAnimationFrame(raf);
 
-document.addEventListener('DOMContentLoaded', function() {
+// ====================================
+// LENIS SMOOTH SCROLL INITIALIZATION
+// ====================================
+function initSmoothScroll() {
+    // Initialize Lenis smooth scroll - optimized for performance
+    const lenis = new Lenis({
+        duration: isMobile ? 0.4 : 0.8,
+        easing: (t) => 1 - Math.pow(1 - t, 2), // Lighter easing
+        direction: 'vertical',
+        gestureDirection: 'vertical',
+        smooth: !isMobile, // Disable smooth scroll on mobile
+        mouseMultiplier: 1.2,
+        smoothTouch: false, // Disable smooth touch completely
+        touchMultiplier: 2, // Faster touch response
+        infinite: false,
+        lerp: isMobile ? 1 : 0.12, // Instant on mobile
+        wheelMultiplier: 1.2,
+        autoResize: true,
+        syncTouch: false // Native scroll on mobile
+    });
+
+    // Update ScrollTrigger on Lenis scroll
+    lenis.on('scroll', ScrollTrigger.update);
+
+    // GSAP ticker for Lenis with requestAnimationFrame
+    function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Lenis Smooth Scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const target = document.querySelector(targetId);
+            
+            if (target) {
+                const headerOffset = 80;
+                const targetPosition = target.offsetTop - headerOffset;
+                
+                // Use Lenis scrollTo method - faster on mobile
+                lenis.scrollTo(targetPosition, {
+                    duration: isMobile ? 0.6 : 2,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+                });
+            }
+        });
+    });
+}
+
+// ====================================
+// GSAP ANIMATIONS & SCROLL TRIGGERS
+// ====================================
+function initMainAnimations() {
     gsap.registerPlugin(ScrollTrigger, Draggable);
-    
-    
-    
-    
     
     // Button text stagger animation
     function createButtonAnimation(button) {
@@ -438,10 +456,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize parallax
     initParallax();
-    
-    
-    // No initial animation for corner navigation items
-    
 
     // Intro clients rollout animation - CLEAN VERSION
     
@@ -576,7 +590,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    
     // Check if elements exist before animating
     if (document.querySelector('.feature-list li, .audience-list li') && document.querySelector('.coaching-content')) {
         gsap.from('.feature-list li, .audience-list li', {
@@ -593,9 +606,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Package cards - no scroll animation
-    
-    
     // Check if form groups exist
     if (document.querySelector('.form-group') && document.querySelector('.contact-form')) {
         gsap.from('.form-group', {
@@ -611,7 +621,6 @@ document.addEventListener('DOMContentLoaded', function() {
             ease: 'power2.out'
         });
     }
-    
     
     // Check if contact form exists
     const contactForm = document.querySelector('.contact-form');
@@ -653,27 +662,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    
-    // Lenis Smooth Scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const target = document.querySelector(targetId);
-            
-            if (target) {
-                const headerOffset = 80;
-                const targetPosition = target.offsetTop - headerOffset;
-                
-                // Use Lenis scrollTo method - faster on mobile
-                lenis.scrollTo(targetPosition, {
-                    duration: isMobile ? 0.6 : 2,
-                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
-                });
-            }
-        });
-    });
-    
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
@@ -690,9 +678,11 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('section').forEach(section => {
         observer.observe(section);
     });
-});
+}
 
-// Onboarding form functionality
+// ====================================
+// ONBOARDING FORM FUNCTIONALITY
+// ====================================
 let currentStep = 0;
 const totalSteps = 4;
 
@@ -700,7 +690,6 @@ function startForm() {
     currentStep = 1;
     
     // Reset all form steps for mobile
-    const isMobile = window.innerWidth <= 767;
     if (isMobile) {
         const container = document.getElementById('steps-container');
         const allSteps = document.querySelectorAll('.form-step');
@@ -733,8 +722,6 @@ function showStep(step) {
     const submitBtn = document.querySelector('.submit-btn');
     
     // Check if mobile (simple card layout) or desktop (sliding layout)
-    const isMobile = window.innerWidth <= 767;
-    
     if (isMobile) {
         // Mobile: Simple show/hide approach
         const allSteps = document.querySelectorAll('.form-step');
@@ -883,12 +870,6 @@ function hideErrorMessage(step) {
     }
 }
 
-function hideAllErrorMessages() {
-    for (let i = 1; i <= totalSteps; i++) {
-        hideErrorMessage(i);
-    }
-}
-
 function isStepValid(step) {
     if (step === 1) {
         const checkboxes = document.querySelectorAll('input[name="goals"]:checked');
@@ -973,17 +954,15 @@ function formatFormData() {
         .map(checkbox => checkbox.value);
     const experience = document.querySelector('input[name="experience"]:checked')?.value;
     const trainingPreference = document.querySelector('input[name="training-preference"]:checked')?.value;
-    const personalMessage = document.querySelector('textarea[name="personal-message"]').value;
+    const personalMessage = document.querySelector('textarea[name="personal-message"]')?.value || '';
     
-    const formattedData = {
+    return {
         timestamp: new Date().toLocaleString('nl-NL'),
         goals: goals,
         experience: experience,
         trainingPreference: trainingPreference,
         personalMessage: personalMessage
     };
-    
-    return formattedData;
 }
 
 function generateEmailContent(formData) {
@@ -1024,67 +1003,61 @@ Dit bericht is automatisch gegenereerd via de onboarding pagina van fitlikenigel
     `.trim();
 }
 
-// Initialize form when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    if (document.getElementById('onboarding-form')) {
-        currentStep = 1;
-        showStep(1);
-        
-        // Add event listeners to hide error messages when selections are made
-        setupFormValidation();
-        
-        // Handle form submission
-        document.getElementById('onboarding-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            if (!validateCurrentStep()) {
-                return;
-            }
-            
-            const formData = formatFormData();
-            const emailContent = generateEmailContent(formData);
-            
-            // Create mailto link
-            const subject = encodeURIComponent('Nieuwe Onboarding Aanvraag - Fitlike Nigel');
-            const body = encodeURIComponent(emailContent);
-            const mailtoLink = `mailto:nigel@fitlikenigel.nl?subject=${subject}&body=${body}`;
-            
-            // Show success message
-            const submitBtn = document.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
-            
-            submitBtn.textContent = 'AANVRAAG WORDT VERSTUURD...';
-            submitBtn.disabled = true;
-            
-            // Open email client
-            window.location.href = mailtoLink;
-            
-            // Show confirmation
-            setTimeout(() => {
-                submitBtn.textContent = 'BEDANKT! JE EMAIL CLIENT IS GEOPEND';
-                submitBtn.style.backgroundColor = 'var(--orange-bright)';
-                
-                setTimeout(() => {
-                    submitBtn.textContent = originalText;
-                    submitBtn.style.backgroundColor = '';
-                    submitBtn.disabled = false;
-                    
-                    // Reset form
-                    document.getElementById('onboarding-form').reset();
-                    currentStep = 1;
-                    showStep(1);
-                }, 3000);
-            }, 1000);
-        });
-    }
+function initOnboardingForm() {
+    currentStep = 1;
+    showStep(1);
     
-    // Initialize reviews slider
-    if (document.querySelector('.testimonials-wrapper')) {
-        initReviewsSlider();
-    }
-});
+    // Add event listeners to hide error messages when selections are made
+    setupFormValidation();
+    
+    // Handle form submission
+    document.getElementById('onboarding-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (!validateCurrentStep()) {
+            return;
+        }
+        
+        const formData = formatFormData();
+        const emailContent = generateEmailContent(formData);
+        
+        // Create mailto link
+        const subject = encodeURIComponent('Nieuwe Onboarding Aanvraag - Fitlike Nigel');
+        const body = encodeURIComponent(emailContent);
+        const mailtoLink = `mailto:nigel@fitlikenigel.nl?subject=${subject}&body=${body}`;
+        
+        // Show success message
+        const submitBtn = document.querySelector('.submit-btn');
+        const originalText = submitBtn.textContent;
+        
+        submitBtn.textContent = 'AANVRAAG WORDT VERSTUURD...';
+        submitBtn.disabled = true;
+        
+        // Open email client
+        window.location.href = mailtoLink;
+        
+        // Show confirmation
+        setTimeout(() => {
+            submitBtn.textContent = 'BEDANKT! JE EMAIL CLIENT IS GEOPEND';
+            submitBtn.style.backgroundColor = 'var(--orange-bright)';
+            
+            setTimeout(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.style.backgroundColor = '';
+                submitBtn.disabled = false;
+                
+                // Reset form
+                document.getElementById('onboarding-form').reset();
+                currentStep = 1;
+                showStep(1);
+            }, 3000);
+        }, 1000);
+    });
+}
 
-// Reviews Slider - Met drag functionaliteit
+// ====================================
+// REVIEWS SLIDER WITH DRAG FUNCTIONALITY
+// ====================================
 function initReviewsSlider() {
     const wrapper = document.querySelector('.testimonials-wrapper');
     const boxes = gsap.utils.toArray('.testimonial-box');
@@ -1136,17 +1109,14 @@ function initReviewsSlider() {
     proxy.style.pointerEvents = "auto";
     wrapper.appendChild(proxy);
     
-    let dragThreshold = 10;
     let hasDragged = false;
-    let startX = 0;
     
     // Create draggable
     const draggable = Draggable.create(proxy, {
         type: "x",
         trigger: proxy,
         inertia: true,
-        onPress: function(e) {
-            startX = e.x || e.clientX;
+        onPress: function() {
             hasDragged = false;
         },
         onDragStart: function() {
@@ -1259,10 +1229,11 @@ function initReviewsSlider() {
     
     // Start auto-play
     startAutoPlay();
-    
 }
 
-// Horizontal Loop Function (van jouw voorbeeld)
+// ====================================
+// HORIZONTAL LOOP FUNCTION (FOR REVIEWS SLIDER)
+// ====================================
 function horizontalLoop(items, config) {
     let timeline;
     items = gsap.utils.toArray(items);
@@ -1358,8 +1329,7 @@ function horizontalLoop(items, config) {
                 populateOffsets();
                 deep && tl.draggable && tl.paused() ? tl.time(times[curIndex], true) : tl.progress(progress, true);
             },
-            onResize = () => refresh(true),
-            proxy;
+            onResize = () => refresh(true);
         
         gsap.set(items, {x: 0});
         populateWidths();
@@ -1380,7 +1350,7 @@ function horizontalLoop(items, config) {
             }
             curIndex = newIndex;
             vars.overwrite = true;
-            gsap.killTweensOf(proxy);    
+            gsap.killTweensOf();    
             return vars.duration === 0 ? tl.time(timeWrap(time)) : tl.tweenTo(time, vars);
         }
         
@@ -1410,33 +1380,11 @@ function horizontalLoop(items, config) {
     return timeline;
 }
 
-// Featured Badge Animation with ScrollTrigger
-ScrollTrigger.create({
-    trigger: ".packages",
-    start: "top 70%",
-    onEnter: () => {
-        const badge = document.querySelector(".featured-badge");
-        if (badge) {
-            gsap.fromTo(badge, 
-                {
-                    scale: 0,
-                    opacity: 0
-                },
-                {
-                    scale: 1,
-                    opacity: 1,
-                    duration: 0.6,
-                    ease: "back.out(1.7)"
-                }
-            );
-        }
-    },
-    once: true
-});
-
-// List items stagger animation - Tekst komt van onder naar boven achter lijnen
-document.addEventListener('DOMContentLoaded', function() {
-    // Selecteer alle drie de lijsten
+// ====================================
+// LIST ANIMATIONS (TEXT & LINES)
+// ====================================
+function initListAnimations() {
+    // List items stagger animation - Text comes from bottom to top behind lines
     const lists = [
         { selector: '.about .services-list', items: null },
         { selector: '.philosophy .philosophy-list', items: null },
@@ -1451,7 +1399,7 @@ document.addEventListener('DOMContentLoaded', function() {
         listObj.items = items;
         
         if (items.length > 0) {
-            // Wrap elke li tekst in containers voor overflow hidden effect
+            // Wrap each li text in containers for overflow hidden effect
             items.forEach(item => {
                 const text = item.innerHTML;
                 item.innerHTML = `
@@ -1461,31 +1409,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
             });
             
-            // Selecteer de tekst containers en spans
-            const textContainers = list.querySelectorAll('.li-text-container');
+            // Select the text containers and spans
             const textElements = list.querySelectorAll('.li-text');
             
-            // Set initial state - tekst begint onder de container
+            // Set initial state - text starts below the container
             gsap.set(textElements, {
-                y: "100%", // Start volledig onder de container
+                y: "100%", // Start completely below the container
                 opacity: 1
             });
             
-            // Create timeline voor tekst animatie
+            // Create timeline for text animation
             const textTimeline = gsap.timeline({
                 paused: true
             });
             
-            // Voeg elke tekst toe aan de timeline
+            // Add each text to the timeline
             textElements.forEach((textElement, index) => {
                 textTimeline.to(textElement, {
-                    y: "0%", // Beweeg naar normale positie
+                    y: "0%", // Move to normal position
                     duration: 0.6,
                     ease: "power3.out"
-                }, index * 0.3); // Zelfde timing als lijnen
+                }, index * 0.3); // Same timing as lines
             });
             
-            // ScrollTrigger om de tekst timeline te starten
+            // ScrollTrigger to start the text timeline
             ScrollTrigger.create({
                 trigger: list,
                 start: "top 80%",
@@ -1494,45 +1441,35 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
-});
 
-// List item ::after lines stagger animation - Horizontale lijnen vullen van links naar rechts
-document.addEventListener('DOMContentLoaded', function() {
-    // Selecteer alle drie de lijsten
-    const lists = [
-        { selector: '.about .services-list', items: null },
-        { selector: '.philosophy .philosophy-list', items: null },
-        { selector: '.onboarding .services-list', items: null }
-    ];
-    
+    // List item ::after lines stagger animation - Horizontal lines fill from left to right
     lists.forEach(listObj => {
         const list = document.querySelector(listObj.selector);
         if (!list) return;
         
         const items = list.querySelectorAll('li');
-        listObj.items = items;
         
         if (items.length > 0) {
-            // Set initial state voor de ::after lijnen
-            items.forEach((item, index) => {
+            // Set initial state for the ::after lines
+            items.forEach((item) => {
                 item.style.setProperty('--line-scale', '0');
             });
             
-            // Create timeline voor deze lijst
+            // Create timeline for this list
             const tl = gsap.timeline({
                 paused: true
             });
             
-            // Voeg elke lijn toe aan de timeline met vaste delays
+            // Add each line to the timeline with fixed delays
             items.forEach((item, index) => {
                 tl.to(item, {
                     '--line-scale': '1',
                     duration: 0.6,
                     ease: "power3.out"
-                }, index * 0.3); // Vaste 0.3s tussen elke lijn
+                }, index * 0.3); // Fixed 0.3s between each line
             });
             
-            // ScrollTrigger om de hele timeline te starten
+            // ScrollTrigger to start the whole timeline
             ScrollTrigger.create({
                 trigger: list,
                 start: "top 80%",
@@ -1541,10 +1478,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
-});
+}
 
-// Bicep emoji hover effect voor footer title
-document.addEventListener('DOMContentLoaded', function() {
+// ====================================
+// FOOTER BICEP EMOJI EFFECT
+// ====================================
+function initBicepEmojiEffect() {
     const followTitle = document.querySelector('.follow-title');
     const bicepEmoji = document.querySelector('.bicep-emoji');
     
@@ -1576,27 +1515,27 @@ document.addEventListener('DOMContentLoaded', function() {
         // Smooth emoji animation
         function animateEmoji() {
             if (isHovering) {
-                // Scale in animatie
+                // Scale in animation
                 animationScale += (1 - animationScale) * 0.15;
                 
-                // Beweeg van center naar muis positie
+                // Move from center to mouse position
                 emojiX += (mouseX - emojiX) * 0.05;
             } else {
-                // Scale out animatie
+                // Scale out animation
                 animationScale += (0 - animationScale) * 0.15;
                 
-                // Beweeg terug naar center
+                // Move back to center
                 emojiX += (centerX - emojiX) * 0.1;
             }
             
-            // Positioneer emoji
+            // Position emoji
             bicepEmoji.style.left = (emojiX - 120) + 'px';
             bicepEmoji.style.top = fixedY + 'px';
             
-            // Apply scale en opacity gebaseerd op animationScale
+            // Apply scale and opacity based on animationScale
             bicepEmoji.style.opacity = animationScale;
             
-            // Subtiele rotatie alleen tijdens hover
+            // Subtle rotation only during hover
             const rotation = isHovering ? (mouseX - emojiX) * 0.05 : 0;
             bicepEmoji.style.transform = `scale(${animationScale}) rotate(${rotation}deg)`;
             
@@ -1610,7 +1549,7 @@ document.addEventListener('DOMContentLoaded', function() {
         followTitle.addEventListener('mouseenter', function(e) {
             isHovering = true;
             updateTitleCenter();
-            // Start vanuit het midden
+            // Start from the middle
             emojiX = centerX;
             mouseX = e.clientX;
             document.addEventListener('mousemove', handleMouseMove);
@@ -1619,8 +1558,148 @@ document.addEventListener('DOMContentLoaded', function() {
         followTitle.addEventListener('mouseleave', function() {
             isHovering = false;
             document.removeEventListener('mousemove', handleMouseMove);
-            // Zet muis positie naar center voor smooth terugkeer
+            // Set mouse position to center for smooth return
             mouseX = centerX;
         });
     }
+}
+
+// ====================================
+// FEATURED BADGE ANIMATION
+// ====================================
+ScrollTrigger.create({
+    trigger: ".packages",
+    start: "top 70%",
+    onEnter: () => {
+        const badge = document.querySelector(".featured-badge");
+        if (badge) {
+            gsap.fromTo(badge, 
+                {
+                    scale: 0,
+                    opacity: 0
+                },
+                {
+                    scale: 1,
+                    opacity: 1,
+                    duration: 0.6,
+                    ease: "back.out(1.7)"
+                }
+            );
+        }
+    },
+    once: true
 });
+
+// ====================================
+// MAIN INITIALIZATION - DOM CONTENT LOADED
+// ====================================
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize WebGL effects
+    initWebGLEffect();
+    initCombinedEffects();
+    
+    // Initialize custom cursor
+    initCustomCursor();
+    
+    // Initialize navigation scroll trigger
+    initNavigationScrollTrigger();
+    
+    // Initialize smooth scroll
+    initSmoothScroll();
+    
+    // Initialize GSAP animations & scroll triggers
+    initMainAnimations();
+    
+    // Initialize form if present
+    if (document.getElementById('onboarding-form')) {
+        initOnboardingForm();
+    }
+    
+    // Initialize reviews slider if present
+    if (document.querySelector('.testimonials-wrapper')) {
+        initReviewsSlider();
+    }
+    
+    // Initialize list animations
+    initListAnimations();
+    
+    // Initialize footer bicep emoji effect
+    initBicepEmojiEffect();
+
+    // Initialize page transitions
+    initPageTransitions();
+});
+
+// ====================================
+// PAGE TRANSITIONS
+// ====================================
+function initPageTransitions() {
+    const $frameOrange = document.querySelector('.page-transition__orange');
+    const $frameBlack = document.querySelector('.page-transition__black');
+    const $logo = document.querySelector('.transition-logo');
+
+    if (!$frameOrange || !$frameBlack || !$logo) return;
+
+    // Handle all links to trajectory.html (including with query parameters)
+    const navLinks = document.querySelectorAll('a[href^="trajectory.html"]');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const href = link.getAttribute('href');
+
+            // Create enter animation (top to bottom)
+            const tlEnter = gsap.timeline()
+                .fromTo($frameOrange, {
+                    scaleY: 0
+                }, {
+                    scaleY: 1,
+                    transformOrigin: 'top',
+                    duration: 0.9,
+                    ease: 'power4.inOut'
+                })
+                .fromTo($frameBlack, {
+                    scaleY: 0
+                }, {
+                    scaleY: 1,
+                    transformOrigin: 'top',
+                    duration: 0.9,
+                    ease: 'power4.inOut'
+                }, 0.1)
+                .to($logo, {
+                    opacity: 1,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                }, 0.4);
+
+            // Navigate when black screen is fully visible
+            setTimeout(() => {
+                sessionStorage.setItem('pageTransitionActive', 'true');
+                window.location.href = href;
+            }, 1050);
+        });
+    });
+
+    // Check if we're coming from another page - play exit animation (bottom to top)
+    if (sessionStorage.getItem('pageTransitionActive')) {
+        // Show logo initially
+        gsap.set($logo, { opacity: 1 });
+
+        // GSAP animation for smooth exit
+        gsap.timeline({ delay: 0.08 })
+            .to($logo, {
+                opacity: 0,
+                duration: 0.2,
+                ease: 'power2.in'
+            })
+            .to($frameBlack, {
+                scaleY: 0,
+                transformOrigin: 'bottom',
+                duration: 0.9,
+                ease: 'power4.inOut'
+            }, 0.1);
+
+        // Clean up
+        sessionStorage.removeItem('pageTransitionActive');
+    }
+}

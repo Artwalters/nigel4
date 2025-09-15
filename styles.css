@@ -866,7 +866,7 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 2rem 4rem;
+    padding: 1.5rem 2.5rem;
     width: 100%;
 }
 
@@ -1066,7 +1066,7 @@ a {
 /* Hero Decorative Elements */
 .hero-decorative {
     position: absolute;
-    bottom: 8%;
+    bottom: calc(8% - 2rem);
     left: 50%;
     transform: translateX(-50%);
     width: 85vw;
@@ -1111,7 +1111,7 @@ a {
     }
     
     .nav-container {
-        padding: 2rem 1rem;
+        padding: 1.25rem 0.75rem;
     }
     
     .hero-title {
@@ -4541,4 +4541,389 @@ textarea::placeholder {
         padding: 10px 16px !important;
         font-size: 13px !important;
     }
+}
+
+/* ========================================
+   TRAJECTORY PAGE STYLING
+   ======================================== */
+
+.trajectory-page {
+    height: 100vh;
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+}
+
+.trajectory-left {
+    flex: 0 0 33.333%;
+    padding: 4rem 5rem;
+    background: #0a0d0f;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-top: 8rem;
+}
+
+.trajectory-right {
+    flex: 1;
+    padding: 4rem 6rem;
+    background: rgba(15, 20, 25, 0.8);
+    backdrop-filter: blur(20px);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow-y: auto;
+}
+
+.trajectory-content {
+    max-width: 100%;
+    width: 100%;
+    position: relative;
+    top: 0;
+}
+
+.trajectory-title {
+    font-family: 'PPFormula', Arial, sans-serif;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #efeeec;
+    margin-bottom: 2rem;
+    line-height: 1.1;
+}
+
+.plan-switcher {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 2rem;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.plan-option {
+    flex: 1;
+    padding: 14px 24px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'PPFormula', Arial, sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.plan-option.active {
+    background: #ff4c24;
+    color: #efeeec;
+    box-shadow: 0 4px 12px rgba(255, 76, 36, 0.3);
+}
+
+.trajectory-description {
+    font-size: clamp(1.1rem, 1.3vw, 1.4rem);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 2.5rem;
+}
+
+.trajectory-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2.5rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 380px;
+    height: 380px;
+    overflow: hidden;
+}
+
+.trajectory-features li {
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: clamp(1rem, 1.1vw, 1.2rem);
+    color: rgba(255, 255, 255, 0.85);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.trajectory-features li:before {
+    content: "✓";
+    color: #ff4c24;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.trajectory-price {
+    font-family: 'PPFormula', Arial, sans-serif;
+    font-size: clamp(2rem, 3vw, 3.5rem);
+    font-weight: 900;
+    color: #ff4c24;
+    margin-top: 1rem;
+}
+
+.form-container {
+    max-width: 100%;
+    width: 100%;
+    padding-top: 2rem;
+}
+
+.form-title {
+    font-family: 'PPFormula', Arial, sans-serif;
+    font-size: clamp(1.8rem, 2.5vw, 2.5rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #efeeec;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.trajectory-form {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 3rem;
+    backdrop-filter: blur(20px);
+}
+
+.trajectory-form .form-group {
+    margin-bottom: 2rem;
+}
+
+.trajectory-form .form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: var(--text-small);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.trajectory-form .form-input, 
+.trajectory-form .form-textarea, 
+.trajectory-form select.form-input {
+    width: 100%;
+    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #efeeec;
+    font-size: 0.95rem;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.trajectory-form select.form-input {
+    cursor: pointer;
+}
+
+.trajectory-form select.form-input option {
+    background: #1a1d20;
+    color: #efeeec;
+}
+
+.trajectory-form .form-input:focus, 
+.trajectory-form .form-textarea:focus, 
+.trajectory-form select.form-input:focus {
+    outline: none;
+    border-color: #ff4c24;
+    box-shadow: 0 0 0 3px rgba(255, 76, 36, 0.1);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.trajectory-form .form-textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.trajectory-form .form-submit {
+    width: 100%;
+    padding: 18px 32px;
+    background: #ff4c24;
+    border: none;
+    border-radius: 8px;
+    color: #efeeec;
+    font-family: 'PPFormula', Arial, sans-serif;
+    font-weight: 900;
+    font-size: 16px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: var(--space-sm);
+}
+
+.trajectory-form .form-submit:hover {
+    background: #e63d1a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 76, 36, 0.3);
+}
+
+.back-button {
+    position: fixed;
+    top: 40px;
+    left: 40px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #efeeec;
+    text-decoration: none;
+    font-size: var(--text-small);
+    font-weight: 600;
+    backdrop-filter: blur(20px);
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(-4px);
+}
+
+/* Trajectory page mobile responsive */
+@media (max-width: 1024px) {
+    .trajectory-page {
+        height: auto;
+        min-height: 100vh;
+        flex-direction: column;
+        overflow: visible;
+    }
+    
+    .trajectory-left {
+        flex: none;
+        padding: 2rem 1.5rem;
+        padding-top: 2rem;
+        min-height: auto;
+        justify-content: flex-start;
+    }
+    
+    .trajectory-features {
+        min-height: auto;
+        height: auto;
+        overflow: visible;
+    }
+    
+    .trajectory-right {
+        flex: none;
+        padding: 2rem 1.5rem;
+        background: rgba(15, 20, 25, 0.9);
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        overflow-y: visible;
+        align-items: stretch;
+    }
+    
+    .trajectory-title {
+        font-size: var(--heading-h2);
+        margin-bottom: 1.5rem;
+    }
+    
+    .trajectory-content {
+        padding-bottom: 2rem;
+    }
+    
+    .back-button {
+        position: relative;
+        top: auto;
+        left: auto;
+        margin: 1rem 0 0 1.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 8px 16px;
+        font-size: 12px;
+        opacity: 0.7;
+        display: inline-flex;
+        width: auto;
+    }
+    
+    .back-button:hover {
+        opacity: 1;
+        background: rgba(255, 255, 255, 0.1);
+        transform: none;
+    }
+}
+
+/* Page Transition Styles */
+.page-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10000;
+    pointer-events: none;
+}
+
+.page-transition__black {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    background: #000000;
+    transform-origin: top;
+    transform: scaleY(0);
+    z-index: 2;
+}
+
+.page-transition__orange {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    background: #ff4c24;
+    transform-origin: top;
+    transform: scaleY(0);
+    z-index: 1;
+}
+
+.transition__logo {
+    font-family: 'PPFormula', Arial, sans-serif;
+    font-weight: 900;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    text-transform: uppercase;
+    position: absolute;
+    z-index: 1;
+    color: #efeeec;
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
+    letter-spacing: 2px;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.transition-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120vw;
+    height: 120vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.transition-logo-img {
+    width: clamp(200px, 40vw, 600px);
+    height: auto;
+    opacity: 1;
+    filter: brightness(0) saturate(100%) invert(2%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(90%) contrast(95%);
 }
