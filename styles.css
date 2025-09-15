@@ -4655,10 +4655,16 @@ textarea::placeholder {
    ======================================== */
 
 .trajectory-page {
-    height: 100vh;
     display: flex;
     align-items: stretch;
-    overflow: hidden;
+}
+
+/* Desktop only - ensure proper scrolling behavior */
+@media (min-width: 1025px) {
+    .trajectory-page {
+        overflow: hidden;
+        height: 100vh;
+    }
 }
 
 .trajectory-left {
