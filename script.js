@@ -84,8 +84,8 @@ function initWebGLEffect() {
         let zoomFactor;
         
         if (isMobile) {
-            // Mobile - 50% less zoom
-            zoomFactor = 1.5;
+            // Mobile - fixed zoom, no scaling
+            zoomFactor = 1.0;
         } else if (screenWidth <= 1200) {
             // Small laptops
             zoomFactor = 3.2;
@@ -99,14 +99,18 @@ function initWebGLEffect() {
         
         const mat = m3.scaling((imageAspect / canvasAspect) * zoomFactor, -1 * zoomFactor);
         
-        // Auto animation for touch devices
-        if (isTouchDevice) {
+        // Disable auto animation for touch devices to prevent scaling
+        if (isTouchDevice && !isMobile) {
             autoAnimTime += 0.01;
             // Create smooth circular motion
             const autoX = Math.sin(autoAnimTime * 0.5) * 0.008;
             const autoY = Math.cos(autoAnimTime * 0.7) * 0.006;
             mouse[0] = autoX;
             mouse[1] = autoY;
+        } else if (isMobile) {
+            // Keep mobile completely static
+            mouse[0] = 0;
+            mouse[1] = 0;
         }
         
         nMouse[0] += (mouse[0] - nMouse[0]) * 0.05;
@@ -139,61 +143,6 @@ function initWebGLEffect() {
     requestAnimationFrame(render);
 }
 
-// ====================================
-// WEBGL NOISE OVERLAY EFFECT
-// ====================================
-function initCombinedEffects() {
-    const canvas = document.getElementById("effects-canvas");
-    if (!canvas) {
-        console.log("Effects canvas not found");
-        return;
-    }
-    
-    const gl = canvas.getContext("webgl");
-    if (!gl) {
-        console.log("WebGL not supported for effects");
-        return;
-    }
-
-    console.log("Initializing combined effects");
-    
-    const programInfo = twgl.createProgramInfo(gl, ["noise-vs", "noise-fs"]);
-    const bufferInfo = twgl.primitives.createXYQuadBufferInfo(gl);
-
-    function resizeCanvas() {
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
-        canvas.style.width = width + 'px';
-        canvas.style.height = height + 'px';
-        gl.viewport(0, 0, canvas.width, canvas.height);
-    }
-
-    function render() {
-        resizeCanvas();
-        
-        gl.clearColor(0, 0, 0, 0);
-        gl.clear(gl.COLOR_BUFFER_BIT);
-        gl.enable(gl.BLEND);
-        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-
-        gl.useProgram(programInfo.program);
-        twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
-
-        twgl.setUniforms(programInfo, {
-            u_time: performance.now() * 0.001,
-            u_resolution: [canvas.width, canvas.height],
-            u_intensity: 0.3, // Reduced intensity
-        });
-        
-        twgl.drawBufferInfo(gl, bufferInfo);
-        requestAnimationFrame(render);
-    }
-
-    window.addEventListener('resize', resizeCanvas);
-    requestAnimationFrame(render);
-}
 
 // ====================================
 // CUSTOM CURSOR EFFECT
@@ -1596,7 +1545,7 @@ ScrollTrigger.create({
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize WebGL effects
     initWebGLEffect();
-    initCombinedEffects();
+    // initCombinedEffects(); // Disabled grain/noise effect
     
     // Initialize custom cursor
     initCustomCursor();
