@@ -1571,7 +1571,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize list animations
     initListAnimations();
-    
+
+    // Initialize onboarding form scroll animation (desktop only)
+    initOnboardingFormAnimation();
+
     // Initialize footer bicep emoji effect
     initBicepEmojiEffect();
 
@@ -1611,6 +1614,63 @@ function createTitleStaggerAnimation(selector) {
     });
 
     return titleTimeline;
+}
+
+// ====================================
+// ONBOARDING FORM SCROLL ANIMATION
+// ====================================
+function initOnboardingFormAnimation() {
+    // Apply animation on screens 900px and wider (includes smaller laptops/tablets in landscape)
+    const mediaQuery = window.matchMedia('(min-width: 900px)');
+
+    const formPanel = document.querySelector('.onboarding-form-panel');
+    if (!formPanel) return;
+
+    function setupAnimation() {
+        if (!mediaQuery.matches) {
+            // Reset any transforms on mobile/tablet
+            gsap.set(formPanel, { clearProps: "all" });
+            return;
+        }
+
+        // Set initial state - form starts off to the right
+        gsap.set(formPanel, {
+            xPercent: 20
+        });
+
+        // Create scroll-triggered animation - noticeable horizontal slide from right to left
+        gsap.to(formPanel, {
+            xPercent: 0,
+            duration: 1.8,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: '.onboarding',
+                start: 'top 90%',  // Trigger earlier, when section just enters viewport
+                once: true, // Animation only happens once
+                onEnter: () => {
+                    console.log('Onboarding form animation triggered');
+                }
+            }
+        });
+    }
+
+    // Setup animation initially
+    setupAnimation();
+
+    // Re-setup animation on window resize
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            // Kill existing ScrollTrigger for this element
+            ScrollTrigger.getAll().forEach(trigger => {
+                if (trigger.trigger === '.onboarding') {
+                    trigger.kill();
+                }
+            });
+            setupAnimation();
+        }, 250);
+    });
 }
 
 function initHeroTitleAnimation() {

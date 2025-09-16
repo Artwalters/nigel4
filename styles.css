@@ -4542,9 +4542,31 @@ textarea::placeholder {
         border-radius: 12px !important;
         padding: 30px 20px !important;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
-        width: 100% !important;
-        margin: 0 !important;
+        width: calc(100% - 30px) !important;
+        max-width: 500px !important;
+        margin: 0 auto !important;
         box-sizing: border-box !important;
+    }
+
+    .form-step {
+        width: 22% !important;
+        flex-shrink: 0 !important;
+        padding: 0 60px 0 0 !important;
+        box-sizing: border-box !important;
+        color: #000000 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+    }
+
+    .form-navigation {
+        padding: 15px !important;
+        background-color: #efeeec !important;
+        border-top: 1px solid #e2e8f0 !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: calc(100% - 151px) !important;
     }
     
     .step-title {
