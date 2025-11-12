@@ -1,4 +1,30 @@
 // ====================================
+// EMAILJS CONFIGURATION
+// ====================================
+// BELANGRIJK VOOR NIGEL: Vervang deze waardes met je eigen EmailJS gegevens
+// Stap 1: Maak een account aan op https://www.emailjs.com/
+// Stap 2: Maak een email service aan (Gmail, Outlook, etc.)
+// Stap 3: Maak een email template aan voor het intake formulier
+// Stap 4: Vul hieronder je eigen IDs in
+
+const EMAILJS_CONFIG = {
+    PUBLIC_KEY: "8j_fJaV-chQQrmqOb",      // EmailJS public key
+    SERVICE_ID: "service_v96yzmf",         // Hostinger SMTP service
+    TEMPLATE_ID: "template_b2d66vk"        // Intake form template
+};
+
+// Initialize EmailJS
+(function() {
+    // Alleen initialiseren als de keys zijn ingevuld
+    if (EMAILJS_CONFIG.PUBLIC_KEY !== "JOUW_PUBLIC_KEY_HIER") {
+        emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+        console.log("EmailJS geïnitialiseerd");
+    } else {
+        console.warn("EmailJS is nog niet geconfigureerd. Vul je eigen IDs in!");
+    }
+})();
+
+// ====================================
 // GLOBAL VARIABLES & MOBILE DETECTION
 // ====================================
 const isMobile = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768 && !/iPad/i.test(navigator.userAgent));
@@ -903,14 +929,22 @@ function formatFormData() {
         .map(checkbox => checkbox.value);
     const experience = document.querySelector('input[name="experience"]:checked')?.value;
     const trainingPreference = document.querySelector('input[name="training-preference"]:checked')?.value;
-    const personalMessage = document.querySelector('textarea[name="personal-message"]')?.value || '';
+    
+    // Haal ook de contactgegevens op
+    const name = document.getElementById('name')?.value || '';
+    const phone = document.getElementById('phone')?.value || '';
+    const email = document.getElementById('email')?.value || '';
+    const message = document.getElementById('message')?.value || '';
     
     return {
         timestamp: new Date().toLocaleString('nl-NL'),
         goals: goals,
         experience: experience,
-        trainingPreference: trainingPreference,
-        personalMessage: personalMessage
+        'training-preference': trainingPreference,
+        name: name,
+        phone: phone,
+        email: email,
+        message: message
     };
 }
 
@@ -960,7 +994,7 @@ function initOnboardingForm() {
     setupFormValidation();
     
     // Handle form submission
-    document.getElementById('onboarding-form').addEventListener('submit', function(e) {
+    document.getElementById('onboarding-form').addEventListener('submit', async function(e) {
         e.preventDefault();
         
         if (!validateCurrentStep()) {
@@ -968,39 +1002,99 @@ function initOnboardingForm() {
         }
         
         const formData = formatFormData();
-        const emailContent = generateEmailContent(formData);
-        
-        // Create mailto link
-        const subject = encodeURIComponent('Nieuwe Onboarding Aanvraag - Fitlike Nigel');
-        const body = encodeURIComponent(emailContent);
-        const mailtoLink = `mailto:nigel@fitlikenigel.nl?subject=${subject}&body=${body}`;
-        
-        // Show success message
         const submitBtn = document.querySelector('.submit-btn');
-        const originalText = submitBtn.textContent;
+        const originalText = submitBtn.innerHTML;
         
-        submitBtn.textContent = 'AANVRAAG WORDT VERSTUURD...';
-        submitBtn.disabled = true;
+        // Check if EmailJS is configured
+        const isConfigured = EMAILJS_CONFIG.PUBLIC_KEY !== "JOUW_PUBLIC_KEY_HIER";
         
-        // Open email client
-        window.location.href = mailtoLink;
-        
-        // Show confirmation
-        setTimeout(() => {
-            submitBtn.textContent = 'BEDANKT! JE EMAIL CLIENT IS GEOPEND';
-            submitBtn.style.backgroundColor = 'var(--orange-bright)';
+        if (isConfigured) {
+            // Use EmailJS
+            submitBtn.innerHTML = '<span class="btn-text">AANVRAAG WORDT VERSTUURD...</span>';
+            submitBtn.disabled = true;
             
-            setTimeout(() => {
-                submitBtn.textContent = originalText;
-                submitBtn.style.backgroundColor = '';
-                submitBtn.disabled = false;
+            try {
+                // Prepare template parameters
+                const templateParams = {
+                    name: formData.name,
+                    phone: formData.phone,
+                    email: formData.email || 'Niet opgegeven',
+                    goals: formData.goals.join(', '),
+                    experience: formData.experience,
+                    training_preference: formData['training-preference'],
+                    message: formData.message || 'Geen bericht'
+                };
                 
-                // Reset form
-                document.getElementById('onboarding-form').reset();
-                currentStep = 1;
-                showStep(1);
-            }, 3000);
-        }, 1000);
+                // Debug: log wat we versturen
+                console.log('Versturen naar EmailJS:', templateParams);
+                console.log('FormData:', formData);
+                
+                // Send email via EmailJS
+                const response = await emailjs.send(
+                    EMAILJS_CONFIG.SERVICE_ID,
+                    EMAILJS_CONFIG.TEMPLATE_ID,
+                    templateParams
+                );
+                
+                console.log('Email succesvol verstuurd!', response);
+                
+                // Show success
+                submitBtn.innerHTML = '<span class="btn-text">BEDANKT! JE AANVRAAG IS VERSTUURD ✓</span>';
+                submitBtn.style.backgroundColor = 'var(--orange-bright)';
+                
+                // Reset form after delay
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.style.backgroundColor = '';
+                    submitBtn.disabled = false;
+                    
+                    // Reset form
+                    document.getElementById('onboarding-form').reset();
+                    currentStep = 1;
+                    showStep(1);
+                }, 3000);
+                
+            } catch (error) {
+                console.error('EmailJS Error:', error);
+                submitBtn.innerHTML = '<span class="btn-text">FOUT: Probeer opnieuw</span>';
+                submitBtn.style.backgroundColor = '#ff4444';
+                
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.style.backgroundColor = '';
+                    submitBtn.disabled = false;
+                }, 3000);
+            }
+        } else {
+            // Fallback to mailto (for testing)
+            const emailContent = generateEmailContent(formData);
+            const subject = encodeURIComponent('Nieuwe Onboarding Aanvraag - Fitlike Nigel');
+            const body = encodeURIComponent(emailContent);
+            const mailtoLink = `mailto:nigel@fitlikenigel.nl?subject=${subject}&body=${body}`;
+            
+            submitBtn.innerHTML = '<span class="btn-text">EMAIL CLIENT WORDT GEOPEND...</span>';
+            submitBtn.disabled = true;
+            
+            // Open email client
+            window.location.href = mailtoLink;
+            
+            // Show confirmation
+            setTimeout(() => {
+                submitBtn.innerHTML = '<span class="btn-text">BEDANKT! JE EMAIL CLIENT IS GEOPEND</span>';
+                submitBtn.style.backgroundColor = 'var(--orange-bright)';
+                
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.style.backgroundColor = '';
+                    submitBtn.disabled = false;
+                    
+                    // Reset form
+                    document.getElementById('onboarding-form').reset();
+                    currentStep = 1;
+                    showStep(1);
+                }, 3000);
+            }, 1000);
+        }
     });
 }
 

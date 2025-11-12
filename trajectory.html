@@ -286,25 +286,112 @@
             }
         });
 
+        // EmailJS Configuration (same as main site)
+        const EMAILJS_CONFIG = {
+            PUBLIC_KEY: "8j_fJaV-chQQrmqOb",      // EmailJS public key
+            SERVICE_ID: "service_v96yzmf",         // Hostinger SMTP service
+            TEMPLATE_ID: "template_8r3s8jo"       // Coaching form template
+        };
+
+        // Initialize EmailJS when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof emailjs !== 'undefined') {
+                emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+                console.log('EmailJS initialized successfully');
+            } else {
+                console.error('EmailJS library not loaded');
+            }
+        });
+
         // Form submission
-        document.getElementById('trajectoryForm').addEventListener('submit', function(e) {
+        document.getElementById('trajectoryForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             // Get form data
             const formData = new FormData(this);
             const selectedPlan = document.getElementById('selectedPlan').value;
+            const selectedPlanInfo = planData[selectedPlan];
             
-            // Here you would normally send the data to your backend
-            alert(`Bedankt! We nemen contact met je op voor het ${planData[selectedPlan].title} traject.`);
+            // Get submit button
+            const submitBtn = document.querySelector('.form-submit');
+            const originalText = submitBtn.textContent;
             
-            // Reset form
-            this.reset();
+            // Show loading state
+            submitBtn.textContent = 'Aanvraag wordt verstuurd...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Check if EmailJS is available
+                if (typeof emailjs === 'undefined') {
+                    throw new Error('EmailJS not loaded');
+                }
+                
+                // Prepare template parameters
+                const templateParams = {
+                    // Contact info
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone'),
+                    age: formData.get('age'),
+                    
+                    // Plan details
+                    plan: selectedPlanInfo.title,
+                    price: selectedPlanInfo.price,
+                    
+                    // Form details
+                    experience: formData.get('experience') || 'Niet opgegeven',
+                    goals: formData.get('goals') || 'Niet opgegeven',
+                    timeframe: formData.get('timeframe') || 'Niet opgegeven',
+                    challenges: formData.get('challenges') || 'Niet opgegeven',
+                    motivation: formData.get('motivation') || 'Niet opgegeven',
+                    message: formData.get('message') || 'Geen extra informatie',
+                    contact_preference: formData.get('contact-preference') || 'email'
+                };
+                
+                console.log('Sending template params:', templateParams);
+                
+                // Send email via EmailJS
+                const response = await emailjs.send(
+                    EMAILJS_CONFIG.SERVICE_ID,
+                    EMAILJS_CONFIG.TEMPLATE_ID,
+                    templateParams
+                );
+                
+                console.log('Email succesvol verstuurd!', response);
+                
+                // Show success
+                submitBtn.textContent = '✓ Aanvraag verstuurd! We nemen snel contact op.';
+                submitBtn.style.backgroundColor = '#4CAF50';
+                
+                // Reset form after delay
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.style.backgroundColor = '';
+                    submitBtn.disabled = false;
+                    this.reset();
+                    
+                    // Reset to basic plan
+                    document.querySelector('[data-plan="basic"]').click();
+                }, 3000);
+                
+            } catch (error) {
+                console.error('EmailJS Error:', error);
+                submitBtn.textContent = 'Fout: Probeer opnieuw of bel ons';
+                submitBtn.style.backgroundColor = '#ff4444';
+                
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.style.backgroundColor = '';
+                    submitBtn.disabled = false;
+                }, 3000);
+            }
         });
     </script>
 
     <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <!-- Navigation Scroll Trigger Script -->
     <script>
