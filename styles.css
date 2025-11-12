@@ -996,7 +996,7 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding-bottom: 10vh;
+    padding-bottom: 2vh;
 }
 
 .hero-main {
@@ -4917,20 +4917,25 @@ textarea::placeholder {
     width: 100%;
     padding-top: 0;
     display: flex;
+    flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
     min-height: auto;
 }
 
 .form-title {
-    font-family: 'PPFormula', Arial, sans-serif;
-    font-size: var(--heading-h3);
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
     font-weight: 900;
+    color: rgba(255, 255, 255, 0.95);
     text-transform: uppercase;
-    color: #efeeec;
-    margin-bottom: 1.5rem;
-    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 2.5rem;
+    letter-spacing: -0.02em;
+    font-family: 'PPFormula', Arial, sans-serif;
+    line-height: 0.9;
+    width: 100%;
 }
+
 
 .trajectory-form {
     background: transparent;
