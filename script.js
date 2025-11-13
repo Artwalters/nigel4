@@ -30,6 +30,88 @@ const EMAILJS_CONFIG = {
 const isMobile = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768 && !/iPad/i.test(navigator.userAgent));
 
 // ====================================
+// MOTIVATIONAL TAB MESSAGES
+// ====================================
+const motivationalMessages = [
+    "💪 Begin vandaag!",
+    "🚀 Niet uitstellen!",
+    "🎯 Doelen halen?",
+    "🔥 Fit worden?",
+    "⏰ Nu is het moment!",
+    "💯 Jij kan dit!",
+    "🏆 Start je transformatie",
+    "⚡ Geen excuses meer",
+    "🎾 Actie = Resultaat",
+    "💥 Waarom wachten?",
+    "🌟 Jouw tijd is nu",
+    "🏃 Eerste stap zetten?",
+    "💎 Investeer in jezelf",
+    "🔥 Ready to transform?",
+    "⭐ Maak het waar!",
+    "🚨 Stop met uitstellen",
+    "💪 Sterker worden?",
+    "🎯 Focus op je doel",
+    "⏱️ Tijd vliegt...",
+    "🏋️ Klaar voor verandering?"
+];
+
+let originalTitle = document.title;
+let titleInterval;
+
+// Function to show motivational message
+function showMotivationalMessage() {
+    const randomMessage = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
+    document.title = randomMessage;
+}
+
+// Function to cycle through messages
+function startTitleAnimation() {
+    // Clear any existing interval
+    if (titleInterval) clearInterval(titleInterval);
+    
+    // Show first message immediately
+    showMotivationalMessage();
+    
+    // Then cycle through messages every 3 seconds
+    titleInterval = setInterval(showMotivationalMessage, 3000);
+}
+
+// Function to restore original title
+function restoreTitle() {
+    if (titleInterval) {
+        clearInterval(titleInterval);
+        titleInterval = null;
+    }
+    document.title = originalTitle;
+}
+
+// Set up tab visibility detection
+document.addEventListener('DOMContentLoaded', function() {
+    // Store original title
+    originalTitle = document.title;
+    
+    // Detect when user leaves/returns to tab
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            // User left the tab
+            startTitleAnimation();
+        } else {
+            // User returned to the tab
+            restoreTitle();
+        }
+    });
+    
+    // Alternative method for older browsers
+    window.addEventListener('blur', function() {
+        startTitleAnimation();
+    });
+    
+    window.addEventListener('focus', function() {
+        restoreTitle();
+    });
+});
+
+// ====================================
 // WEBGL DISPLACEMENT EFFECT
 // ====================================
 function initWebGLEffect() {
@@ -1819,8 +1901,8 @@ function initPageTransitions() {
 
     if (!$frameOrange || !$frameBlack) return;
 
-    // Handle all links to trajectory.html (including with query parameters)
-    const navLinks = document.querySelectorAll('a[href^="trajectory.html"]');
+    // Handle all links to coaching/ (including with query parameters)
+    const navLinks = document.querySelectorAll('a[href^="coaching/"]');
 
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {

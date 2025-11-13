@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Coaching Traject - Nigel</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
     <!-- Page Transition -->
@@ -30,7 +30,7 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container" style="justify-content: flex-end;">
-            <a href="index.html" class="nav-link">Terug</a>
+            <a href="../" class="nav-link">Terug</a>
         </div>
     </nav>
 
@@ -271,19 +271,49 @@
 
         // Check URL parameters and set initial plan
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize default description with line structure
-            const defaultDescription = planData.basic.description;
-            document.getElementById('plan-description').innerHTML = createDescriptionHTML(defaultDescription);
-
             const urlParams = new URLSearchParams(window.location.search);
             const planFromUrl = urlParams.get('plan');
+            const selectedPlan = (planFromUrl && planData[planFromUrl]) ? planFromUrl : 'basic';
 
-            if (planFromUrl && planData[planFromUrl]) {
-                // Find and click the corresponding plan button
-                const targetButton = document.querySelector(`[data-plan="${planFromUrl}"]`);
-                if (targetButton) {
-                    targetButton.click();
-                }
+            // Update content directly for the selected plan
+            const planInfo = planData[selectedPlan];
+            
+            // Update title
+            document.querySelector('#plan-title .title-line').textContent = planInfo.title;
+            
+            // Update description
+            document.getElementById('plan-description').innerHTML = createDescriptionHTML(planInfo.description);
+            
+            // Update price
+            document.querySelector('.price-text').textContent = planInfo.price;
+            
+            // Update features
+            const featuresList = document.getElementById('plan-features');
+            featuresList.innerHTML = '';
+            planInfo.features.forEach(feature => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div class="li-text-container">
+                        <span class="li-text">${feature}</span>
+                    </div>
+                `;
+                featuresList.appendChild(li);
+            });
+            
+            // Update selected plan value
+            document.getElementById('selectedPlan').value = selectedPlan;
+            
+            // Update submit button
+            const submitButton = document.querySelector('.form-submit');
+            submitButton.textContent = `Start gratis intake - ${planInfo.title}`;
+            
+            // Set the correct button as active
+            document.querySelectorAll('.plan-option').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const targetButton = document.querySelector(`[data-plan="${selectedPlan}"]`);
+            if (targetButton) {
+                targetButton.classList.add('active');
             }
         });
 
@@ -393,6 +423,75 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
+    <!-- Motivational Tab Messages -->
+    <script>
+        const motivationalMessages = [
+            "💪 Begin vandaag!",
+            "🚀 Niet uitstellen!",
+            "🎯 Doelen halen?",
+            "🔥 Fit worden?",
+            "⏰ Nu is het moment!",
+            "💯 Jij kan dit!",
+            "🏆 Start je transformatie",
+            "⚡ Geen excuses meer",
+            "🎾 Actie = Resultaat",
+            "💥 Waarom wachten?",
+            "🌟 Jouw tijd is nu",
+            "🏃 Eerste stap zetten?",
+            "💎 Investeer in jezelf",
+            "🔥 Ready to transform?",
+            "⭐ Maak het waar!",
+            "🚨 Stop met uitstellen",
+            "💪 Sterker worden?",
+            "🎯 Focus op je doel",
+            "⏱️ Tijd vliegt...",
+            "🏋️ Klaar voor verandering?"
+        ];
+
+        let originalTitle = document.title;
+        let titleInterval;
+
+        function showMotivationalMessage() {
+            const randomMessage = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
+            document.title = randomMessage;
+        }
+
+        function startTitleAnimation() {
+            if (titleInterval) clearInterval(titleInterval);
+            showMotivationalMessage();
+            titleInterval = setInterval(showMotivationalMessage, 3000);
+        }
+
+        function restoreTitle() {
+            if (titleInterval) {
+                clearInterval(titleInterval);
+                titleInterval = null;
+            }
+            document.title = originalTitle;
+        }
+
+        // Set up when DOM loads
+        document.addEventListener('DOMContentLoaded', function() {
+            originalTitle = document.title;
+            
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    startTitleAnimation();
+                } else {
+                    restoreTitle();
+                }
+            });
+            
+            window.addEventListener('blur', function() {
+                startTitleAnimation();
+            });
+            
+            window.addEventListener('focus', function() {
+                restoreTitle();
+            });
+        });
+    </script>
 
     <!-- Navigation Scroll Trigger Script -->
     <script>
@@ -562,7 +661,7 @@
 
         if ($frameOrange && $frameBlack) {
             // Handle navigation links (including the "Terug" link)
-            const navLinks = document.querySelectorAll('a[href="index.html"]');
+            const navLinks = document.querySelectorAll('a[href="../"]');
             navLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
