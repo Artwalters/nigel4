@@ -1910,29 +1910,29 @@ function initPageTransitions() {
             const href = link.getAttribute('href');
 
             // Create enter animation (top to bottom)
-            const tlEnter = gsap.timeline()
-                .fromTo($frameOrange, {
-                    scaleY: 0
-                }, {
-                    scaleY: 1,
-                    transformOrigin: 'top',
-                    duration: 0.9,
-                    ease: 'power4.inOut'
-                })
-                .fromTo($frameBlack, {
-                    scaleY: 0
-                }, {
-                    scaleY: 1,
-                    transformOrigin: 'top',
-                    duration: 0.9,
-                    ease: 'power4.inOut'
-                }, 0.1);
-
-            // Navigate when black screen is fully visible
-            setTimeout(() => {
-                sessionStorage.setItem('pageTransitionActive', 'true');
-                window.location.href = href;
-            }, 1100);
+            const tlEnter = gsap.timeline({
+                onComplete: function() {
+                    // Navigate when animation is complete
+                    sessionStorage.setItem('pageTransitionActive', 'true');
+                    window.location.href = href;
+                }
+            })
+            .fromTo($frameOrange, {
+                scaleY: 0
+            }, {
+                scaleY: 1,
+                transformOrigin: 'top',
+                duration: 0.9,
+                ease: 'power4.inOut'
+            })
+            .fromTo($frameBlack, {
+                scaleY: 0
+            }, {
+                scaleY: 1,
+                transformOrigin: 'top',
+                duration: 0.9,
+                ease: 'power4.inOut'
+            }, 0.1);
         });
     });
 

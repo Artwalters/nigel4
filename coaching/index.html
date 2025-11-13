@@ -20,9 +20,11 @@
             const frameBlack = document.querySelector('.page-transition__black');
             const frameOrange = document.querySelector('.page-transition__orange');
             if (frameBlack && frameOrange) {
+                // Both frames should start at full scale for exit animation
                 frameBlack.style.transform = 'scaleY(1)';
                 frameBlack.style.transformOrigin = 'bottom';
-                frameOrange.style.transform = 'scaleY(0)';
+                frameOrange.style.transform = 'scaleY(1)';
+                frameOrange.style.transformOrigin = 'bottom';
             }
         }
     </script>
