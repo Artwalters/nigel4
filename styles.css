@@ -2357,6 +2357,26 @@ a {
     color: #d4d4d4;
 }
 
+.package-commitment {
+    margin: 0.75rem 0 1rem 0;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: #666;
+    text-align: center;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.package-card.featured .package-commitment {
+    color: #efeeec;
+    border-top-color: rgba(255,255,255,0.2);
+}
+
+.package-card.elite .package-commitment {
+    color: #d4d4d4;
+    border-top-color: rgba(255,255,255,0.1);
+}
+
 .package-btn {
     background-color: #000000;
     color: #efeeec;

@@ -121,9 +121,9 @@
                         </select>
                     </div>
                     
-                    <input type="hidden" id="selectedPlan" name="plan" value="basic">
+                    <input type="hidden" id="selectedPlan" name="plan" value="loyalty">
                     
-                    <button type="submit" class="form-submit">Start gratis intake - Basic Coaching</button>
+                    <button type="submit" class="form-submit">Start gratis intake - Loyalty Coaching</button>
                     
                     <p style="text-align: center; color: rgba(255,255,255,0.5); margin-top: 1rem; font-size: 0.8rem;">
                         Door dit formulier in te vullen ga je akkoord met een gratis kennismakingsgesprek. Geen verplichtingen.
@@ -135,15 +135,15 @@
         <div class="trajectory-right">
             <div class="trajectory-content">
                 <div class="plan-switcher">
-                    <button class="plan-option active" data-plan="basic">Basic</button>
-                    <button class="plan-option" data-plan="pro">Pro</button>
-                    <button class="plan-option" data-plan="elite">Elite</button>
+                    <button class="plan-option active" data-plan="loyalty">Loyalty</button>
+                    <button class="plan-option" data-plan="smart">Smart</button>
+                    <button class="plan-option" data-plan="flex">Flex</button>
                 </div>
 
                 <div style="display: flex; align-items: baseline; gap: 1.5rem; flex-wrap: wrap;">
                     <h1 class="trajectory-title" id="plan-title" style="margin: 0;">
                         <div class="title-line-container">
-                            <span class="title-line">Basic Coaching</span>
+                            <span class="title-line">Loyalty Coaching</span>
                         </div>
                     </h1>
                     <div class="trajectory-price" id="plan-price">
@@ -188,40 +188,41 @@
 
     <script>
         const planData = {
-            basic: {
-                title: 'Basic Coaching',
-                description: 'Voor mensen die zelfstandig willen trainen, maar wél met professionele begeleiding om hun doelen te bereiken. Perfect om de juiste basis te leggen zonder overweldigende complexiteit.',
+            loyalty: {
+                title: 'Loyalty Coaching',
+                description: 'Opzegbaar na 6 maanden',
                 features: [
-                    'Persoonlijk trainingsschema (om de 4 weken aangepast)',
-                    'Voedingsrichtlijnen & macrodoelen',
-                    '1x per week check-in via whatsapp',
-                    'Feedback en aanpassing waar nodig'
+                    'Persoonlijk voedingsschema',
+                    'Persoonlijk trainingsschema',
+                    'PT Distinction app coaching',
+                    '24/7 WhatsApp contact',
+                    'Techniekcheck via video'
                 ],
-                price: '€89/maand'
+                price: '€100/maand'
             },
-            pro: {
-                title: 'Pro Coaching',
-                description: 'Voor wie echt resultaten wil met intensieve persoonlijke opvolging. Dit pakket combineert de beste coaching tools met regelmatige evaluaties. Ideaal voor wie consistente progressie en professionele begeleiding wil.',
+            smart: {
+                title: 'Smart Coaching',
+                description: 'Opzegbaar na 3 maanden',
                 features: [
-                    'Alles uit Basic',
-                    'Volledige online 1-op-1 coaching via PT Distinction app',
-                    'Maandelijkse evaluatiecall',
-                    'Voedingsschema + updates op basis van progressie',
-                    'Toegang tot exclusieve Fitlike Coaching community'
+                    'Persoonlijk voedingsschema',
+                    'Persoonlijk trainingsschema',
+                    'PT Distinction app coaching',
+                    '24/7 WhatsApp contact',
+                    'Techniekcheck via video'
                 ],
-                price: '€129/maand'
+                price: '€120/maand'
             },
-            elite: {
-                title: 'Elite Coaching',
-                description: 'Jouw premium traject met maximale begeleiding en directe support. Het meest complete programma voor mensen die de beste versie van zichzelf willen worden. Holistische aanpak die verder gaat dan alleen fitness.',
+            flex: {
+                title: 'Flex Coaching',
+                description: 'Maandelijks opzegbaar',
                 features: [
-                    'Alles uit Pro',
-                    'WhatsApp support (snelle feedback en motivatie)',
-                    'Diepgaande levensstijlcoaching (slaap, stress, routines)',
-                    'Wekelijkse evaluatiecalls of voice-updates',
-                    'Prioriteit bij schema-updates'
+                    'Persoonlijk voedingsschema',
+                    'Persoonlijk trainingsschema',
+                    'PT Distinction app coaching',
+                    '24/7 WhatsApp contact',
+                    'Techniekcheck via video'
                 ],
-                price: '€179/maand'
+                price: '€130/maand'
             }
         };
 
@@ -266,7 +267,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const planFromUrl = urlParams.get('plan');
-            const selectedPlan = (planFromUrl && planData[planFromUrl]) ? planFromUrl : 'basic';
+            const selectedPlan = (planFromUrl && planData[planFromUrl]) ? planFromUrl : 'loyalty';
 
             // Update content directly for the selected plan
             const planInfo = planData[selectedPlan];
@@ -394,8 +395,8 @@
                     submitBtn.disabled = false;
                     this.reset();
                     
-                    // Reset to basic plan
-                    document.querySelector('[data-plan="basic"]').click();
+                    // Reset to loyalty plan
+                    document.querySelector('[data-plan="loyalty"]').click();
                 }, 3000);
                 
             } catch (error) {
