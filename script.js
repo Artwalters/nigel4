@@ -162,10 +162,22 @@ function initWebGLEffect() {
     
     let nMouse = [0, 0];
 
+    // Lock the hero canvas to its initial viewport size so the mobile URL-bar
+    // collapse/expand doesn't cause the hero image to grow mid-scroll.
+    let lockedWidth = window.innerWidth;
+    let lockedHeight = window.innerHeight;
+
+    window.addEventListener('orientationchange', () => {
+        setTimeout(() => {
+            lockedWidth = window.innerWidth;
+            lockedHeight = window.innerHeight;
+        }, 150);
+    });
+
     function sizeCanvasToDisplaySize(canvas) {
-        const displayWidth = window.innerWidth;
-        const displayHeight = window.innerHeight;
-        
+        const displayWidth = isMobile ? lockedWidth : window.innerWidth;
+        const displayHeight = isMobile ? lockedHeight : window.innerHeight;
+
         if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
             canvas.width = displayWidth;
             canvas.height = displayHeight;
@@ -1527,9 +1539,12 @@ function initListAnimations() {
 // FOOTER BICEP EMOJI EFFECT
 // ====================================
 function initBicepEmojiEffect() {
+    // Skip the hover effect on mobile — there the bicep is statically placed via CSS.
+    if (isMobile) return;
+
     const followTitle = document.querySelector('.follow-title');
     const bicepEmoji = document.querySelector('.bicep-emoji');
-    
+
     if (followTitle && bicepEmoji) {
         let mouseX = 0;
         let emojiX = 0;
