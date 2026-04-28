@@ -162,27 +162,18 @@ function initWebGLEffect() {
     
     let nMouse = [0, 0];
 
-    // Lock the hero canvas to its initial viewport size so the mobile URL-bar
-    // collapse/expand doesn't cause the hero image to grow mid-scroll.
-    let lockedWidth = window.innerWidth;
-    let lockedHeight = window.innerHeight;
-
-    window.addEventListener('orientationchange', () => {
-        setTimeout(() => {
-            lockedWidth = window.innerWidth;
-            lockedHeight = window.innerHeight;
-        }, 150);
-    });
-
+    // Size the WebGL pixel buffer to match the canvas element's rendered size.
+    // Reading clientWidth/clientHeight (instead of window.innerHeight) keeps the
+    // canvas perfectly in sync with the locked --app-vh CSS variable, which avoids
+    // jumps in in-app browsers like Instagram/Facebook where window.innerHeight
+    // can change unexpectedly after the initial load.
     function sizeCanvasToDisplaySize(canvas) {
-        const displayWidth = isMobile ? lockedWidth : window.innerWidth;
-        const displayHeight = isMobile ? lockedHeight : window.innerHeight;
+        const displayWidth = canvas.clientWidth || window.innerWidth;
+        const displayHeight = canvas.clientHeight || window.innerHeight;
 
         if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
             canvas.width = displayWidth;
             canvas.height = displayHeight;
-            canvas.style.width = displayWidth + 'px';
-            canvas.style.height = displayHeight + 'px';
         }
     }
 

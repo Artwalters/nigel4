@@ -22,6 +22,15 @@
     <meta name="twitter:image" content="https://fitlikenigel.com/img/image00006.webp">
 
     <link rel="icon" type="image/webp" href="img/flavicon2@3x.webp">
+
+    <!-- Preconnect to CDNs that script tags below pull from -->
+    <link rel="preconnect" href="https://twgljs.org" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+    <!-- Preload hero image (loaded by WebGL via JS) so it starts downloading early -->
+    <link rel="preload" as="image" href="img/hero.webp" fetchpriority="high">
+
     <script>
         // Lock viewport height once at load to prevent mobile URL-bar jumps.
         (function () {
@@ -107,7 +116,7 @@
             <div class="intro-icons-container">
                 <div class="intro-logo">
                     <div class="intro-logo-circle">
-                        <img src="img/likenigel.svg" alt="Fitlike Nigel Logo" class="intro-logo-image">
+                        <img src="img/likenigel.svg" alt="Fitlike Nigel Logo" class="intro-logo-image" loading="lazy" decoding="async">
                     </div>
                 </div>
             </div>
@@ -144,7 +153,7 @@
                     </ul>
                 </div>
                 <div class="about-right">
-                    <img src="img/image00003.webp" alt="Nigel Coaching" class="about-image">
+                    <img src="img/image00003.webp" alt="Nigel Coaching" class="about-image" loading="lazy" decoding="async">
                 </div>
             </div>
         </div>
@@ -154,7 +163,7 @@
         <div class="container">
             <div class="philosophy-grid">
                 <div class="philosophy-left">
-                    <img src="img/image00004.webp" alt="Nigel Training" class="philosophy-image">
+                    <img src="img/image00004.webp" alt="Nigel Training" class="philosophy-image" loading="lazy" decoding="async">
                 </div>
                 <div class="philosophy-right">
                     <h2 class="philosophy-title">
@@ -570,7 +579,7 @@
                     </div>
                 </h2>
                 <div class="bicep-emoji">
-                    <img src="img/flexed-biceps-medium-dark-skin-tone_1f4aa-1f3fe.png" alt="💪">
+                    <img src="img/flexed-biceps-medium-dark-skin-tone_1f4aa-1f3fe.png" alt="💪" loading="lazy" decoding="async">
                 </div>
                 
                 <div class="follow-socials">

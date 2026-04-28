@@ -926,7 +926,7 @@ a {
 
 /* Hero Section */
 .hero {
-    height: var(--app-vh, 100vh);
+    height: var(--app-vh, 100svh);
     width: 100%;
     position: relative;
     display: flex;
@@ -974,7 +974,7 @@ a {
     top: 0;
     left: 0;
     width: 100vw;
-    height: var(--app-vh, 100vh);
+    height: var(--app-vh, 100svh);
     z-index: 0;
     display: block;
     object-fit: cover;
@@ -1013,7 +1013,7 @@ a {
 }
 
 .hero-title {
-    font-size: clamp(3.5rem, 8vw, 8rem);
+    font-size: clamp(3.5rem, 7vw, 7rem);
     line-height: 0.9;
     margin-bottom: 2rem;
     color: #efeeec;
@@ -3599,7 +3599,7 @@ textarea::placeholder {
 }
 
 .follow-title {
-    font-size: clamp(3.5rem, 8vw, 8rem);  /* Zelfde grootte als hero-title */
+    font-size: clamp(3.5rem, 7vw, 7rem);  /* Zelfde grootte als hero-title */
     font-weight: 900;
     margin-bottom: 15px;
     color: #efeeec;
